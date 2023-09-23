@@ -75,9 +75,18 @@ static const u8 sMetatileAttrShifts[METATILE_ATTRIBUTE_COUNT] = {
 
 static inline u16 GetBorderBlockAt(int x, int y)
 {
-    int i = (x + 1) & 1;
-    i += ((y + 1) & 1) * 2;
-    return gMapHeader.mapLayout->border[i] | MAPGRID_COLLISION_MASK;
+    s32 xprime, yprime;
+    const struct MapLayout *mapLayout = gMapHeader.mapLayout;
+
+    xprime = x - MAP_OFFSET;
+    xprime += 8 * mapLayout->borderWidth;
+    xprime %= mapLayout->borderWidth;
+
+    yprime = y - MAP_OFFSET;
+    yprime += 8 * mapLayout->borderHeight;
+    yprime %= mapLayout->borderHeight;
+
+    return mapLayout->border[xprime + yprime * mapLayout->borderWidth] | MAPGRID_COLLISION_MASK;
 }
 
 #define AreCoordsWithinMapGridBounds(x, y) (x >= 0 && x < gBackupMapLayout.width && y >= 0 && y < gBackupMapLayout.height)
