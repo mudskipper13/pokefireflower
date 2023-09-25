@@ -1,0 +1,35 @@
+text LittlerootTown_Text_CanUsePCToStoreItems {
+	"If you use a PC, you can store items\n"
+	"and POKéMON.\p"
+	"The power of science is staggering!"
+}
+
+text LittlerootTown_Text_BirchSpendsDaysInLab {
+	"PROF. BIRCH spends days in his LAB\n"
+	"studying, then he'll suddenly go out in\l"
+	"the wild to do more research…\p"
+	"When does PROF. BIRCH spend time\n"
+	"at home?"
+}
+
+text LittlerootTown_Text_GoodLuckCatchingPokemon {
+	"Are you going to catch POKéMON?\n"
+	"Good luck!"
+}
+
+text LittlerootTown_Text_TownSign {
+	"LITTLEROOT TOWN\n"
+	"“A town that can't be shaded any hue.”"
+}
+
+text LittlerootTown_Text_ProfBirchsLab {
+	"PROF. BIRCH'S POKéMON LAB"
+}
+
+text LittlerootTown_Text_PlayersHouse {
+	"{PLAYER}'s HOUSE"
+}
+
+text LittlerootTown_Text_ProfBirchsHouse {
+	"PROF. BIRCH'S HOUSE"
+}
