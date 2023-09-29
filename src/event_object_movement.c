@@ -139,7 +139,6 @@ static void RemoveObjectEventIfOutsideView(struct ObjectEvent *);
 static void SpawnObjectEventOnReturnToField(u8, s16, s16);
 static void SetPlayerAvatarObjectEventIdAndObjectId(u8, u8);
 static void ResetObjectEventFldEffData(struct ObjectEvent *);
-static u8 LoadSpritePaletteIfTagExists(const struct SpritePalette *);
 static u8 FindObjectEventPaletteIndexByTag(u16);
 static void _PatchObjectPalette(u16, u8);
 static bool8 ObjectEventDoesElevationMatch(struct ObjectEvent *, u8);
@@ -165,6 +164,8 @@ static void DestroyLevitateMovementTask(u8);
 static bool8 NpcTakeStep(struct Sprite *);
 static bool8 IsElevationMismatchAt(u8, s16, s16);
 static bool8 AreElevationsCompatible(u8, u8);
+static u8 LoadSpritePaletteIfTagExists(const struct SpritePalette *, bool32);
+static void LoadObjectEventPaletteHandleDayNight(u16, bool32);
 
 static const struct SpriteFrameImage sPicTable_PechaBerryTree[];
 
@@ -1351,22 +1352,21 @@ static void MakeSpriteTemplateFromObjectEventTemplate(const struct ObjectEventTe
     CopyObjectGraphicsInfoToSpriteTemplate_WithMovementType(objectEventTemplate->graphicsId, objectEventTemplate->movementType, spriteTemplate, subspriteTables);
 }
 
-// Used to create a sprite using a graphicsId associated with object events.
-u8 CreateObjectGraphicsSprite(u16 graphicsId, void (*callback)(struct Sprite *), s16 x, s16 y, u8 subpriority)
+static u8 CreateObjectGraphicsSpriteHandleDayNight(u16 graphicsId, void (*callback)(struct Sprite *), s16 x, s16 y, u8 subpriority, bool32 isDayNight)
 {
     struct SpriteTemplate *spriteTemplate;
     const struct SubspriteTable *subspriteTables;
     struct Sprite *sprite;
     u8 spriteId;
-
+ 
     spriteTemplate = Alloc(sizeof(struct SpriteTemplate));
     CopyObjectGraphicsInfoToSpriteTemplate(graphicsId, callback, spriteTemplate, &subspriteTables);
     if (spriteTemplate->paletteTag != TAG_NONE)
-        LoadObjectEventPalette(spriteTemplate->paletteTag);
-
+        LoadObjectEventPaletteHandleDayNight(spriteTemplate->paletteTag, isDayNight);
+ 
     spriteId = CreateSprite(spriteTemplate, x, y, subpriority);
     Free(spriteTemplate);
-
+ 
     if (spriteId != MAX_SPRITES && subspriteTables != NULL)
     {
         sprite = &gSprites[spriteId];
@@ -1375,6 +1375,18 @@ u8 CreateObjectGraphicsSprite(u16 graphicsId, void (*callback)(struct Sprite *),
     }
     return spriteId;
 }
+ 
+// Used to create a sprite using a graphicsId associated with object events.
+u8 CreateObjectGraphicsSprite(u16 graphicsId, void (*callback)(struct Sprite *), s16 x, s16 y, u8 subpriority)
+{
+    return CreateObjectGraphicsSpriteHandleDayNight(graphicsId, callback, x, y, subpriority, TRUE);
+}
+ 
+u8 CreateObjectGraphicsSpriteNoTint(u16 graphicsId, void (*callback)(struct Sprite *), s16 x, s16 y, u8 subpriority)
+{
+    return CreateObjectGraphicsSpriteHandleDayNight(graphicsId, callback, x, y, subpriority, FALSE);
+}
+
 
 #define sVirtualObjId   data[0]
 #define sVirtualObjElev data[1]
@@ -1775,17 +1787,17 @@ void FreeAndReserveObjectSpritePalettes(void)
     gReservedSpritePaletteCount = OBJ_PALSLOT_COUNT;
 }
 
-void LoadObjectEventPalette(u16 paletteTag)
+static void LoadObjectEventPaletteHandleDayNight(u16 paletteTag, bool32 isDayNight)
 {
     u16 i = FindObjectEventPaletteIndexByTag(paletteTag);
-
-// FindObjectEventPaletteIndexByTag returns 0xFF on failure, not OBJ_EVENT_PAL_TAG_NONE.
-#ifdef BUGFIX
+ 
     if (i != 0xFF)
-#else
-    if (i != OBJ_EVENT_PAL_TAG_NONE)
-#endif
-        LoadSpritePaletteIfTagExists(&sObjectEventSpritePalettes[i]);
+        LoadSpritePaletteIfTagExists(&sObjectEventSpritePalettes[i], isDayNight);
+}
+ 
+void LoadObjectEventPalette(u16 paletteTag)
+{
+    LoadObjectEventPaletteHandleDayNight(paletteTag, TRUE);
 }
 
 static void UNUSED LoadObjectEventPaletteSet(u16 *paletteTags)
@@ -1796,13 +1808,12 @@ static void UNUSED LoadObjectEventPaletteSet(u16 *paletteTags)
         LoadObjectEventPalette(paletteTags[i]);
 }
 
-// NOTE: Does not use LoadSpritePaletteDayNight because of naming screen
-static u8 LoadSpritePaletteIfTagExists(const struct SpritePalette *spritePalette)
+static u8 LoadSpritePaletteIfTagExists(const struct SpritePalette *spritePalette, bool32 isDayNight)
 {
     if (IndexOfSpritePaletteTag(spritePalette->tag) != 0xFF)
         return 0xFF;
 
-    return LoadSpritePalette(spritePalette);
+    return LoadSpritePalette_HandleDayNight(spritePalette, isDayNight);
 }
 
 void PatchObjectPalette(u16 paletteTag, u8 paletteSlot)
