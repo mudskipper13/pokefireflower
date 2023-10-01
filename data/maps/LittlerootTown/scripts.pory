@@ -2,46 +2,42 @@ const LOCALID_SIGN_GIRL = 1
 const LOCALID_PROF_OAK = 3
 
 mapscripts LittlerootTown_MapScripts {
-	MAP_SCRIPT_ON_TRANSITION: LittlerootTown_OnTransition
+	MAP_SCRIPT_ON_TRANSITION: PalletTown_OnTransition
 }
 
-script LittlerootTown_OnTransition {
+script PalletTown_OnTransition {
 	setflag(FLAG_VISITED_LITTLEROOT_TOWN)
 	end
 }
 
-script LittlerootTown_OnFrame {
+script PalletTown_OnFrame {
 	end
 }
 
 raw `
 
-LittlerootTown_EventScript_FatMan::
-	msgbox LittlerootTown_Text_CanUsePCToStoreItems, MSGBOX_NPC
+PalletTown_EventScript_FatMan::
+	msgbox PalletTown_Text_CanStoreItemsAndMonsInPC, MSGBOX_NPC
 	end
 
-LittlerootTown_EventScript_Boy::
-	msgbox LittlerootTown_Text_BirchSpendsDaysInLab, MSGBOX_NPC
+PalletTown_EventScript_Twin::
+	msgbox PalletTown_Text_GoodLuckCatchingPokemon, MSGBOX_NPC
 	end
 
-LittlerootTown_EventScript_Twin::
-	msgbox LittlerootTown_Text_GoodLuckCatchingPokemon, MSGBOX_NPC
+PalletTown_EventScript_TownSign::
+	msgbox PalletTown_Text_TownSign, MSGBOX_SIGN
 	end
 
-LittlerootTown_EventScript_TownSign::
-	msgbox LittlerootTown_Text_TownSign, MSGBOX_SIGN
+PalletTown_EventScript_OakLabSign::
+	msgbox PalletTown_Text_ProfOaksLab, MSGBOX_SIGN
 	end
 
-LittlerootTown_EventScript_BirchsLabSign::
-	msgbox LittlerootTown_Text_ProfBirchsLab, MSGBOX_SIGN
-	end
-
-LittlerootTown_EventScript_PlayersHouse::
-	msgbox LittlerootTown_Text_PlayersHouse, MSGBOX_NPC
+PalletTown_EventScript_PlayerHouse::
+	msgbox PalletTown_Text_PlayersHouse, MSGBOX_NPC
 	return
 
-LittlerootTown_EventScript_BirchsHouse::
-	msgbox LittlerootTown_Text_ProfBirchsHouse, MSGBOX_NPC
+PalletTown_EventScript_RivalHouse::
+	msgbox PalletTown_Text_RivalsHouse, MSGBOX_NPC
 	return
 
 `

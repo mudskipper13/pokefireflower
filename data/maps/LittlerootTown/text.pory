@@ -1,35 +1,34 @@
-text LittlerootTown_Text_CanUsePCToStoreItems {
-	"If you use a PC, you can store items\n"
-	"and POKéMON.\p"
-	"The power of science is staggering!"
+text PalletTown_Text_CanStoreItemsAndMonsInPC {
+	"Today's technology is pretty rad!\p"
+
+	"You can now modify your favorite games\n"
+	"to whatever you want them to be with no\l"
+	"such worries, unlike before!\p"
+
+	"If only those fan games people didn't\n"
+	"try stealing our potential modders.."
 }
 
-text LittlerootTown_Text_BirchSpendsDaysInLab {
-	"PROF. BIRCH spends days in his LAB\n"
-	"studying, then he'll suddenly go out in\l"
-	"the wild to do more research…\p"
-	"When does PROF. BIRCH spend time\n"
-	"at home?"
+text PalletTown_Text_GoodLuckCatchingPokemon {
+	"I'm raising POKéMON, too.\p"
+
+	"When they get strong, they can\n"
+	"protect me."
 }
 
-text LittlerootTown_Text_GoodLuckCatchingPokemon {
-	"Are you going to catch POKéMON?\n"
-	"Good luck!"
+text PalletTown_Text_TownSign {
+	"PALLET TOWN\n"
+	"Shades of your journey await!"
 }
 
-text LittlerootTown_Text_TownSign {
-	"LITTLEROOT TOWN\n"
-	"“A town that can't be shaded any hue.”"
+text PalletTown_Text_ProfOaksLab {
+	"OAK POKéMON RESEARCH LAB"
 }
 
-text LittlerootTown_Text_ProfBirchsLab {
-	"PROF. BIRCH'S POKéMON LAB"
-}
-
-text LittlerootTown_Text_PlayersHouse {
+text PalletTown_Text_PlayersHouse {
 	"{PLAYER}'s HOUSE"
 }
 
-text LittlerootTown_Text_ProfBirchsHouse {
-	"PROF. BIRCH'S HOUSE"
+text PalletTown_Text_RivalsHouse {
+	"PROF. OAK'S HOUSE"
 }
