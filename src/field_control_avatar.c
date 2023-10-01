@@ -730,7 +730,7 @@ static bool8 TryArrowWarp(struct MapPosition *position, u16 metatileBehavior, u8
         else if (IsDirectionalStairWarpMetatileBehavior(metatileBehavior, direction))
         {
             u16 delay = 0;
-            if (gPlayerAvatar.flags & (PLAYER_AVATAR_FLAG_MACH_BIKE | PLAYER_AVATAR_FLAG_ACRO_BIKE))
+            if (gPlayerAvatar.flags & (PLAYER_AVATAR_FLAG_BIKE))
             {
                 SetPlayerAvatarTransitionFlags(PLAYER_AVATAR_FLAG_ON_FOOT);
                 delay = 12;
