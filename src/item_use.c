@@ -264,8 +264,8 @@ static void ItemUseOnFieldCB_Bike(u8 taskId)
     {
         gSaveBlock2Ptr->playerBike = ItemId_GetSecondaryId(gSpecialVar_ItemId);
         SetPlayerAvatarTransitionFlags(PLAYER_AVATAR_FLAG_BIKE);
-        Overworld_SetSavedMusic(MUS_CYCLING);
-        Overworld_ChangeMusicTo(MUS_CYCLING);
+        Overworld_SetSavedMusic(MUS_RG_CYCLING);
+        Overworld_ChangeMusicTo(MUS_RG_CYCLING);
     }
     ScriptUnfreezeObjectEvents();
     UnlockPlayerFieldControls();
