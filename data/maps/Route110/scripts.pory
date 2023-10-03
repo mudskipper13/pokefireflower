@@ -21,7 +21,7 @@ Route110_OnTransition:
 	end
 
 Route110_EventScript_SaveCyclingMusic::
-	savebgm MUS_CYCLING
+	savebgm MUS_RG_CYCLING
 	return
 
 Route110_OnFrame:
