@@ -1,5 +1,9 @@
+//! constants
+
 const LOCALID_SIGN_GIRL = 1
-const LOCALID_PROF_OAK = 3
+const LOCALID_PROF_MARCUS = 3
+
+//! mapscripts
 
 mapscripts LittlerootTown_MapScripts {
 	MAP_SCRIPT_ON_TRANSITION: PalletTown_OnTransition
@@ -7,37 +11,51 @@ mapscripts LittlerootTown_MapScripts {
 
 script PalletTown_OnTransition {
 	setflag(FLAG_VISITED_LITTLEROOT_TOWN)
-	end
 }
 
 script PalletTown_OnFrame {
 	end
 }
 
-raw `
+//! triggers
 
-PalletTown_EventScript_FatMan::
-	msgbox PalletTown_Text_CanStoreItemsAndMonsInPC, MSGBOX_NPC
+//! movements
+
+//! overworlds
+
+script PalletTown_EventScript_FatMan {
+	msgbox(PalletTown_Text_CanModifyGames, MSGBOX_NPC)
 	end
+}
 
-PalletTown_EventScript_Twin::
-	msgbox PalletTown_Text_GoodLuckCatchingPokemon, MSGBOX_NPC
+script PalletTown_EventScript_Twin {
+	msgbox(PalletTown_Text_RaisingMonsToo, MSGBOX_NPC)
 	end
+}
 
-PalletTown_EventScript_TownSign::
-	msgbox PalletTown_Text_TownSign, MSGBOX_SIGN
+//! Signs
+
+script PalletTown_EventScript_TrainerTipsSign {
+	msgbox(PalletTown_Text_TrainerTipsSign, MSGBOX_SIGN)
 	end
+}
 
-PalletTown_EventScript_OakLabSign::
-	msgbox PalletTown_Text_ProfOaksLab, MSGBOX_SIGN
+script PalletTown_EventScript_TownSign {
+	msgbox(PalletTown_Text_TownSign, MSGBOX_SIGN)
 	end
+}
 
-PalletTown_EventScript_PlayerHouse::
-	msgbox PalletTown_Text_PlayersHouse, MSGBOX_NPC
-	return
+script PalletTown_EventScript_OakLabSign {
+	msgbox(PalletTown_Text_OakLabSign, MSGBOX_SIGN)
+	end
+}
 
-PalletTown_EventScript_RivalHouse::
-	msgbox PalletTown_Text_RivalsHouse, MSGBOX_NPC
-	return
+script PalletTown_EventScript_PlayerHouseSign {
+	msgbox(PalletTown_Text_PlayersHouseSign, MSGBOX_NPC)
+	end
+}
 
-`
+script PalletTown_EventScript_RivalHouseSign {
+	msgbox(PalletTown_Text_RivalsHouseSign, MSGBOX_NPC)
+	end
+}

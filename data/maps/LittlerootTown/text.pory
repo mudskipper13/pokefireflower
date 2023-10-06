@@ -1,34 +1,53 @@
-text PalletTown_Text_CanStoreItemsAndMonsInPC {
+
+//! triggers / mapscripts
+
+//! overworlds
+
+text PalletTown_Text_CanModifyGames {
 	"Today's technology is pretty rad!\p"
 
-	"You can now modify your favorite games\n"
-	"to whatever you want them to be with no\l"
-	"such worries, unlike before!\p"
+	"You can now modify your favorite\n"
+	"games to whatever you want them to\l"
+	"be with no such worries, unlike\l"
+	"before!\p"
 
-	"If only those fan games people didn't\n"
-	"try stealing our potential modders.."
+	"…If only those fan games people did\n"
+	"not try and steal our potential users,\l"
+	"though."
 }
 
-text PalletTown_Text_GoodLuckCatchingPokemon {
+text PalletTown_Text_RaisingMonsToo {
 	"I'm raising POKéMON, too.\p"
 
 	"When they get strong, they can\n"
 	"protect me."
 }
 
+//! signs
+
+text PalletTown_Text_TrainerTipsSign {
+	"TRAINER TIPS!\p"
+
+	"Don't forget to use the SAVE\n"
+	"option to save your progress.\p"
+
+	"The SAVE option is located\n"
+	"in the START menu."
+}
+
 text PalletTown_Text_TownSign {
 	"PALLET TOWN\n"
-	"Shades of your journey await!"
+	"The colorful journey awaits!"
 }
 
-text PalletTown_Text_ProfOaksLab {
-	"OAK POKéMON RESEARCH LAB"
+text PalletTown_Text_OakLabSign {
+	"PALLET TOWN'S POKéMON RESEARCH INSTITUTE"
 }
 
-text PalletTown_Text_PlayersHouse {
+text PalletTown_Text_PlayersHouseSign {
 	"{PLAYER}'s HOUSE"
 }
 
-text PalletTown_Text_RivalsHouse {
+text PalletTown_Text_RivalsHouseSign {
 	"PROF. OAK'S HOUSE"
 }
