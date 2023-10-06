@@ -240,7 +240,11 @@
 #define OBJ_EVENT_GFX_LINK_RS_MAY                236
 #define OBJ_EVENT_GFX_LUGIA                      237
 #define OBJ_EVENT_GFX_HOOH                       238
+
+//! pokefireflower / pokesuperleaf
+
 #define OBJ_EVENT_GFX_PROF_OAK                   239
+#define OBJ_EVENT_GFX_PROF_MARCUS                240
 
 // NOTE: By default, the max value for NUM_OBJ_EVENT_GFX is 239.
 //
@@ -252,7 +256,6 @@
 // stores graphics ids will need to be increased in size. See wiki entry below:
 // https://github.com/pret/pokeemerald/wiki/Feature-Branches#overworld-expansion
 #define NUM_OBJ_EVENT_GFX                        249
-
 
 // These are dynamic object gfx ids.
 // They correspond with the values of the VAR_OBJ_GFX_ID_X vars.

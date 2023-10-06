@@ -379,4 +379,7 @@ const u16 gObjectEventPal_HoOh[] = INCBIN_U16("graphics/object_events/palettes/h
 //! pokefireflower / pokesuperleaf
 
 const u32 gObjectEventPic_ProfOak[] = INCBIN_U32("graphics/object_events/pics/people/prof_oak.4bpp");
-const u16 gObjectEventPal_ProfOak[] = INCBIN_U16("graphics/object_events/palettes/prof_oak.gbapal");
+const u16 gObjectEventPal_ProfOak[] = INCBIN_U16("graphics/object_events/pics/people/prof_oak.gbapal");
+
+const u32 gObjectEventPic_ProfMarcus[] = INCBIN_U32("graphics/object_events/pics/people/prof_marcus.4bpp");
+const u16 gObjectEventPal_ProfMarcus[] = INCBIN_U16("graphics/object_events/pics/people/prof_marcus.gbapal");
