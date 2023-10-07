@@ -640,7 +640,7 @@
     {
       "id": "LAYOUT_LITTLEROOT_TOWN_BRENDANS_HOUSE_1F",
       "name": "LittlerootTown_BrendansHouse_1F_Layout",
-      "width": 11,
+      "width": 16,
       "height": 9,
       "border_width": 2,
       "border_height": 2,
@@ -652,7 +652,7 @@
     {
       "id": "LAYOUT_LITTLEROOT_TOWN_BRENDANS_HOUSE_2F",
       "name": "LittlerootTown_BrendansHouse_2F_Layout",
-      "width": 9,
+      "width": 11,
       "height": 8,
       "border_width": 2,
       "border_height": 2,
