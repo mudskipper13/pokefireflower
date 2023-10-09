@@ -3038,4 +3038,10 @@ extern const u8 gText_TellHimTheWords[];
 extern const u8 gText_ExpShareOn[];
 extern const u8 gText_ExpShareOff[];
 
+//! Current Time Window
+
+extern const u8 *const gDayNamesStringsTable[];
+extern const u8 gText_CurrentTimeOn[];
+extern const u8 gText_CurrentTimeOff[];
+
 #endif // GUARD_STRINGS_H
