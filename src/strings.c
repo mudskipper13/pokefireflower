@@ -1488,7 +1488,7 @@ const u8 gText_Option[] = _("OPTION");
 const u8 gText_TextSpeed[] = _("TEXT SPEED");
 const u8 gText_BattleScene[] = _("BATTLE SCENE");
 const u8 gText_BattleStyle[] = _("BATTLE STYLE");
-const u8 gText_Sound[] = _("SOUND");
+const u8 gText_ClockMode[] = _("CLOCK MODE");
 const u8 gText_Frame[] = _("FRAME");
 const u8 gText_OptionMenuCancel[] = _("CANCEL");
 const u8 gText_ButtonMode[] = _("BUTTON MODE");
@@ -1499,8 +1499,8 @@ const u8 gText_BattleSceneOn[] = _("{COLOR GREEN}{SHADOW LIGHT_GREEN}ON");
 const u8 gText_BattleSceneOff[] = _("{COLOR GREEN}{SHADOW LIGHT_GREEN}OFF");
 const u8 gText_BattleStyleShift[] = _("{COLOR GREEN}{SHADOW LIGHT_GREEN}SHIFT");
 const u8 gText_BattleStyleSet[] = _("{COLOR GREEN}{SHADOW LIGHT_GREEN}SET");
-const u8 gText_SoundMono[] = _("{COLOR GREEN}{SHADOW LIGHT_GREEN}MONO");
-const u8 gText_SoundStereo[] = _("{COLOR GREEN}{SHADOW LIGHT_GREEN}STEREO");
+const u8 gText_ClockMode12Hours[] = _("{COLOR GREEN}{SHADOW LIGHT_GREEN}12 HOURS");
+const u8 gText_ClockMode24Hours[] = _("{COLOR GREEN}{SHADOW LIGHT_GREEN}24 HOURS");
 const u8 gText_FrameType[] = _("{COLOR GREEN}{SHADOW LIGHT_GREEN}TYPE");
 const u8 gText_FrameTypeNumber[] = _("{COLOR GREEN}{SHADOW LIGHT_GREEN}");
 const u8 gText_ButtonTypeNormal[] = _("{COLOR GREEN}{SHADOW LIGHT_GREEN}NORMAL");
@@ -1838,13 +1838,13 @@ const u8 gText_ExpShareOff[] = _("The Exp. Share has been turned off.{PAUSE_UNTI
 
 //! these technically are duplicates with easy chat- :masuda:
 
-const u8 gText_Sunday[] =    _("SUNDAY");
-const u8 gText_Monday[] =    _("MONDAY");
-const u8 gText_Tuesday[] =   _("TUESDAY");
-const u8 gText_Wednesday[] = _("WEDNESDAY");
-const u8 gText_Thursday[] =  _("THURSDAY");
-const u8 gText_Friday[] =    _("FRIDAY");
-const u8 gText_Saturday[] =  _("SATURDAY");
+const u8 gText_Sunday[] =    _("SUN.");
+const u8 gText_Monday[] =    _("MON.");
+const u8 gText_Tuesday[] =   _("TUE.");
+const u8 gText_Wednesday[] = _("WED.");
+const u8 gText_Thursday[] =  _("THU.");
+const u8 gText_Friday[] =    _("FRI.");
+const u8 gText_Saturday[] =  _("SAT.");
 
 //! don't ask why saturday is above-
 const u8 *const gDayNamesStringsTable[] = {
@@ -1859,3 +1859,6 @@ const u8 *const gDayNamesStringsTable[] = {
 
 const u8 gText_CurrentTimeOn[] = _("{STR_VAR_1} {STR_VAR_2}:{STR_VAR_3}");
 const u8 gText_CurrentTimeOff[] = _("{STR_VAR_1} {STR_VAR_2} {STR_VAR_3}");
+
+const u8 gText_AM[] = _(" AM");
+const u8 gText_PM[] = _(" PM");
