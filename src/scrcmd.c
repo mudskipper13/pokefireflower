@@ -690,6 +690,8 @@ bool8 ScrCmd_initclock(struct ScriptContext *ctx)
 {
     u8 hour = VarGet(ScriptReadHalfword(ctx));
     u8 minute = VarGet(ScriptReadHalfword(ctx));
+    if (hour > 24 || minute > 60) //! failsafe
+        return TRUE;
 
     RtcInitLocalTimeOffset(hour, minute);
     return FALSE;
@@ -703,11 +705,13 @@ bool8 ScrCmd_dotimebasedevents(struct ScriptContext *ctx)
 
 bool8 ScrCmd_gettime(struct ScriptContext *ctx)
 {
-    RtcCalcLocalTime();
+    RtcCalcLocalTimeFast();
     gSpecialVar_0x8000 = gLocalTime.hours;
     gSpecialVar_0x8001 = gLocalTime.minutes;
-    gSpecialVar_0x8002 = gLocalTime.seconds;
-    gSpecialVar_0x8003 = GetCurrentTimeOfDay();
+    gSpecialVar_0x8002 = GetCurrentTimeOfDay();
+    //! We need this modulo so that it
+    //! can gives the right day number.
+    gSpecialVar_0x8003 = gLocalTime.days % 7;
     return FALSE;
 }
 
