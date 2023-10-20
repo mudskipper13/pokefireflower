@@ -1335,7 +1335,7 @@ static void CopyObjectGraphicsInfoToSpriteTemplate(u16 graphicsId, void (*callba
     spriteTemplate->tileTag = graphicsInfo->tileTag;
     spriteTemplate->paletteTag = graphicsInfo->paletteTag;
     spriteTemplate->oam = graphicsInfo->oam;
-    spriteTemplate->anims = graphicsInfo->anims;
+    spriteTemplate->anims = sStepAnimTables[graphicsInfo->anims].anims;
     spriteTemplate->images = graphicsInfo->images;
     spriteTemplate->affineAnims = graphicsInfo->affineAnims;
     spriteTemplate->callback = callback;
@@ -1615,7 +1615,7 @@ void ObjectEventSetGraphicsId(struct ObjectEvent *objectEvent, u16 graphicsId)
     sprite->oam.shape = graphicsInfo->oam->shape;
     sprite->oam.size = graphicsInfo->oam->size;
     sprite->images = graphicsInfo->images;
-    sprite->anims = graphicsInfo->anims;
+    sprite->anims = sStepAnimTables[graphicsInfo->anims].anims;
     sprite->subspriteTables = graphicsInfo->subspriteTables;
     sprite->oam.paletteNum = IndexOfSpritePaletteTag(graphicsInfo->paletteTag);
     objectEvent->inanimate = graphicsInfo->inanimate;
@@ -4292,7 +4292,7 @@ static const struct StepAnimTable *GetStepAnimTable(const union AnimCmd *const *
 
     for (stepTable = sStepAnimTables; stepTable->anims != NULL; stepTable++)
     {
-        if (stepTable->anims == anims)
+        if (stepTable->anims == anims && stepTable->animPos[0] != 0)
             return stepTable;
     }
     return NULL;
