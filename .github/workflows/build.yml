@@ -14,23 +14,11 @@ jobs:
       GAME_VERSION: EMERALD
       GAME_REVISION: 0
       GAME_LANGUAGE: ENGLISH
-      MODERN: 0
+      MODERN: 1
       COMPARE: 0
     steps:
       - name: Checkout
         uses: actions/checkout@v2
-
-      - name: Checkout agbcc
-        uses: actions/checkout@v2
-        with:
-          path: agbcc
-          repository: pret/agbcc
-
-      - name: Checkout poryscript
-        uses: actions/checkout@v2
-        with:
-          path: poryscript
-          repository: huderlem/poryscript
 
       - name: Install binutils
         run: sudo apt install gcc-arm-none-eabi binutils-arm-none-eabi libelf-dev g++ golang-go
@@ -38,23 +26,12 @@ jobs:
         # gcc-arm-none-eabi is only needed for the modern build
         # as an alternative to dkP
 
-      - name: Install agbcc
-        run: |
-          ./build.sh
-          ./install.sh ../
-        working-directory: agbcc
-
       - name: Install poryscript
         run: |
+          git clone https://github.com/huderlem/poryscript.git tools/poryscript
+          cd tools/poryscript
           go build
-          ./install.sh ../
-        working-directory: poryscript
-
-      - name: Agbcc
-        run: make -j${nproc} -O all
+          cd ../../
 
       - name: Modern
-        env:
-          MODERN: 1
-          COMPARE: 0
         run: make -j${nproc} -O all
