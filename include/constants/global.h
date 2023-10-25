@@ -22,19 +22,30 @@
 #define VERSION_DIAMOND 10
 #define VERSION_PEARL 11
 #define VERSION_PLATINUM 12
+#define VERSION_FIREFLOWER 13 //! these skips 13 and 14, so i'll take it.
+#define VERSION_SUPERLEAF 14
 #define VERSION_GAMECUBE 15
 
-#define LANGUAGE_JAPANESE 1
-#define LANGUAGE_ENGLISH  2
-#define LANGUAGE_FRENCH   3
-#define LANGUAGE_ITALIAN  4
-#define LANGUAGE_GERMAN   5
-#define LANGUAGE_KOREAN   6 // 6 goes unused but the theory is it was meant to be Korean
-#define LANGUAGE_SPANISH  7
-#define NUM_LANGUAGES     7
+#define LANGUAGE_JAPANESE  1
+#define LANGUAGE_ENGLISH   2
+#define LANGUAGE_FRENCH    3
+#define LANGUAGE_ITALIAN   4
+#define LANGUAGE_GERMAN    5
+#define LANGUAGE_INDONESIA 6 // 6 goes unused but the theory is it was meant to be Korean
+#define LANGUAGE_SPANISH   7
+#define NUM_LANGUAGES      7
 
-#define GAME_VERSION (VERSION_EMERALD)
+#if SUPERLEAF
+#define GAME_VERSION (VERSION_SUPERLEAF)
+#else
+#define GAME_VERSION (VERSION_FIREFLOWER)
+#endif
+
+#if INA
+#define GAME_LANGUAGE (LANGUAGE_INDONESIA)
+#else
 #define GAME_LANGUAGE (LANGUAGE_ENGLISH)
+#endif
 
 // party sizes
 #define PARTY_SIZE 6
