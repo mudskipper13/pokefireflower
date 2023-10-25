@@ -1,10 +1,6 @@
 TOOLCHAIN := $(DEVKITARM)
 COMPARE ?= 0
 
-ifeq (compare,$(MAKECMDGOALS))
-  COMPARE := 1
-endif
-
 # don't use dkP's base_tools anymore
 # because the redefinition of $(CC) conflicts
 # with when we want to use $(CC) to preprocess files
@@ -36,13 +32,39 @@ else
 EXE :=
 endif
 
-TITLE       := POKEMON EMER
+GAME_VERS    ?= FIREFLOWER
+GAME_LANG    ?= ENG
+BUILD_NAME   := 
+BUILD_SUFFIX := 
+
 GAME_CODE   := BPEE
 MAKER_CODE  := 01
 REVISION    := 0
-MODERN      ?= 0
+MODERN      ?= 1
 TEST        ?= 0
 ANALYZE     ?= 0
+
+ifeq ($(GAME_VERS),SUPERLEAF)
+TITLE       := PKSUPERLEAF
+BUILD_NAME  := superleaf
+else
+TITLE       := PKFIREFLOWER
+BUILD_NAME  := fireflower
+endif
+
+ifeq ($(GAME_LANG),INA)
+BUILD_SUFFIX := _id
+endif
+
+ifeq ($(MODERN),0)
+BUILD_SUFFIX := _legacy
+endif
+
+BUILD_NAME   := $(BUILD_NAME)$(BUILD_SUFFIX)
+ROM_NAME     := poke$(BUILD_NAME).gba
+ELF_NAME     := $(ROM_NAME:.gba=.elf)
+MAP_NAME     := $(ROM_NAME:.gba=.map)
+OBJ_DIR_NAME := build/$(BUILD_NAME)
 
 ifeq (modern,$(MAKECMDGOALS))
   MODERN := 1
@@ -68,16 +90,6 @@ ifneq ($(MODERN),1)
 else
   CPP := $(PREFIX)cpp
 endif
-
-ROM_NAME := pokeemerald.gba
-ELF_NAME := $(ROM_NAME:.gba=.elf)
-MAP_NAME := $(ROM_NAME:.gba=.map)
-OBJ_DIR_NAME := build/emerald
-
-MODERN_ROM_NAME := pokeemerald_modern.gba
-MODERN_ELF_NAME := $(MODERN_ROM_NAME:.gba=.elf)
-MODERN_MAP_NAME := $(MODERN_ROM_NAME:.gba=.map)
-MODERN_OBJ_DIR_NAME := build/modern
 
 SHELL := /bin/bash -o pipefail
 
@@ -108,13 +120,14 @@ SONG_BUILDDIR = $(OBJ_DIR)/$(SONG_SUBDIR)
 MID_BUILDDIR = $(OBJ_DIR)/$(MID_SUBDIR)
 TEST_BUILDDIR = $(OBJ_DIR)/$(TEST_SUBDIR)
 
-ASFLAGS := -mcpu=arm7tdmi --defsym MODERN=$(MODERN)
+ASFLAGS := -mcpu=arm7tdmi --defsym MODERN=$(MODERN) --defsym $(GAME_VERS)=1 --defsym $(GAME_LANG)=1
+
+ROM := $(ROM_NAME)
+OBJ_DIR := $(OBJ_DIR_NAME)
 
 ifeq ($(MODERN),0)
 CC1             := tools/agbcc/bin/agbcc$(EXE)
 override CFLAGS += -mthumb-interwork -Wimplicit -Wparentheses -Werror -O2 -fhex-asm -g
-ROM := $(ROM_NAME)
-OBJ_DIR := $(OBJ_DIR_NAME)
 LIBPATH := -L ../../tools/agbcc/lib
 LIB := $(LIBPATH) -lgcc -lc -L../../libagbsyscall -lagbsyscall
 else
@@ -123,8 +136,6 @@ override CFLAGS += -mthumb -mthumb-interwork -O2 -mabi=apcs-gnu -mtune=arm7tdmi 
 ifeq ($(ANALYZE),1)
 override CFLAGS += -fanalyzer
 endif
-ROM := $(MODERN_ROM_NAME)
-OBJ_DIR := $(MODERN_OBJ_DIR_NAME)
 LIBPATH := -L "$(dir $(shell $(PATH_MODERNCC) -mthumb -print-file-name=libgcc.a))" -L "$(dir $(shell $(PATH_MODERNCC) -mthumb -print-file-name=libnosys.a))" -L "$(dir $(shell $(PATH_MODERNCC) -mthumb -print-file-name=libc.a))"
 LIB := $(LIBPATH) -lc -lnosys -lgcc -L../../libagbsyscall -lagbsyscall
 endif
@@ -137,7 +148,7 @@ ifeq ($(TEST),1)
 OBJ_DIR := $(TEST_OBJ_DIR_NAME)
 endif
 
-CPPFLAGS := -iquote include -iquote $(GFLIB_SUBDIR) -Wno-trigraphs -DMODERN=$(MODERN) -DTESTING=$(TEST)
+CPPFLAGS := -iquote include -iquote $(GFLIB_SUBDIR) -Wno-trigraphs -DMODERN=$(MODERN) -DTESTING=$(TEST) -D$(GAME_VERS) -D$(GAME_LANG)
 ifneq ($(MODERN),1)
 CPPFLAGS += -I tools/agbcc/include -I tools/agbcc -nostdinc -undef
 endif
@@ -179,7 +190,7 @@ MAKEFLAGS += --no-print-directory
 # Secondary expansion is required for dependency variables in object rules.
 .SECONDEXPANSION:
 
-.PHONY: all rom clean compare tidy tools check-tools mostlyclean clean-tools clean-check-tools $(TOOLDIRS) $(CHECKTOOLDIRS) libagbsyscall modern tidymodern tidynonmodern check
+.PHONY: all rom clean tidy tools check-tools mostlyclean clean-tools clean-check-tools $(TOOLDIRS) $(CHECKTOOLDIRS) libagbsyscall modern tidy check
 
 infoshell = $(foreach line, $(shell $1 | sed "s/ /__SPACE__/g"), $(info $(subst __SPACE__, ,$(line))))
 
@@ -187,7 +198,7 @@ infoshell = $(foreach line, $(shell $1 | sed "s/ /__SPACE__/g"), $(info $(subst 
 # Disable dependency scanning for clean/tidy/tools
 # Use a separate minimal makefile for speed
 # Since we don't need to reload most of this makefile
-ifeq (,$(filter-out all rom compare modern check libagbsyscall syms $(TESTELF),$(MAKECMDGOALS)))
+ifeq (,$(filter-out all rom modern check libagbsyscall syms $(TESTELF),$(MAKECMDGOALS)))
 $(call infoshell, $(MAKE) -f make_tools.mk)
 else
 NODEP ?= 1
@@ -261,12 +272,6 @@ $(CHECKTOOLDIRS):
 	@$(MAKE) -C $@
 
 rom: $(ROM)
-ifeq ($(COMPARE),1)
-	@$(SHA1) rom.sha1
-endif
-
-# For contributors to make sure a change didn't affect the contents of the ROM.
-compare: all
 
 clean: mostlyclean clean-tools clean-check-tools
 
@@ -276,7 +281,7 @@ clean-tools:
 clean-check-tools:
 	@$(foreach tooldir,$(CHECKTOOLDIRS),$(MAKE) clean -C $(tooldir);)
 
-mostlyclean: tidynonmodern tidymodern tidycheck
+mostlyclean: tidy tidycheck
 	rm -f $(SAMPLE_SUBDIR)/*.bin
 	rm -f $(CRY_SUBDIR)/*.bin
 	rm -f $(MID_SUBDIR)/*.s
@@ -287,15 +292,10 @@ mostlyclean: tidynonmodern tidymodern tidycheck
 	rm -f $(AUTO_GEN_TARGETS)
 	@$(MAKE) clean -C libagbsyscall
 
-tidy: tidynonmodern tidymodern tidycheck
-
-tidynonmodern:
-	rm -f $(ROM_NAME) $(ELF_NAME) $(MAP_NAME)
-	rm -rf $(OBJ_DIR_NAME)
-
-tidymodern:
-	rm -f $(MODERN_ROM_NAME) $(MODERN_ELF_NAME) $(MODERN_MAP_NAME)
-	rm -rf $(MODERN_OBJ_DIR_NAME)
+tidy: tidycheck
+	$(RM) $(ALL_BUILDS:%=poke%{.gba,.elf,.map})
+	$(RM) $(MODERN_BUILDS:%=poke%{.gba,.elf,.map})
+	$(RM) -r build
 
 tidycheck:
 	rm -f $(TESTELF) $(HEADLESSELF)
@@ -328,8 +328,7 @@ include songs.mk
 $(CRY_SUBDIR)/uncomp_%.bin: $(CRY_SUBDIR)/uncomp_%.aif ; $(AIF) $< $@
 $(CRY_SUBDIR)/%.bin: $(CRY_SUBDIR)/%.aif ; $(AIF) $< $@ --compress
 sound/%.bin: sound/%.aif ; $(AIF) $< $@
-data/%.inc: data/%.pory ; $(SCRIPT) -i $< -o $@ -fc tools/poryscript/font_config.json
-
+data/%.inc: data/%.pory ; $(SCRIPT) -i $< -o $@ -s VERS=$(GAME_VERS) -s LANG=$(GAME_LANG) -fc tools/poryscript/font_config.json -l 198
 
 ifeq ($(MODERN),0)
 $(C_BUILDDIR)/libc.o: CC1 := tools/agbcc/bin/old_agbcc$(EXE)
@@ -349,6 +348,11 @@ $(C_BUILDDIR)/librfu_intr.o: CFLAGS := -O2 -mthumb-interwork -quiet
 else
 $(C_BUILDDIR)/librfu_intr.o: CFLAGS := -mthumb-interwork -O2 -mabi=apcs-gnu -mtune=arm7tdmi -march=armv4t -fno-toplevel-reorder -Wno-pointer-to-int-cast
 endif
+
+#### Main Rules ####
+
+ALL_BUILDS := fireflower fireflower_id superleaf superleaf_id
+MODERN_BUILDS := $(ALL_BUILDS:%=%_modern)
 
 ifeq ($(DINFO),1)
 override CFLAGS += -g
@@ -495,6 +499,13 @@ $(TESTELF): $(OBJ_DIR)/ld_script_test.ld $(OBJS) $(TEST_OBJS) libagbsyscall tool
 	@cd $(OBJ_DIR) && $(LD) $(TESTLDFLAGS) -T ld_script_test.ld -o ../../$@ $(OBJS_REL) $(TEST_OBJS_REL) $(LIB)
 	$(FIX) $@ -t"$(TITLE)" -c$(GAME_CODE) -m$(MAKER_CODE) -r$(REVISION) --silent
 	$(PATCHELF) $(TESTELF) gTestRunnerArgv "$(TESTS)\0"
+
+# "Friendly" target names for convenience sake
+
+fireflower:    ; @$(MAKE) GAME_VERS=FIREFLOWER GAME_LANG=ENG
+fireflower_id: ; @$(MAKE) GAME_VERS=FIREFLOWER GAME_LANG=INA
+superleaf:     ; @$(MAKE) GAME_VERS=SUPERLEAF GAME_LANG=ENG
+superleaf_id:  ; @$(MAKE) GAME_VERS=SUPERLEAF GAME_LANG=INA
 
 ifeq ($(GITHUB_REPOSITORY_OWNER),rh-hideout)
 TEST_SKIP_IS_FAIL := \x01

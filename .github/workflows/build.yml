@@ -11,11 +11,10 @@ jobs:
   build:
     runs-on: ubuntu-latest
     env:
-      GAME_VERSION: EMERALD
+      GAME_VERS: FIREFLOWER
       GAME_REVISION: 0
-      GAME_LANGUAGE: ENGLISH
+      GAME_LANG: ENG
       MODERN: 1
-      COMPARE: 0
     steps:
       - name: Checkout
         uses: actions/checkout@v2
@@ -33,5 +32,13 @@ jobs:
           go build
           cd ../../
 
-      - name: Modern
+      - name: FireFlower
+        env:
+          GAME_VERS: FIREFLOWER
+        run: make -j${nproc} -O all
+
+      - name: SuperLeaf Indonesian
+        env:
+          GAME_VERS: SUPERLEAF
+          GAME_LANG: INA
         run: make -j${nproc} -O all
