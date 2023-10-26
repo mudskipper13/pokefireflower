@@ -204,6 +204,7 @@ void NewGameInitData(void)
     WipeTrainerNameRecords();
     ResetTrainerHillResults();
     ResetContestLinkResults();
+    gSaveBlock2Ptr->currOutfitId = DEFAULT_OUTFIT;
 }
 
 static void ResetMiniGamesRecords(void)

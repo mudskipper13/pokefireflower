@@ -170,6 +170,12 @@
 #define DIR_NORTHWEST   7
 #define DIR_NORTHEAST   8
 
+#define OUTFIT_A     0
+#define OUTFIT_B     1 //! If linking with Re/Gr
+#define OUTFIT_COUNT 2
+
+#define DEFAULT_OUTFIT OUTFIT_A
+
 #define CONNECTION_INVALID -1
 #define CONNECTION_NONE     0
 #define CONNECTION_SOUTH    1

@@ -121,4 +121,22 @@ extern const u8 gMoveNames[MOVES_COUNT_DYNAMAX][MOVE_NAME_LENGTH + 1];
 extern const u8 *const gZMoveNames[];
 extern const u8 *const gMaxMoveNames[];
 
+extern const u8 gOutfitFrontPics[OUTFIT_COUNT][GENDER_COUNT];
+extern const u8 gOutfitBackPics[OUTFIT_COUNT][GENDER_COUNT];
+extern const u16 gPlayerAvatarGfxIds[OUTFIT_COUNT][4][2];
+extern const u8 gPlayerAvatarAnimGfxIds[OUTFIT_COUNT][3][2];
+
+struct OutfitIcon
+{
+    u8 outfit;
+    u8 gender;
+    const void *gfx;
+    const void *pal;
+};
+
+extern const struct OutfitIcon gOutfitToRegionMapIcon[OUTFIT_COUNT * GENDER_COUNT];
+extern const struct OutfitIcon gOutfitToFrontierPassIcon[OUTFIT_COUNT * GENDER_COUNT];
+
+extern const u8 *const gOutfitNameDescTables[OUTFIT_COUNT][2];
+
 #endif // GUARD_DATA_H
