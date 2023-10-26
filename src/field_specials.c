@@ -4209,3 +4209,23 @@ u8 Script_TryGainNewFanFromCounter(void)
 {
     return TryGainNewFanFromCounter(gSpecialVar_0x8004);
 }
+
+void BufferCurrentOutfitName(void)
+{
+    const u8 *str = gOutfitNameDescTables[gSaveBlock2Ptr->currOutfitId][0];
+    StringCopy(gStringVar1, str);
+}
+
+void SwapCurrentOutfit(void)
+{
+    struct ObjectEvent *player = &gObjectEvents[gPlayerAvatar.objectEventId];
+    gSaveBlock2Ptr->currOutfitId = VarGet(VAR_TEMP_1);
+    ObjectEventSetGraphicsId(player, GetPlayerAvatarGraphicsIdByCurrentState());
+    ObjectEventTurn(player, player->movementDirection);
+    BlendPalettes(PALETTES_ALL, 16, 0);
+}
+
+u16 GetCurrentOutfitGfxId(void)
+{
+    return GetPlayerAvatarGraphicsIdByStateIdAndGender(PLAYER_AVATAR_STATE_NORMAL, gSaveBlock2Ptr->playerGender);
+}

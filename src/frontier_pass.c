@@ -176,11 +176,8 @@ static void PrintAreaDescription(u8);
 static void ShowHideZoomingArea(bool8, bool8);
 static void SpriteCB_PlayerHead(struct Sprite *);
 
-static const u16 sMaleHead_Pal[]                 = INCBIN_U16("graphics/frontier_pass/map_heads.gbapal");
-static const u16 sFemaleHead_Pal[]               = INCBIN_U16("graphics/frontier_pass/map_heads_female.gbapal");
 static const u32 sMapScreen_Gfx[]                = INCBIN_U32("graphics/frontier_pass/map_screen.4bpp.lz");
 static const u32 sCursor_Gfx[]                   = INCBIN_U32("graphics/frontier_pass/cursor.4bpp.lz");
-static const u32 sHeads_Gfx[]                    = INCBIN_U32("graphics/frontier_pass/map_heads.4bpp.lz");
 static const u32 sMapCursor_Gfx[]                = INCBIN_U32("graphics/frontier_pass/map_cursor.4bpp.lz");
 static const u32 sMapScreen_Tilemap[]            = INCBIN_U32("graphics/frontier_pass/map_screen.bin.lz");
 static const u32 sMapAndCard_ZoomedOut_Tilemap[] = INCBIN_U32("graphics/frontier_pass/small_map_and_card.bin.lz");
@@ -367,20 +364,12 @@ static const struct CompressedSpriteSheet sCursorSpriteSheets[] =
     {gFrontierPassMedals_Gfx, 0x380, TAG_MEDAL_SILVER},
 };
 
-static const struct CompressedSpriteSheet sHeadsSpriteSheet[] =
-{
-    {sHeads_Gfx, 0x100, TAG_HEAD_MALE},
-    {}
-};
-
 static const struct SpritePalette sSpritePalettes[] =
 {
     {gFrontierPassCursor_Pal,       TAG_CURSOR},
     {gFrontierPassMapCursor_Pal,    TAG_MAP_INDICATOR},
     {gFrontierPassMedalsSilver_Pal, TAG_MEDAL_SILVER},
     {gFrontierPassMedalsGold_Pal,   TAG_MEDAL_GOLD},
-    {sMaleHead_Pal,                 TAG_HEAD_MALE},
-    {sFemaleHead_Pal,               TAG_HEAD_FEMALE},
     {}
 };
 
@@ -1630,13 +1619,29 @@ static u8 MapNumToFrontierFacilityId(u16 mapNum) // id + 1, zero means not a fro
 
 static void InitFrontierMapSprites(void)
 {
+    u32 i;
     struct SpriteTemplate sprite;
+    //! Male, Outfit 0
+    struct CompressedSpriteSheet gfx = { gOutfitToFrontierPassIcon[0].gfx, 0x100, TAG_HEAD_MALE };
+    struct SpritePalette pal = { gOutfitToFrontierPassIcon[0].pal, gSaveBlock2Ptr->playerGender + TAG_HEAD_MALE };
     u8 spriteId;
     u8 id;
     s16 x = 0, y;
 
+    for (i = 0; i < ARRAY_COUNT(gOutfitToFrontierPassIcon); i++)
+    {
+        const struct OutfitIcon *icon = &gOutfitToFrontierPassIcon[i];
+        if (gSaveBlock2Ptr->currOutfitId == icon->outfit
+             && gSaveBlock2Ptr->playerGender == icon->gender)
+        {
+            gfx.data = icon->gfx;
+            pal.data = icon->pal;
+        }
+    }
+
     FreeAllSpritePalettes();
     LoadSpritePalettes(sSpritePalettes);
+    LoadSpritePalette(&pal);
 
     LoadCompressedSpriteSheet(&sCursorSpriteSheets[0]);
     spriteId = CreateSprite(&sSpriteTemplates_Cursors[0], 155, (sMapData->cursorPos * 16) + 8, 2);
@@ -1691,7 +1696,7 @@ static void InitFrontierMapSprites(void)
             }
         }
 
-        LoadCompressedSpriteSheet(sHeadsSpriteSheet);
+        LoadCompressedSpriteSheet(&gfx);
         sprite = sSpriteTemplate_PlayerHead;
         sprite.paletteTag = gSaveBlock2Ptr->playerGender + TAG_HEAD_MALE; // TAG_HEAD_FEMALE if gender is FEMALE
         if (id != 0)

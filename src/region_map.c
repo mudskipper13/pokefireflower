@@ -20,8 +20,9 @@
 #include "field_specials.h"
 #include "fldeff.h"
 #include "region_map.h"
-#include "constants/region_map_sections.h"
+#include "data.h"
 #include "heal_location.h"
+#include "constants/region_map_sections.h"
 #include "constants/field_specials.h"
 #include "constants/heal_locations.h"
 #include "constants/map_types.h"
@@ -1452,16 +1453,24 @@ void CreateRegionMapPlayerIcon(u16 tileTag, u16 paletteTag)
     struct SpriteSheet sheet = {sRegionMapPlayerIcon_BrendanGfx, 0x80, tileTag};
     struct SpritePalette palette = {sRegionMapPlayerIcon_BrendanPal, paletteTag};
     struct SpriteTemplate template = {tileTag, paletteTag, &sRegionMapPlayerIconOam, sRegionMapPlayerIconAnimTable, NULL, gDummySpriteAffineAnimTable, SpriteCallbackDummy};
+    u32 i;
+
+    //! I wonder if there's anything better than this tbh.
+    for (i = 0; i < ARRAY_COUNT(gOutfitToRegionMapIcon); i++)
+    {
+        const struct OutfitIcon *icon = &gOutfitToRegionMapIcon[i];
+        if (gSaveBlock2Ptr->currOutfitId == icon->outfit
+             && gSaveBlock2Ptr->playerGender == icon->gender)
+        {
+            sheet.data = icon->gfx;
+            palette.data = icon->pal;
+        }
+    }
 
     if (IsEventIslandMapSecId(gMapHeader.regionMapSectionId))
     {
         sRegionMap->playerIconSprite = NULL;
         return;
-    }
-    if (gSaveBlock2Ptr->playerGender == FEMALE)
-    {
-        sheet.data = sRegionMapPlayerIcon_MayGfx;
-        palette.data = sRegionMapPlayerIcon_MayPal;
     }
     LoadSpriteSheet(&sheet);
     LoadSpritePalette(&palette);
