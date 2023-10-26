@@ -160,6 +160,7 @@ int ProcessPlayerFieldInput(struct FieldInput *input)
 
     gSpecialVar_LastTalked = 0;
     gSelectedObjectEvent = 0;
+    gSpecialVar_TextColor = NPC_TEXT_COLOR_DEFAULT;
     MsgSetNotSignpost();
 
     playerDirection = GetPlayerFacingDirection();
