@@ -349,3 +349,17 @@ const u16 gObjectEventPal_ProfOak[] = INCBIN_U16("graphics/object_events/pics/pe
 
 const u32 gObjectEventPic_ProfMarcus[] = INCBIN_U32("graphics/object_events/pics/people/prof_marcus.4bpp");
 const u16 gObjectEventPal_ProfMarcus[] = INCBIN_U16("graphics/object_events/pics/people/prof_marcus.gbapal");
+
+const u32 gObjectEventPic_RubySapphireBrendanRunning[] = INCBIN_U32("graphics/object_events/pics/people/ruby_sapphire_brendan/running.4bpp");
+const u32 gObjectEventPic_RubySapphireBrendanAcroBike[] = INCBIN_U32("graphics/object_events/pics/people/ruby_sapphire_brendan/acro_bike.4bpp");
+const u32 gObjectEventPic_RubySapphireBrendanSurfing[] = INCBIN_U32("graphics/object_events/pics/people/ruby_sapphire_brendan/surfing.4bpp");
+const u32 gObjectEventPic_RubySapphireBrendanFieldMove[] = INCBIN_U32("graphics/object_events/pics/people/ruby_sapphire_brendan/field_move.4bpp");
+const u32 gObjectEventPic_RubySapphireBrendanFishing[] = INCBIN_U32("graphics/object_events/pics/people/ruby_sapphire_brendan/fishing.4bpp");
+const u32 gObjectEventPic_RubySapphireBrendanWatering[] = INCBIN_U32("graphics/object_events/pics/people/ruby_sapphire_brendan/watering.4bpp");
+
+const u32 gObjectEventPic_RubySapphireMayRunning[] = INCBIN_U32("graphics/object_events/pics/people/ruby_sapphire_may/running.4bpp");
+const u32 gObjectEventPic_RubySapphireMayAcroBike[] = INCBIN_U32("graphics/object_events/pics/people/ruby_sapphire_may/acro_bike.4bpp");
+const u32 gObjectEventPic_RubySapphireMaySurfing[] = INCBIN_U32("graphics/object_events/pics/people/ruby_sapphire_may/surfing.4bpp");
+const u32 gObjectEventPic_RubySapphireMayFieldMove[] = INCBIN_U32("graphics/object_events/pics/people/ruby_sapphire_may/field_move.4bpp");
+const u32 gObjectEventPic_RubySapphireMayFishing[] = INCBIN_U32("graphics/object_events/pics/people/ruby_sapphire_may/fishing.4bpp");
+const u32 gObjectEventPic_RubySapphireMayWatering[] = INCBIN_U32("graphics/object_events/pics/people/ruby_sapphire_may/watering.4bpp");

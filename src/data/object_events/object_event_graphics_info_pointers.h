@@ -234,7 +234,17 @@ extern const struct ObjectEventGraphicsInfo gObjectEventGraphicsInfo_Deoxys;
 extern const struct ObjectEventGraphicsInfo gObjectEventGraphicsInfo_BirthIslandStone;
 extern const struct ObjectEventGraphicsInfo gObjectEventGraphicsInfo_Brandon;
 extern const struct ObjectEventGraphicsInfo gObjectEventGraphicsInfo_RubySapphireBrendan;
+extern const struct ObjectEventGraphicsInfo gObjectEventGraphicsInfo_RubySapphireBrendanAcroBike;
+extern const struct ObjectEventGraphicsInfo gObjectEventGraphicsInfo_RubySapphireBrendanSurfing;
+extern const struct ObjectEventGraphicsInfo gObjectEventGraphicsInfo_RubySapphireBrendanFieldMove;
+extern const struct ObjectEventGraphicsInfo gObjectEventGraphicsInfo_RubySapphireBrendanFishing;
+extern const struct ObjectEventGraphicsInfo gObjectEventGraphicsInfo_RubySapphireBrendanWatering;
 extern const struct ObjectEventGraphicsInfo gObjectEventGraphicsInfo_RubySapphireMay;
+extern const struct ObjectEventGraphicsInfo gObjectEventGraphicsInfo_RubySapphireMayAcroBike;
+extern const struct ObjectEventGraphicsInfo gObjectEventGraphicsInfo_RubySapphireMaySurfing;
+extern const struct ObjectEventGraphicsInfo gObjectEventGraphicsInfo_RubySapphireMayFieldMove;
+extern const struct ObjectEventGraphicsInfo gObjectEventGraphicsInfo_RubySapphireMayFishing;
+extern const struct ObjectEventGraphicsInfo gObjectEventGraphicsInfo_RubySapphireMayWatering;
 extern const struct ObjectEventGraphicsInfo gObjectEventGraphicsInfo_Lugia;
 extern const struct ObjectEventGraphicsInfo gObjectEventGraphicsInfo_HoOh;
 extern const struct ObjectEventGraphicsInfo gObjectEventGraphicsInfo_Bard;
@@ -492,6 +502,16 @@ const struct ObjectEventGraphicsInfo *const gObjectEventGraphicsInfoPointers[NUM
     [OBJ_EVENT_GFX_HOOH] =                     &gObjectEventGraphicsInfo_HoOh,
     [OBJ_EVENT_GFX_PROF_OAK] =                 &gObjectEventGraphicsInfo_ProfOak,
     [OBJ_EVENT_GFX_PROF_MARCUS] =              &gObjectEventGraphicsInfo_ProfMarcus,
+    [OBJ_EVENT_GFX_RS_BRENDAN_ACRO_BIKE] =     &gObjectEventGraphicsInfo_RubySapphireBrendanAcroBike,
+    [OBJ_EVENT_GFX_RS_BRENDAN_SURFING] =       &gObjectEventGraphicsInfo_RubySapphireBrendanSurfing,
+    [OBJ_EVENT_GFX_RS_BRENDAN_FIELD_MOVE] =    &gObjectEventGraphicsInfo_RubySapphireBrendanFieldMove,
+    [OBJ_EVENT_GFX_RS_BRENDAN_FISHING] =       &gObjectEventGraphicsInfo_RubySapphireBrendanFishing,
+    [OBJ_EVENT_GFX_RS_BRENDAN_WATERING] =      &gObjectEventGraphicsInfo_RubySapphireBrendanWatering,
+    [OBJ_EVENT_GFX_RS_MAY_ACRO_BIKE] =         &gObjectEventGraphicsInfo_RubySapphireMayAcroBike,
+    [OBJ_EVENT_GFX_RS_MAY_SURFING] =           &gObjectEventGraphicsInfo_RubySapphireMaySurfing,
+    [OBJ_EVENT_GFX_RS_MAY_FIELD_MOVE] =        &gObjectEventGraphicsInfo_RubySapphireMayFieldMove,
+    [OBJ_EVENT_GFX_RS_MAY_FISHING] =           &gObjectEventGraphicsInfo_RubySapphireMayFishing,
+    [OBJ_EVENT_GFX_RS_MAY_WATERING] =          &gObjectEventGraphicsInfo_RubySapphireMayWatering,
 };
 
 const struct ObjectEventGraphicsInfo *const gMauvilleOldManGraphicsInfoPointers[] = {
