@@ -31,7 +31,7 @@ const u16 gPlayerAvatarGfxIds[OUTFIT_COUNT][4][GENDER_COUNT] =
     }
 };
 
-const u8 gPlayerAvatarAnimGfxIds[OUTFIT_COUNT][3][GENDER_COUNT] =
+const u16 gPlayerAvatarAnimGfxIds[OUTFIT_COUNT][3][GENDER_COUNT] =
 {
     [OUTFIT_A] =
     {

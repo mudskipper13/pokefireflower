@@ -1251,9 +1251,9 @@ void SetPlayerAvatarStateMask(u8 flags)
     gPlayerAvatar.flags |= flags;
 }
 
-static u8 GetPlayerAvatarStateTransitionByGraphicsId(u16 graphicsId)
+static u16 GetPlayerAvatarStateTransitionByGraphicsId(u16 graphicsId)
 {
-    u8 i;
+    u32 i;
 
     for (i = 0; i < ARRAY_COUNT(sPlayerAvatarGfxToStateFlag); i++)
     {
@@ -1324,7 +1324,7 @@ void SetPlayerInvisibility(bool8 invisible)
 
 static void SetPlayerAvatarAnimation(u32 playerAnimId, u32 animNum)
 {
-    u8 gfxId = gPlayerAvatarAnimGfxIds[gSaveBlock2Ptr->currOutfitId][playerAnimId][gSaveBlock2Ptr->playerGender];
+    u16 gfxId = gPlayerAvatarAnimGfxIds[gSaveBlock2Ptr->currOutfitId][playerAnimId][gSaveBlock2Ptr->playerGender];
     ObjectEventSetGraphicsId(&gObjectEvents[gPlayerAvatar.objectEventId], gfxId);
     StartSpriteAnim(&gSprites[gPlayerAvatar.spriteId], animNum);
 }

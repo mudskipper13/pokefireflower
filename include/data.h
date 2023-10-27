@@ -122,8 +122,8 @@ extern const u8 *const gZMoveNames[];
 
 extern const u8 gOutfitFrontPics[OUTFIT_COUNT][GENDER_COUNT];
 extern const u8 gOutfitBackPics[OUTFIT_COUNT][GENDER_COUNT];
-extern const u16 gPlayerAvatarGfxIds[OUTFIT_COUNT][4][2];
-extern const u8 gPlayerAvatarAnimGfxIds[OUTFIT_COUNT][3][2];
+extern const u16 gPlayerAvatarGfxIds[OUTFIT_COUNT][4][GENDER_COUNT];
+extern const u16 gPlayerAvatarAnimGfxIds[OUTFIT_COUNT][3][GENDER_COUNT];
 
 struct OutfitIcon
 {
