@@ -5,7 +5,7 @@
 
 	.align 2
 gFieldEffectScriptPointers::
-	.4byte gFieldEffectScript_ExclamationMarkIcon1      @ FLDEFF_EXCLAMATION_MARK_ICON
+	.4byte gFieldEffectScript_EmoteIcon                 @ FLDEFF_EMOTE_ICON
 	.4byte gFieldEffectScript_UseCutOnTallGrass         @ FLDEFF_USE_CUT_ON_GRASS
 	.4byte gFieldEffectScript_UseCutOnTree              @ FLDEFF_USE_CUT_ON_TREE
 	.4byte gFieldEffectScript_Shadow                    @ FLDEFF_SHADOW
@@ -73,8 +73,8 @@ gFieldEffectScriptPointers::
 	.4byte gFieldEffectScript_DestroyDeoxysRock         @ FLDEFF_DESTROY_DEOXYS_ROCK
 	.4byte gFieldEffectScript_MoveDeoxysRock            @ FLDEFF_MOVE_DEOXYS_ROCK
 
-gFieldEffectScript_ExclamationMarkIcon1::
-	field_eff_loadfadedpaldaynight_callnative gSpritePalette_ArrowEmotionsFieldEffect, FldEff_ExclamationMarkIcon
+gFieldEffectScript_EmoteIcon::
+	field_eff_loadfadedpaldaynight_callnative gSpritePalette_ArrowEmotionsFieldEffect, FldEff_EmoteIcon
 	field_eff_end
 
 gFieldEffectScript_UseCutOnTallGrass::
@@ -207,7 +207,7 @@ gFieldEffectScript_FlyIn::
 	field_eff_end
 
 gFieldEffectScript_QuestionMarkIcon::
-	field_eff_loadfadedpaldaynight_callnative gSpritePalette_ArrowEmotionsFieldEffect, FldEff_QuestionMarkIcon
+	field_eff_loadfadedpaldaynight_callnative gSpritePalette_ArrowEmotionsFieldEffect, FldEff_Nop47
 	field_eff_end
 
 gFieldEffectScript_FeetInFlowingWater::
@@ -260,7 +260,7 @@ gFieldEffectScript_PokeballTrail::
 	field_eff_end
 
 gFieldEffectScript_HeartIcon::
-	field_eff_loadfadedpaldaynight_callnative gSpritePalette_GeneralFieldEffect0, FldEff_HeartIcon
+	field_eff_loadfadedpaldaynight_callnative gSpritePalette_GeneralFieldEffect0, FldEff_Nop47
 	field_eff_end
 
 gFieldEffectScript_Nop47::

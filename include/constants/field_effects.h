@@ -1,7 +1,7 @@
 #ifndef GUARD_FIELD_EFFECT_CONSTANTS_H
 #define GUARD_FIELD_EFFECT_CONSTANTS_H
 
-#define FLDEFF_EXCLAMATION_MARK_ICON     0
+#define FLDEFF_EMOTE_ICON                0
 #define FLDEFF_USE_CUT_ON_GRASS          1
 #define FLDEFF_USE_CUT_ON_TREE           2
 #define FLDEFF_SHADOW                    3
@@ -34,7 +34,7 @@
 #define FLDEFF_NPCFLY_OUT                30
 #define FLDEFF_USE_FLY                   31
 #define FLDEFF_FLY_IN                    32
-#define FLDEFF_QUESTION_MARK_ICON        33
+#define FLDEFF_NOP_33                    33
 #define FLDEFF_FEET_IN_FLOWING_WATER     34
 #define FLDEFF_BIKE_TIRE_TRACKS          35
 #define FLDEFF_SAND_DISGUISE             36
@@ -47,7 +47,7 @@
 #define FLDEFF_USE_WATERFALL             43
 #define FLDEFF_USE_DIVE                  44
 #define FLDEFF_POKEBALL_TRAIL            45
-#define FLDEFF_HEART_ICON                46
+#define FLDEFF_NOP_46                    46
 #define FLDEFF_NOP_47                    47
 #define FLDEFF_NOP_48                    48
 #define FLDEFF_ASH_PUFF                  49
@@ -120,5 +120,9 @@
 #define FLDEFF_PAL_TAG_SMALL_SPARKLE      0x100F
 #define FLDEFF_PAL_TAG_HOF_MONITOR        0x1010
 #define FLDEFF_PAL_TAG_UNKNOWN            0x1011
+
+#define ICON_EXCLAMATION 0
+#define ICON_QUESTION    1
+#define ICON_HEART       2
 
 #endif // GUARD_FIELD_EFFECT_CONSTANTS_H

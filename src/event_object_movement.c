@@ -6201,7 +6201,8 @@ bool8 MovementAction_SetVisible_Step0(struct ObjectEvent *objectEvent, struct Sp
 bool8 MovementAction_EmoteExclamationMark_Step0(struct ObjectEvent *objectEvent, struct Sprite *sprite)
 {
     ObjectEventGetLocalIdAndMap(objectEvent, &gFieldEffectArguments[0], &gFieldEffectArguments[1], &gFieldEffectArguments[2]);
-    FieldEffectStart(FLDEFF_EXCLAMATION_MARK_ICON);
+    gFieldEffectArguments[3] = ICON_EXCLAMATION;
+    FieldEffectStart(FLDEFF_EMOTE_ICON);
     sprite->sActionFuncId = 1;
     return TRUE;
 }
@@ -6209,7 +6210,8 @@ bool8 MovementAction_EmoteExclamationMark_Step0(struct ObjectEvent *objectEvent,
 bool8 MovementAction_EmoteQuestionMark_Step0(struct ObjectEvent *objectEvent, struct Sprite *sprite)
 {
     ObjectEventGetLocalIdAndMap(objectEvent, &gFieldEffectArguments[0], &gFieldEffectArguments[1], &gFieldEffectArguments[2]);
-    FieldEffectStart(FLDEFF_QUESTION_MARK_ICON);
+    gFieldEffectArguments[3] = ICON_QUESTION;
+    FieldEffectStart(FLDEFF_EMOTE_ICON);
     sprite->sActionFuncId = 1;
     return TRUE;
 }
@@ -6217,7 +6219,8 @@ bool8 MovementAction_EmoteQuestionMark_Step0(struct ObjectEvent *objectEvent, st
 bool8 MovementAction_EmoteHeart_Step0(struct ObjectEvent *objectEvent, struct Sprite *sprite)
 {
     ObjectEventGetLocalIdAndMap(objectEvent, &gFieldEffectArguments[0], &gFieldEffectArguments[1], &gFieldEffectArguments[2]);
-    FieldEffectStart(FLDEFF_HEART_ICON);
+    gFieldEffectArguments[3] = ICON_HEART;
+    FieldEffectStart(FLDEFF_EMOTE_ICON);
     sprite->sActionFuncId = 1;
     return TRUE;
 }
