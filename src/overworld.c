@@ -198,6 +198,7 @@ EWRAM_DATA static u16 sLastMapSectionId = 0;
 EWRAM_DATA static struct InitialPlayerAvatarState sInitialPlayerAvatarState = {0};
 EWRAM_DATA static u16 sAmbientCrySpecies = 0;
 EWRAM_DATA static bool8 sIsAmbientCryWaterMon = FALSE;
+ALIGNED(4) EWRAM_DATA bool8 gExitStairsMovementDisabled = FALSE;
 EWRAM_DATA struct LinkPlayerObjectEvent gLinkPlayerObjectEvents[4] = {0};
 
 static const struct WarpData sDummyWarpData =
@@ -1755,6 +1756,7 @@ void CB2_ContinueSavedGame(void)
     ScriptContext_Init();
     UnlockPlayerFieldControls();
     InitMatchCallCounters();
+    gExitStairsMovementDisabled = TRUE;
     if (UseContinueGameWarp() == TRUE)
     {
         ClearContinueGameWarpStatus();
