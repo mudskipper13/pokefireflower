@@ -129,7 +129,33 @@ Debug_Text_OptionB:
 	.string "BASIC B$"
 
 Debug_EventScript_Script_2::
+	lockall
+	applymovement OBJ_EVENT_ID_PLAYER, Common_Movement_QuestionMark
+	playse SE_PIN
+	waitfieldeffect FLDEFF_EMOTE_ICON
+	waitse
+	applymovement OBJ_EVENT_ID_PLAYER, Common_Movement_ExclamationMark
+	playse SE_PIN
+	waitfieldeffect FLDEFF_EMOTE_ICON
+	waitse
+	applymovement OBJ_EVENT_ID_PLAYER, Debug_Movement_EmoteHeart
+	playse SE_PIN
+	waitfieldeffect FLDEFF_EMOTE_ICON
+	waitse
+	applymovement OBJ_EVENT_ID_PLAYER, Debug_Movement_EmoteDots
+	playse SE_PIN
+	waitfieldeffect FLDEFF_EMOTE_ICON
+	waitse
+	releaseall
 	end
+
+Debug_Movement_EmoteHeart:
+	emote_heart
+	step_end
+
+Debug_Movement_EmoteDots:
+	emote_dots
+	step_end
 
 Debug_EventScript_Script_3::
 	end
