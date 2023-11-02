@@ -124,5 +124,6 @@
 #define ICON_EXCLAMATION 0
 #define ICON_QUESTION    1
 #define ICON_HEART       2
+#define ICON_DOTS        3
 
 #endif // GUARD_FIELD_EFFECT_CONSTANTS_H

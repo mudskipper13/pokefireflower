@@ -65,6 +65,7 @@ EWRAM_DATA u8 gApproachingTrainerId = 0;
 static const u8 sEmotion_ExclamationMarkGfx[] = INCBIN_U8("graphics/field_effects/pics/emotion_exclamation.4bpp");
 static const u8 sEmotion_QuestionMarkGfx[] = INCBIN_U8("graphics/field_effects/pics/emotion_question.4bpp");
 static const u8 sEmotion_HeartGfx[] = INCBIN_U8("graphics/field_effects/pics/emotion_heart.4bpp");
+static const u8 sEmotion_DotsGfx[] = INCBIN_U8("graphics/field_effects/pics/emotion_dots.4bpp");
 
 static u8 (*const sDirectionalApproachDistanceFuncs[])(struct ObjectEvent *trainerObj, s16 range, s16 x, s16 y) =
 {
@@ -144,6 +145,10 @@ static const struct SpriteFrameImage sSpriteImageTable_EmoteIcon[] =
         .data = sEmotion_HeartGfx,
         .size = sizeof(sEmotion_HeartGfx)
     },
+    {
+        .data = sEmotion_DotsGfx,
+        .size = sizeof(sEmotion_DotsGfx)
+    },
 };
 
 static const union AnimCmd sSpriteAnim_IconExclamation[] =
@@ -164,11 +169,18 @@ static const union AnimCmd sSpriteAnim_IconHeart[] =
     ANIMCMD_END
 };
 
+static const union AnimCmd sSpriteAnim_IconDots[] =
+{
+    ANIMCMD_FRAME(3, 60),
+    ANIMCMD_END
+};
+
 static const union AnimCmd *const sSpriteAnimTable_Icons[] =
 {
     sSpriteAnim_IconExclamation,
     sSpriteAnim_IconQuestion,
     sSpriteAnim_IconHeart,
+    sSpriteAnim_IconDots,
 };
 
 static const struct SpriteTemplate sSpriteTemplate_EmoteIcons =
