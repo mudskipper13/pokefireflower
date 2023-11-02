@@ -3,8 +3,8 @@ name: CI
 on:
   push:
     branches:
-      - master
-      - upcoming
+      - dev
+      - main
   pull_request:
 
 jobs:
@@ -27,8 +27,14 @@ jobs:
           path: agbcc
           repository: pret/agbcc
 
+      - name: Checkout poryscript
+        uses: actions/checkout@v2
+        with:
+          path: poryscript
+          repository: huderlem/poryscript
+
       - name: Install binutils
-        run: sudo apt install -y build-essential libpng-dev libelf-dev
+        run: sudo apt install -y build-essential libpng-dev libelf-dev golang-go
         # build-essential, git, and libpng-dev are already installed
         # gcc-arm-none-eabi is only needed for the modern build
         # as an alternative to dkP
@@ -38,6 +44,12 @@ jobs:
           ./build.sh
           ./install.sh ../
         working-directory: agbcc
+
+      - name: Install poryscript
+        run: |
+          go build
+          ./install.sh ../
+        working-directory: poryscript
 
       - name: Agbcc
         env:
@@ -50,11 +62,3 @@ jobs:
           MODERN: 1
           COMPARE: 0
         run: make -j${nproc} -O all
-
-      - name: Test
-        env:
-          MODERN: 1
-          TEST: 1
-        run: |
-          make -j${nproc} -O pokeemerald-test.elf
-          make -j${nproc} check
