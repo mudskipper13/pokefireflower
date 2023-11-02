@@ -1833,3 +1833,29 @@ const u8 gText_Berries[] = _("BERRIES");
 const u8 gText_ExpShareOn[] = _("The Exp. Share has been turned on.{PAUSE_UNTIL_PRESS}");
 const u8 gText_ExpShareOff[] = _("The Exp. Share has been turned off.{PAUSE_UNTIL_PRESS}");
 const u8 gText_BasePointsResetToZero[] = _("{STR_VAR_1}'s base points\nwere all reset to zero!{PAUSE_UNTIL_PRESS}");
+
+//! pokefireflower / pokesuperleaf
+
+//! these technically are duplicates with easy chat- :masuda:
+
+const u8 gText_Sunday[] =    _("SUNDAY");
+const u8 gText_Monday[] =    _("MONDAY");
+const u8 gText_Tuesday[] =   _("TUESDAY");
+const u8 gText_Wednesday[] = _("WEDNESDAY");
+const u8 gText_Thursday[] =  _("THURSDAY");
+const u8 gText_Friday[] =    _("FRIDAY");
+const u8 gText_Saturday[] =  _("SATURDAY");
+
+//! don't ask why saturday is above-
+const u8 *const gDayNamesStringsTable[] = {
+    gText_Sunday,
+    gText_Monday,
+    gText_Tuesday,
+    gText_Wednesday,
+    gText_Thursday,
+    gText_Friday,
+    gText_Saturday,
+};
+
+const u8 gText_CurrentTimeOn[] = _("{STR_VAR_1} {STR_VAR_2}:{STR_VAR_3}");
+const u8 gText_CurrentTimeOff[] = _("{STR_VAR_1} {STR_VAR_2} {STR_VAR_3}");

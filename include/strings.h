@@ -3040,4 +3040,10 @@ extern const u8 gText_ExpShareOff[];
 
 extern const u8 gText_BasePointsResetToZero[];
 
+//! Current Time Window
+
+extern const u8 *const gDayNamesStringsTable[];
+extern const u8 gText_CurrentTimeOn[];
+extern const u8 gText_CurrentTimeOff[];
+
 #endif // GUARD_STRINGS_H

@@ -44,6 +44,7 @@
 #include "trainer_card.h"
 #include "window.h"
 #include "union_room.h"
+#include "rtc.h"
 #include "constants/battle_frontier.h"
 #include "constants/rgb.h"
 #include "constants/songs.h"
@@ -82,6 +83,7 @@ bool8 (*gMenuCallback)(void);
 // EWRAM
 EWRAM_DATA static u8 sSafariBallsWindowId = 0;
 EWRAM_DATA static u8 sBattlePyramidFloorWindowId = 0;
+EWRAM_DATA static u8 sCurrentTimeWindowId = 0;
 EWRAM_DATA static u8 sStartMenuCursorPos = 0;
 EWRAM_DATA static u8 sNumStartMenuActions = 0;
 EWRAM_DATA static u8 sCurrentStartMenuActions[9] = {0};
@@ -182,6 +184,16 @@ static const struct WindowTemplate sWindowTemplate_PyramidPeak = {
     .baseBlock = 0x8
 };
 
+static const struct WindowTemplate sWindowTemplate_CurrentTime = {
+    .bg = 0,
+    .tilemapLeft = 1,
+    .tilemapTop = 17,
+    .width = 12,
+    .height = 2,
+    .paletteNum = 15,
+    .baseBlock = 0x30
+};
+
 static const u8 gText_MenuDebug[] = _("DEBUG");
 
 static const struct MenuAction sStartMenuItems[] =
@@ -252,6 +264,8 @@ static void BuildBattlePyramidStartMenu(void);
 static void BuildMultiPartnerRoomStartMenu(void);
 static void ShowSafariBallsWindow(void);
 static void ShowPyramidFloorWindow(void);
+static void ShowCurrentTimeWindow(void);
+static void UpdateCurrentTime(void);
 static void RemoveExtraStartMenuWindows(void);
 static bool32 PrintStartMenuActions(s8 *pIndex, u32 count);
 static bool32 InitStartMenuStep(void);
@@ -431,6 +445,8 @@ static void BuildMultiPartnerRoomStartMenu(void)
     AddStartMenuAction(MENU_ACTION_EXIT);
 }
 
+//! TODO: Fix Safari Balls Stock and Battle Pyramid Floor window.
+
 static void ShowSafariBallsWindow(void)
 {
     sSafariBallsWindowId = AddWindow(&sWindowTemplate_SafariBalls);
@@ -457,15 +473,56 @@ static void ShowPyramidFloorWindow(void)
     CopyWindowToVram(sBattlePyramidFloorWindowId, COPYWIN_GFX);
 }
 
+static void ShowCurrentTimeWindow(void)
+{
+    RtcCalcLocalTimeFast();
+    //! setup window
+    sCurrentTimeWindowId = AddWindow(&sWindowTemplate_CurrentTime);
+    PutWindowTilemap(sCurrentTimeWindowId);
+    DrawStdWindowFrame(sCurrentTimeWindowId, FALSE);
+    //! setup strings
+    StringCopy(gStringVar1, gDayNamesStringsTable[(gLocalTime.days % 7)]);
+    ConvertIntToDecimalStringN(gStringVar2, gLocalTime.hours, STR_CONV_MODE_LEADING_ZEROS, 2);
+    ConvertIntToDecimalStringN(gStringVar3, gLocalTime.minutes, STR_CONV_MODE_LEADING_ZEROS, 2);
+    //! print result
+    StringExpandPlaceholders(gStringVar4, gText_CurrentTimeOn);
+    AddTextPrinterParameterized(sCurrentTimeWindowId, FONT_NORMAL, gStringVar4, 0, 0, TEXT_SKIP_DRAW, NULL);
+    CopyWindowToVram(sCurrentTimeWindowId, COPYWIN_GFX);
+}
+
+//! basically the above but without setting up the window.
+//! used only for the input function.
+static void UpdateCurrentTime(void)
+{
+    RtcCalcLocalTimeFast();
+    //! We need this so that when changing current day,
+    //! it will not have the text artifacts IF the previous
+    //! day has a longer name than the now-current day.
+    //! (Wednesday -> Thursday)
+    FillWindowPixelBuffer(sCurrentTimeWindowId, PIXEL_FILL(1));
+    StringCopy(gStringVar1, gDayNamesStringsTable[(gLocalTime.days % 7)]);
+    ConvertIntToDecimalStringN(gStringVar2, gLocalTime.hours, STR_CONV_MODE_LEADING_ZEROS, 2);
+    ConvertIntToDecimalStringN(gStringVar3, gLocalTime.minutes, STR_CONV_MODE_LEADING_ZEROS, 2);
+    if (gLocalTime.seconds % 2)
+        StringExpandPlaceholders(gStringVar4, gText_CurrentTimeOn);
+    else
+        StringExpandPlaceholders(gStringVar4, gText_CurrentTimeOff);
+    AddTextPrinterParameterized(sCurrentTimeWindowId, FONT_NORMAL, gStringVar4, 0, 0, TEXT_SKIP_DRAW, NULL);
+    CopyWindowToVram(sCurrentTimeWindowId, COPYWIN_GFX);
+}
+
 static void RemoveExtraStartMenuWindows(void)
 {
+    ClearStdWindowAndFrameToTransparent(sCurrentTimeWindowId, FALSE);
+    CopyWindowToVram(sCurrentTimeWindowId, COPYWIN_GFX);
+    RemoveWindow(sCurrentTimeWindowId);
     if (GetSafariZoneFlag())
     {
         ClearStdWindowAndFrameToTransparent(sSafariBallsWindowId, FALSE);
         CopyWindowToVram(sSafariBallsWindowId, COPYWIN_GFX);
         RemoveWindow(sSafariBallsWindowId);
     }
-    if (InBattlePyramid())
+    else if (InBattlePyramid())
     {
         ClearStdWindowAndFrameToTransparent(sBattlePyramidFloorWindowId, FALSE);
         RemoveWindow(sBattlePyramidFloorWindowId);
@@ -523,9 +580,10 @@ static bool32 InitStartMenuStep(void)
         sInitStartMenuData[0]++;
         break;
     case 3:
+        ShowCurrentTimeWindow();
         if (GetSafariZoneFlag())
             ShowSafariBallsWindow();
-        if (InBattlePyramid())
+        else if (InBattlePyramid())
             ShowPyramidFloorWindow();
         sInitStartMenuData[0]++;
         break;
@@ -618,6 +676,8 @@ void ShowStartMenu(void)
 
 static bool8 HandleStartMenuInput(void)
 {
+    UpdateCurrentTime();
+
     if (JOY_NEW(DPAD_UP))
     {
         PlaySE(SE_SELECT);
