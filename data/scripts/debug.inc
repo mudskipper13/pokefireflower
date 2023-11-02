@@ -95,7 +95,7 @@ Debug_BoxFilledMessage::
 Debug_BoxFilledMessage_Text:
 	.string "Storage boxes filled!$"
 
-Debug_Script_1::
+Debug_EventScript_Script_1::
 	lockall
 	callnative BufferCurrentOutfitName
 	msgbox Debug_Text_YoureUsingOutfitSwapIt, MSGBOX_YESNO
@@ -128,7 +128,7 @@ Debug_Text_OptionA:
 Debug_Text_OptionB:
 	.string "BASIC B$"
 
-Debug_Script_2::
+Debug_EventScript_Script_2::
 	end
 
 Debug_EventScript_Script_3::
