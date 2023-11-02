@@ -188,7 +188,7 @@ static const struct WindowTemplate sWindowTemplate_CurrentTime = {
     .bg = 0,
     .tilemapLeft = 1,
     .tilemapTop = 17,
-    .width = 12,
+    .width = 9,
     .height = 2,
     .paletteNum = 15,
     .baseBlock = 0x30
@@ -475,17 +475,51 @@ static void ShowPyramidFloorWindow(void)
 
 static void ShowCurrentTimeWindow(void)
 {
+    struct WindowTemplate winTemp = sWindowTemplate_CurrentTime;
+    const u8 *suffix = NULL;
+    u16 convHours;
     RtcCalcLocalTimeFast();
     //! setup window
-    sCurrentTimeWindowId = AddWindow(&sWindowTemplate_CurrentTime);
+    if (gSaveBlock2Ptr->optionsClockMode == OPTIONS_CLOCK_MODE_24_HOURS)
+        winTemp.width -= 2;
+    sCurrentTimeWindowId = AddWindow(&winTemp);
     PutWindowTilemap(sCurrentTimeWindowId);
     DrawStdWindowFrame(sCurrentTimeWindowId, FALSE);
     //! setup strings
+    if (gSaveBlock2Ptr->optionsClockMode == OPTIONS_CLOCK_MODE_12_HOURS)
+    {
+        if (gLocalTime.hours < 12)
+        {
+            if (gLocalTime.hours == 0)
+                convHours = 12;
+            else
+                convHours = gLocalTime.hours;
+
+            suffix = gText_AM;
+        }
+        else if (gLocalTime.hours == 12)
+        {
+            convHours = 12;
+            if (suffix == gText_AM)
+                suffix = gText_PM;
+        }
+        else
+        {
+            convHours = gLocalTime.hours - 12;
+            suffix = gText_PM;
+        }
+    }
+    else
+        convHours = gLocalTime.hours;
+
     StringCopy(gStringVar1, gDayNamesStringsTable[(gLocalTime.days % 7)]);
-    ConvertIntToDecimalStringN(gStringVar2, gLocalTime.hours, STR_CONV_MODE_LEADING_ZEROS, 2);
+    ConvertIntToDecimalStringN(gStringVar2, convHours, STR_CONV_MODE_LEADING_ZEROS, 2);
     ConvertIntToDecimalStringN(gStringVar3, gLocalTime.minutes, STR_CONV_MODE_LEADING_ZEROS, 2);
     //! print result
     StringExpandPlaceholders(gStringVar4, gText_CurrentTimeOn);
+    if (suffix != NULL)
+        StringAppend(gStringVar4, suffix);
+
     AddTextPrinterParameterized(sCurrentTimeWindowId, FONT_NORMAL, gStringVar4, 0, 0, TEXT_SKIP_DRAW, NULL);
     CopyWindowToVram(sCurrentTimeWindowId, COPYWIN_GFX);
 }
@@ -494,19 +528,52 @@ static void ShowCurrentTimeWindow(void)
 //! used only for the input function.
 static void UpdateCurrentTime(void)
 {
+    const u8 *suffix = NULL;
+    u16 convHours;
     RtcCalcLocalTimeFast();
     //! We need this so that when changing current day,
     //! it will not have the text artifacts IF the previous
     //! day has a longer name than the now-current day.
     //! (Wednesday -> Thursday)
     FillWindowPixelBuffer(sCurrentTimeWindowId, PIXEL_FILL(1));
+    if (gSaveBlock2Ptr->optionsClockMode == OPTIONS_CLOCK_MODE_12_HOURS)
+    {
+        if (gLocalTime.hours < 12)
+        {
+            if (gLocalTime.hours == 0)
+                convHours = 12;
+            else
+                convHours = gLocalTime.hours;
+
+            suffix = gText_AM;
+        }
+        else if (gLocalTime.hours == 12)
+        {
+            convHours = 12;
+            if (suffix == gText_AM)
+                suffix = gText_PM;
+        }
+        else
+        {
+            convHours = gLocalTime.hours - 12;
+            suffix = gText_PM;
+        }
+    }
+    else
+        convHours = gLocalTime.hours;
+
     StringCopy(gStringVar1, gDayNamesStringsTable[(gLocalTime.days % 7)]);
-    ConvertIntToDecimalStringN(gStringVar2, gLocalTime.hours, STR_CONV_MODE_LEADING_ZEROS, 2);
+    ConvertIntToDecimalStringN(gStringVar2, convHours, STR_CONV_MODE_LEADING_ZEROS, 2);
     ConvertIntToDecimalStringN(gStringVar3, gLocalTime.minutes, STR_CONV_MODE_LEADING_ZEROS, 2);
+
     if (gLocalTime.seconds % 2)
         StringExpandPlaceholders(gStringVar4, gText_CurrentTimeOn);
     else
         StringExpandPlaceholders(gStringVar4, gText_CurrentTimeOff);
+
+    if (suffix != NULL)
+        StringAppend(gStringVar4, suffix);
+
     AddTextPrinterParameterized(sCurrentTimeWindowId, FONT_NORMAL, gStringVar4, 0, 0, TEXT_SKIP_DRAW, NULL);
     CopyWindowToVram(sCurrentTimeWindowId, COPYWIN_GFX);
 }

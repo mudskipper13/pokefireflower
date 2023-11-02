@@ -1,13 +1,21 @@
+//! TODO: Cleanup
+
+mapscripts LittlerootTown_BrendansHouse_1F_MapScripts {
+	MAP_SCRIPT_ON_LOAD: LittlerootTown_BrendansHouse_1F_OnLoad
+	MAP_SCRIPT_ON_TRANSITION: LittlerootTown_BrendansHouse_1F_OnTransition
+	MAP_SCRIPT_ON_FRAME_TABLE [
+		VAR_LITTLEROOT_INTRO_STATE, 3: LittlerootTown_BrendansHouse_1F_EventScript_EnterHouseMovingIn
+		VAR_LITTLEROOT_INTRO_STATE, 5: LittlerootTown_BrendansHouse_1F_EventScript_GoUpstairsToSetClock
+		VAR_LITTLEROOT_INTRO_STATE, 6: LittlerootTown_BrendansHouse_1F_EventScript_PetalburgGymReport
+		VAR_LITTLEROOT_HOUSES_STATE_MAY, 1: LittlerootTown_BrendansHouse_1F_EventScript_YoureNewNeighbor
+		VAR_LITTLEROOT_HOUSES_STATE_MAY, 3: PlayersHouse_1F_EventScript_GetSSTicketAndSeeLatiTV
+	]
+}
+
 raw `
 .set LOCALID_MOM, 1
 .set LOCALID_RIVAL_MOM, 4
 .set LOCALID_RIVAL, 7
-
-LittlerootTown_BrendansHouse_1F_MapScripts::
-	map_script MAP_SCRIPT_ON_LOAD, LittlerootTown_BrendansHouse_1F_OnLoad
-	map_script MAP_SCRIPT_ON_TRANSITION, LittlerootTown_BrendansHouse_1F_OnTransition
-	map_script MAP_SCRIPT_ON_FRAME_TABLE, LittlerootTown_BrendansHouse_1F_OnFrame
-	.byte 0
 
 LittlerootTown_BrendansHouse_1F_OnLoad:
 	call_if_lt VAR_LITTLEROOT_INTRO_STATE, 6, LittlerootTown_BrendansHouse_1F_EventScript_SetMovingBoxes
@@ -440,3 +448,11 @@ PlayersHouse_1F_Text_StillUnknownPokemon:
 	.string "MOM: Well, isn't that something!\n"
 	.string "There are still unknown POKéMON.$"
 `
+
+script PalletTown_PlayersHouse_1F_EventScript_Mom {
+	msgbox(format(
+					"MOM: Hi, honey.\p"
+					"Feel free to take some rests here"
+					"alongside your POKéMON friends, okay?"
+				), MSGBOX_NPC)
+}
