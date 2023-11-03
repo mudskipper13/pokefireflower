@@ -1275,7 +1275,6 @@ bool8 ScrCmd_release(struct ScriptContext *ctx)
     return FALSE;
 }
 
-//! BUG: This does nothing, mGBA warns errors from it however
 bool8 ScrCmd_textcolor(struct ScriptContext *ctx)
 {
     u8 textColor = ScriptReadByte(ctx);
@@ -1298,8 +1297,6 @@ bool8 ScrCmd_textcolor(struct ScriptContext *ctx)
             gSpecialVar_TextColor = textColor;
         }
     }
-    //! somehow, this doesn't show up..
-    DebugPrintf("gSpecialVar_TextColor = %d, gSpecialVar_PrevTextColor = %d", gSpecialVar_TextColor, gSpecialVar_PrevTextColor);
     return FALSE;
 }
 

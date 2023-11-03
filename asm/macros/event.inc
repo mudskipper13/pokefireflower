@@ -1548,7 +1548,6 @@
 	.2byte \box
 	.endm
 
-	@! BUG: This doesn't work properly, setting the textcolor vars directly works though.
 	@ Sets the color of the text in standard message boxes. color is any NPC_TEXT_COLOR_* constant.
 	@ The color will be reset to NPC_TEXT_COLOR_DEFAULT whenever ProcessPlayerFieldInput is called.
 	@ This has been adapted to allow all 16 possible text colors.
