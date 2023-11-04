@@ -62,10 +62,12 @@ bool8 gTrainerApproachedPlayer;
 EWRAM_DATA u8 gApproachingTrainerId = 0;
 
 // const rom data
-static const u8 sEmotion_ExclamationMarkGfx[] = INCBIN_U8("graphics/field_effects/pics/emotion_exclamation.4bpp");
-static const u8 sEmotion_QuestionMarkGfx[] = INCBIN_U8("graphics/field_effects/pics/emotion_question.4bpp");
-static const u8 sEmotion_HeartGfx[] = INCBIN_U8("graphics/field_effects/pics/emotion_heart.4bpp");
-static const u8 sEmotion_DotsGfx[] = INCBIN_U8("graphics/field_effects/pics/emotion_dots.4bpp");
+static const u8 sEmoticons[][0x80] = {
+    INCBIN_U8("graphics/field_effects/pics/emotion_exclamation.4bpp"),
+    INCBIN_U8("graphics/field_effects/pics/emotion_question.4bpp"),
+    INCBIN_U8("graphics/field_effects/pics/emotion_heart.4bpp"),
+    INCBIN_U8("graphics/field_effects/pics/emotion_dots.4bpp")
+};
 
 static u8 (*const sDirectionalApproachDistanceFuncs[])(struct ObjectEvent *trainerObj, s16 range, s16 x, s16 y) =
 {
@@ -131,24 +133,14 @@ static const struct OamData sOamData_Icons =
     .affineParam = 0,
 };
 
+#define ICON_SIZE 128
+
 static const struct SpriteFrameImage sSpriteImageTable_EmoteIcon[] =
 {
-    {
-        .data = sEmotion_ExclamationMarkGfx,
-        .size = sizeof(sEmotion_ExclamationMarkGfx)
-    },
-    {
-        .data = sEmotion_QuestionMarkGfx,
-        .size = sizeof(sEmotion_QuestionMarkGfx)
-    },
-    {
-        .data = sEmotion_HeartGfx,
-        .size = sizeof(sEmotion_HeartGfx)
-    },
-    {
-        .data = sEmotion_DotsGfx,
-        .size = sizeof(sEmotion_DotsGfx)
-    },
+    [ICON_EXCLAMATION] = { (u8 *)sEmoticons + 0 * ICON_SIZE, ICON_SIZE },
+    [ICON_QUESTION]    = { (u8 *)sEmoticons + 1 * ICON_SIZE, ICON_SIZE },
+    [ICON_HEART]       = { (u8 *)sEmoticons + 2 * ICON_SIZE, ICON_SIZE },
+    [ICON_DOTS]        = { (u8 *)sEmoticons + 3 * ICON_SIZE, ICON_SIZE },
 };
 
 static const union AnimCmd sSpriteAnim_IconExclamation[] =
@@ -716,7 +708,10 @@ static void inline SetIconSpriteData(struct Sprite *sprite)
     sprite->sYVelocity = -5;
     sprite->sFldEffId = FLDEFF_EMOTE_ICON;
 
-    StartSpriteAnim(sprite, gFieldEffectArguments[3]);
+    if (gFieldEffectArguments[3] >= ARRAY_COUNT(sSpriteImageTable_EmoteIcon))
+        StartSpriteAnim(sprite, ICON_EXCLAMATION);
+    else
+        StartSpriteAnim(sprite, gFieldEffectArguments[3]);
 }
 
 u8 FldEff_EmoteIcon(void)
