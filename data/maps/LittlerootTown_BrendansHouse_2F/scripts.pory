@@ -1,41 +1,44 @@
 mapscripts LittlerootTown_BrendansHouse_2F_MapScripts {}
 
-script LittlerootTown_BrendansHouse_2F_EventScript_BeginStory {
-	lockall
-	setvar(VAR_LITTLEROOT_TOWN_STATE, 1)
-	releaseall
-}
-
-script LittlerootTown_BrendansHouse_2F_EventScript_Bed {
+script PalletTown_PlayersRoom_EventScript_Bed {
 	lockall
 	applymovement(OBJ_EVENT_ID_PLAYER, Common_Movement_WalkInPlaceDown)
 	waitmovement(0)
-	msgbox(format("{PLAYER}: Should I rest here?"), MSGBOX_YESNO)
+	textcolor(NPC_TEXT_COLOR_PLAYER)
+	if (!var(VAR_PALLET_TOWN_STATE)) {
+		msgbox(PalletTown_PlayersRoom_Text_CantRestOthersWaiting, MSGBOX_AUTOCLOSE)
+		if (var(VAR_RESULT) == FEMALE) {
+			applymovement(OBJ_EVENT_ID_PLAYER, PalletTown_PlayersRoom_Movement_WalkRight)
+		} else {
+			applymovement(OBJ_EVENT_ID_PLAYER, PalletTown_PlayersRoom_Movement_WalkLeft)
+		}
+		waitmovement(0)
+		releaseall
+		end
+	}
+	msgbox(PalletTown_PlayersRoom_Text_ShouldPlayerRest, MSGBOX_YESNO)
 	if (var(VAR_RESULT)) {
-		msgbox(format("{PLAYER}: Alright, time to rest."), MSGBOX_AUTOCLOSE)
+		msgbox(PalletTown_PlayersRoom_Text_AlrightRestTime, MSGBOX_AUTOCLOSE)
 		call(Common_EventScript_OutOfCenterPartyHeal)
-		msgbox(format("{PLAYER}: Ah, better!"), MSGBOX_AUTOCLOSE)
+		msgbox(PalletTown_PlayersRoom_Text_AhBetter, MSGBOX_AUTOCLOSE)
 		checkplayergender
 		if (var(VAR_RESULT) == FEMALE) {
-			applymovement(OBJ_EVENT_ID_PLAYER, LittlerootTown_BrendansHouse_2F_Movement_WalkLeft)
-			waitmovement(0)
+			applymovement(OBJ_EVENT_ID_PLAYER, PalletTown_PlayersRoom_Movement_WalkLeft)
 		} else {
-			applymovement(OBJ_EVENT_ID_PLAYER, LittlerootTown_BrendansHouse_2F_Movement_WalkRight)
-			waitmovement(0)
+			applymovement(OBJ_EVENT_ID_PLAYER, PalletTown_PlayersRoom_Movement_WalkRight)
 		}
+		waitmovement(0)
 	} else {
-		msgbox(format("{PLAYER}: Hm… Maybe not."), MSGBOX_AUTOCLOSE)
+		msgbox(PalletTown_PlayersRoom_Text_HmMaybeNot, MSGBOX_AUTOCLOSE)
 		checkplayergender
 		if (var(VAR_RESULT) == FEMALE) {
-			applymovement(OBJ_EVENT_ID_PLAYER, LittlerootTown_BrendansHouse_2F_Movement_WalkRight)
-			waitmovement(0)
+			applymovement(OBJ_EVENT_ID_PLAYER, PalletTown_PlayersRoom_Movement_WalkRight)
 		} else {
-			applymovement(OBJ_EVENT_ID_PLAYER, LittlerootTown_BrendansHouse_2F_Movement_WalkLeft)
-			waitmovement(0)
+			applymovement(OBJ_EVENT_ID_PLAYER, PalletTown_PlayersRoom_Movement_WalkLeft)
 		}
+		waitmovement(0)
 	}
 	releaseall
-	end
 }
 
 script LittlerootTown_BrendansHouse_2F_EventScript_PC {
@@ -57,41 +60,111 @@ script LittlerootTown_BrendansHouse_2F_EventScript_TurnOffPlayerPC {
 }
 
 script PlayersHouse_2F_EventScript_GameCube {
-	msgbox(PlayersHouse_2F_Text_ItsAGameCube, MSGBOX_SIGN)
+	msgbox(PalletTown_PlayersRoom_Text_ItsAGameCube, MSGBOX_SIGN)
 }
 
 script PlayersHouse_2F_EventScript_Notebook {
-	msgbox(PlayersHouse_2F_Text_OhNotebook, MSGBOX_SIGN)
+	msgbox(PalletTown_PlayersRoom_Text_OhNotebook, MSGBOX_SIGN)
 }
 
-movement LittlerootTown_BrendansHouse_2F_Movement_WalkLeft {
+movement PalletTown_PlayersRoom_Movement_WalkLeft {
 	walk_left
 }
 
-movement LittlerootTown_BrendansHouse_2F_Movement_WalkRight {
+movement PalletTown_PlayersRoom_Movement_WalkRight {
 	walk_right
 }
 
-text PlayersHouse_2F_Text_ItsAGameCube {
-	"It's a Nintendo GameCube.\p"
-
-	"A Game Boy Advance is connected to\n"
-	"serve as the controller."
+text PalletTown_PlayersRoom_Text_ItsAGameCube {
+	poryswitch(LANG) {
+		_ {
+			format(	"It's a Nintendo GameCube.\p"
+					"A Game Boy Advance is connected to\n"
+					"serve as the controller.")
+		}
+		INA {
+			format(	"Ini adalah sebuah Nintendo GameCube.\p"
+					"Sebuah Game Boy Advance dicolokkan\n"
+					"ke dalamnya dan digunakan sebagai"
+					"pengontrol.")
+		}
+	}
 }
 
-text PlayersHouse_2F_Text_OhNotebook {
-	"{PLAYER}: Oh, a notebook.\p"
-
-	"I think I should carry it with me."
+text PalletTown_PlayersRoom_Text_OhNotebook {
+	poryswitch(LANG) {
+		_ {
+			format(	"{PLAYER}: Oh, my notebook.\p"
+					"Maybe I should carry it with me"
+					"later.")
+		}
+		INA {
+			format(	"{PLAYER}: Oh, buku catatanku.\p"
+					"Mungkin aku harus membawanya"
+					"denganku nanti.")
+		}
+	}
 }
 
 text PlayersHouse_2F_Text_ClockIsStopped {
-	"The clock is stopped…\p"
-
-	"Better set and start it!"
+	poryswitch(LANG) {
+		_ {
+			format(	"The clock is stopped…\p"
+					"Better set and start it!")
+		}
+		INA {
+			format(	"Jam dindingnya mati…\p"
+					"Sebaiknya diatur dan dinyalakan!")
+		}
+	}
 }
 
 text Common_Text_LookCloserAtMap {
-	"You took a closer look at the\n"
-	"KANTO region map."
+	poryswitch(LANG) {
+		_ {
+			format(	"You took a closer look at the\n"
+					"KANTO region map.")
+		}
+		INA {
+			format(	"Kamu meneliti lebih dekat ke map"
+					"daerah KANTO.")
+		}
+	}
+}
+
+text PalletTown_PlayersRoom_Text_ShouldPlayerRest {
+	poryswitch(LANG) {
+		_:		format("{PLAYER}: Should we rest here?")
+		INA:	format("{PLAYER}: Apakah kita istirahat disini?")
+	}
+}
+
+text PalletTown_PlayersRoom_Text_AlrightRestTime {
+	poryswitch(LANG) {
+		_:		format("{PLAYER}: Alright, time to rest.")
+		INA:	format("{PLAYER}: Baiklah, saatnya istirahat.")
+	}
+}
+
+text PalletTown_PlayersRoom_Text_AhBetter {
+	poryswitch(LANG) {
+		_:		format("{PLAYER}: Ah, better!")
+		INA:	format("{PLAYER}: Ah, lebih baik!")
+	}
+}
+
+text PalletTown_PlayersRoom_Text_HmMaybeNot {
+	poryswitch(LANG) {
+		_:		format("{PLAYER}: Hm… Maybe not.")
+		INA:	format("{PLAYER}: Hm… Mungkin tidak.")
+	}
+}
+
+text PalletTown_PlayersRoom_Text_CantRestOthersWaiting {
+	poryswitch(LANG) {
+		_:		format(	"{PLAYER}: I can't rest now,"
+						"others are waiting for me below!")
+		INA:	format(	"{PLAYER}: Aku gak bisa tidur sekarang,"
+						"yang lain sedang menungguku dibawah!")
+	}
 }
