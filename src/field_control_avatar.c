@@ -956,15 +956,11 @@ bool8 IsDirectionalStairWarpMetatileBehavior(u16 metatileBehavior, u8 playerDire
     switch (playerDirection)
     {
     case DIR_WEST:
-        if (metatileBehavior == MB_UP_LEFT_STAIR_WARP)
-            return TRUE;
-        if (metatileBehavior == MB_DOWN_LEFT_STAIR_WARP)
+        if (metatileBehavior == MB_UP_LEFT_STAIR_WARP || metatileBehavior == MB_DOWN_LEFT_STAIR_WARP)
             return TRUE;
         break;
     case DIR_EAST:
-        if (metatileBehavior == MB_UP_RIGHT_STAIR_WARP)
-            return TRUE;
-        if (metatileBehavior == MB_DOWN_RIGHT_STAIR_WARP)
+        if (metatileBehavior == MB_UP_RIGHT_STAIR_WARP || metatileBehavior == MB_DOWN_RIGHT_STAIR_WARP)
             return TRUE;
         break;
     }

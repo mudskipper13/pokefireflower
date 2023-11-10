@@ -820,30 +820,28 @@ static void ForceStairsMovement(u16 metatileBehavior, s16 *x, s16 *y)
 
 static void GetStairsMovementDirection(u8 metatileBehavior, s16 *x, s16 *y)
 {
-    if (metatileBehavior == MB_UP_RIGHT_STAIR_WARP)
+    switch(metatileBehavior)
     {
+    case MB_UP_RIGHT_STAIR_WARP:
         *x = 16;
         *y = -10;
-    }
-    else if (metatileBehavior == MB_UP_LEFT_STAIR_WARP)
-    {
+        break;
+    case MB_UP_LEFT_STAIR_WARP:
         *x = -17;
         *y = -10;
-    }
-    else if (metatileBehavior == MB_DOWN_RIGHT_STAIR_WARP)
-    {
+        break;
+    case MB_DOWN_RIGHT_STAIR_WARP:
         *x = 17;
         *y = 3;
-    }
-    else if (metatileBehavior == MB_DOWN_LEFT_STAIR_WARP)
-    {
+        break;
+    case MB_DOWN_LEFT_STAIR_WARP:
         *x = -17;
         *y = 3;
-    }
-    else
-    {
+        break;
+    default:
         *x = 0;
         *y = 0;
+        break;
     }
 }
 
