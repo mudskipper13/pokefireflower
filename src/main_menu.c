@@ -1333,7 +1333,7 @@ static void Task_NewGameBirchSpeech_WaitForSpriteFadeInWelcome(u8 taskId)
             InitWindows(sNewGameBirchSpeechTextWindows);
             LoadMainMenuWindowFrameTiles(0, 0xF3);
             LoadMessageBoxGfx(0, 0xFC, BG_PLTT_ID(15));
-            DrawDialogFrameWithCustomTileAndPalette(0, TRUE, 0xFC, BG_PLTT_ID(15));
+            DrawDialogFrameWithCustomTile(0, TRUE, 0xFC);
             PutWindowTilemap(0);
             CopyWindowToVram(0, COPYWIN_GFX);
             NewGameBirchSpeech_ClearWindow(0);
@@ -2300,7 +2300,7 @@ static void Task_NewGameBirchSpeech_ReturnFromNamingScreenShowTextbox(u8 taskId)
 {
     if (gTasks[taskId].tTimer-- <= 0)
     {
-        DrawDialogFrameWithCustomTileAndPalette(0, TRUE, 0xFC, BG_PLTT_ID(15));
+        DrawDialogFrameWithCustomTile(0, TRUE, 0xFC);
         gTasks[taskId].func = Task_NewGameBirchSpeech_SoItsPlayerName;
     }
 }
