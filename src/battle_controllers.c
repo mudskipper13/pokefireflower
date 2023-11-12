@@ -22,6 +22,7 @@
 #include "test_runner.h"
 #include "util.h"
 #include "text.h"
+#include "day_night.h"
 #include "constants/abilities.h"
 #include "constants/songs.h"
 
@@ -2885,7 +2886,7 @@ void BtlController_HandleIntroTrainerBallThrow(u32 battler, u16 tagTrainerPal, c
         StartSpriteAnim(&gSprites[gBattlerSpriteIds[battler]], 1);
 
         paletteNum = AllocSpritePalette(tagTrainerPal);
-        LoadCompressedPalette(trainerPal, OBJ_PLTT_ID(paletteNum), PLTT_SIZE_4BPP);
+        LoadCompressedPaletteDayNight(trainerPal, OBJ_PLTT_ID(paletteNum), PLTT_SIZE_4BPP);
         gSprites[gBattlerSpriteIds[battler]].oam.paletteNum = paletteNum;
     }
     else

@@ -22,6 +22,7 @@
 #include "data.h"
 #include "palette.h"
 #include "contest.h"
+#include "day_night.h"
 #include "constants/songs.h"
 #include "constants/rgb.h"
 #include "constants/battle_palace.h"
@@ -625,8 +626,8 @@ void BattleLoadMonSpriteGfx(struct Pokemon *mon, u32 battler)
         lzPaletteData = GetMonSpritePalFromSpeciesAndPersonality(species, currentOtId, currentPersonality);
 
     LZDecompressWram(lzPaletteData, gDecompressionBuffer);
-    LoadPalette(gDecompressionBuffer, paletteOffset, PLTT_SIZE_4BPP);
-    LoadPalette(gDecompressionBuffer, BG_PLTT_ID(8) + BG_PLTT_ID(battler), PLTT_SIZE_4BPP);
+    LoadPaletteDayNight(gDecompressionBuffer, paletteOffset, PLTT_SIZE_4BPP);
+    LoadPaletteDayNight(gDecompressionBuffer, BG_PLTT_ID(8) + BG_PLTT_ID(battler), PLTT_SIZE_4BPP);
 
     // transform's pink color
     if (gBattleSpritesDataPtr->battlerData[battler].transformSpecies != SPECIES_NONE)
@@ -653,7 +654,7 @@ void DecompressTrainerFrontPic(u16 frontPicId, u8 battler)
     DecompressPicFromTable(&gTrainerFrontPicTable[frontPicId],
                            gMonSpritesGfxPtr->sprites.ptr[position],
                            SPECIES_NONE);
-    LoadCompressedSpritePalette(&gTrainerFrontPicPaletteTable[frontPicId]);
+    LoadCompressedSpritePaletteDayNight(&gTrainerFrontPicPaletteTable[frontPicId]);
 }
 
 void DecompressTrainerBackPic(u16 backPicId, u8 battler)
@@ -662,7 +663,7 @@ void DecompressTrainerBackPic(u16 backPicId, u8 battler)
     DecompressPicFromTable(&gTrainerBackPicTable[backPicId],
                            gMonSpritesGfxPtr->sprites.ptr[position],
                            SPECIES_NONE);
-    LoadCompressedPalette(gTrainerBackPicPaletteTable[backPicId].data,
+    LoadCompressedPaletteDayNight(gTrainerBackPicPaletteTable[backPicId].data,
                           OBJ_PLTT_ID(battler), PLTT_SIZE_4BPP);
 }
 
@@ -939,7 +940,7 @@ void HandleSpeciesGfxDataChange(u8 battlerAtk, u8 battlerDef, bool32 megaEvo, bo
     paletteOffset = OBJ_PLTT_ID(battlerAtk);
     lzPaletteData = GetMonSpritePalFromSpeciesAndPersonality(targetSpecies, otId, personalityValue);
     LZDecompressWram(lzPaletteData, gDecompressionBuffer);
-    LoadPalette(gDecompressionBuffer, paletteOffset, PLTT_SIZE_4BPP);
+    LoadPaletteDayNight(gDecompressionBuffer, paletteOffset, PLTT_SIZE_4BPP);
 
     if (!megaEvo)
     {
@@ -980,7 +981,7 @@ void BattleLoadSubstituteOrMonSpriteGfx(u8 battler, bool8 loadMonSprite)
         }
 
         palOffset = OBJ_PLTT_ID(battler);
-        LoadCompressedPalette(gBattleAnimSpritePal_Substitute, palOffset, PLTT_SIZE_4BPP);
+        LoadCompressedPaletteDayNight(gBattleAnimSpritePal_Substitute, palOffset, PLTT_SIZE_4BPP);
     }
     else
     {

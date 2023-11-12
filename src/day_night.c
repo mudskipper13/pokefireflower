@@ -12,6 +12,7 @@
 #include "strings.h"
 #include "string_util.h"
 #include "fieldmap.h"
+#include "malloc.h"
 
 #define TINT_MORNING Q_8_8(0.7), Q_8_8(0.7), Q_8_8(0.9)
 #define TINT_DAY Q_8_8(1.0), Q_8_8(1.0), Q_8_8(1.0)
@@ -284,4 +285,39 @@ void LoadPalette_HandleDayNight(const void *src, u16 offset, u16 size, bool32 is
         CpuCopy16(src, &gPlttBufferUnfaded[offset], size);
         CpuCopy16(src, &gPlttBufferFaded[offset], size);
     }
+}
+
+void LoadCompressedSpritePalette_HandleDayNight(const struct CompressedSpritePalette *src, bool32 isDayNight)
+{
+    struct SpritePalette dest;
+    LZ77UnCompWram(src->data, gDecompressionBuffer);
+
+    dest.data = (void *) gDecompressionBuffer;
+    dest.tag = src->tag;
+    LoadSpritePalette_HandleDayNight(&dest, isDayNight);
+}
+
+void LoadCompressedSpritePaletteDayNight(const struct CompressedSpritePalette *src)
+{
+    LoadCompressedSpritePalette_HandleDayNight(src, TRUE);
+}
+
+bool8 LoadCompressedSpritePaletteUsingHeap_HandleDayNight(const struct CompressedSpritePalette *src, bool32 isDayNight)
+{
+    struct SpritePalette dest;
+    void *buffer;
+
+    buffer = AllocZeroed(src->data[0] >> 8);
+    LZ77UnCompWram(src->data, buffer);
+    dest.data = buffer;
+    dest.tag = src->tag;
+
+    LoadSpritePalette_HandleDayNight(&dest, isDayNight);
+    Free(buffer);
+    return FALSE;
+}
+
+bool8 LoadCompressedSpritePaletteUsingHeapDayNight(const struct CompressedSpritePalette *src)
+{
+    return LoadCompressedSpritePaletteUsingHeap_HandleDayNight(src, TRUE);
 }

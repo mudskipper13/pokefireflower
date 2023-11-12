@@ -21,5 +21,9 @@ void ProcessImmediateTimeEvents(void);
 
 void LoadCompressedPalette_HandleDayNight(const u32 *src, u16 offset, u16 size, bool32 isDayNight);
 void LoadPalette_HandleDayNight(const void *src, u16 offset, u16 size, bool32 isDayNight);
+void LoadCompressedSpritePalette_HandleDayNight(const struct CompressedSpritePalette *src, bool32 isDayNight);
+void LoadCompressedSpritePaletteDayNight(const struct CompressedSpritePalette *src);
+bool8 LoadCompressedSpritePaletteUsingHeap_HandleDayNight(const struct CompressedSpritePalette *src, bool32 isDayNight);
+bool8 LoadCompressedSpritePaletteUsingHeapDayNight(const struct CompressedSpritePalette *src);
 
 #endif // GUARD_DAY_NIGHT_H
