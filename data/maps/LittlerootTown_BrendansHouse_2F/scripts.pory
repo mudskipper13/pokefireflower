@@ -122,11 +122,11 @@ text PlayersHouse_2F_Text_ClockIsStopped {
 text Common_Text_LookCloserAtMap {
 	poryswitch(LANG) {
 		_ {
-			format(	"You took a closer look at the\n"
+			format(	"{PLAYER} took a closer look at the"
 					"KANTO region map.")
 		}
 		INA {
-			format(	"Kamu meneliti lebih dekat ke map"
+			format(	"{PLAYER} melihat lebih dekat ke map"
 					"daerah KANTO.")
 		}
 	}
