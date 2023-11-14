@@ -1219,13 +1219,22 @@ static u8 LaunchBallFadeMonTaskForPokeball(bool8 unFadeLater, u8 spritePalNum, u
 #define sTrigIdx     data[7]
 
 // Pokeball in Birch intro, and when receiving via trade
-void CreatePokeballSpriteToReleaseMon(u8 monSpriteId, u8 monPalNum, u8 x, u8 y, u8 oamPriority, u8 subpriority, u8 delay, u32 fadePalettes, u16 species)
+void _CreatePokeballSpriteToReleaseMon(u8 monSpriteId, u8 monPalNum, u8 x, u8 y, u8 oamPriority, u8 subpriority, u8 delay, u32 fadePalettes, u16 species, u16 ball)
 {
     u8 spriteId;
 
-    LoadCompressedSpriteSheetUsingHeap(&gBallSpriteSheets[BALL_POKE]);
-    LoadCompressedSpritePaletteUsingHeap(&gBallSpritePalettes[BALL_POKE]);
-    spriteId = CreateSprite(&gBallSpriteTemplates[BALL_POKE], x, y, subpriority);
+    if (ball >= POKEBALL_COUNT)
+    {
+        LoadCompressedSpriteSheetUsingHeap(&gBallSpriteSheets[BALL_POKE]);
+        LoadCompressedSpritePaletteUsingHeap(&gBallSpritePalettes[BALL_POKE]);
+        spriteId = CreateSprite(&gBallSpriteTemplates[BALL_POKE], x, y, subpriority);
+    }
+    else
+    {
+        LoadCompressedSpriteSheetUsingHeap(&gBallSpriteSheets[ball]);
+        LoadCompressedSpritePaletteUsingHeap(&gBallSpritePalettes[ball]);
+        spriteId = CreateSprite(&gBallSpriteTemplates[ball], x, y, subpriority);
+    }
 
     gSprites[spriteId].sMonSpriteId = monSpriteId;
     gSprites[spriteId].sFinalMonX = gSprites[monSpriteId].x;
@@ -1243,6 +1252,11 @@ void CreatePokeballSpriteToReleaseMon(u8 monSpriteId, u8 monPalNum, u8 x, u8 y, 
     gSprites[spriteId].callback = SpriteCB_PokeballReleaseMon;
 
     gSprites[monSpriteId].invisible = TRUE;
+}
+
+void CreatePokeballSpriteToReleaseMon(u8 monSpriteId, u8 monPalNum, u8 x, u8 y, u8 oamPriority, u8 subpriority, u8 delay, u32 fadePalettes, u16 species)
+{
+    _CreatePokeballSpriteToReleaseMon(monSpriteId, monPalNum, x, y, oamPriority, subpriority, delay, fadePalettes, species, BALL_POKE);
 }
 
 static void SpriteCB_PokeballReleaseMon(struct Sprite *sprite)

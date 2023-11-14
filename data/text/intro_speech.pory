@@ -1,0 +1,218 @@
+text gText_Birch_Welcome {
+	poryswitch(LANG) {
+		_ {
+			format(	"Why hello there!{PAUSE 30}\n"
+					"Thanks for waiting!\p"
+
+					"And welcome to the world of POKéMON!\p"
+
+					"My name is MARCUS AGARWOOD STARKSON.\p"
+
+					"And I am what people called as a"
+					"“POKéMON PROFESSOR.”\p"
+
+					"$")
+		}
+		INA {
+			format(	"Halo!{PAUSE 30}\n"
+					"Terima kasih telah menunggu!\p"
+
+					"Dan selamat datang ke dunia POKéMON!\p"
+
+					"Nama saya MARCUS AGARWOOD STARKSON.\p"
+
+					"Dan saya adalah apa yang orang sebut"
+					"sebagai seorang “PROFESSOR POKéMON.”\p"
+
+					"$")
+		}
+	}
+}
+
+text gText_ThisIsAPokemon {
+	poryswitch(LANG) {
+		_ {
+			format(	"And this…{PAUSE 60} is a so-called"
+					"“POKéMON.”{PAUSE 96}\p")
+		}
+		_ {
+			format(	"Dan ini…{PAUSE 60} adalah apa yang"
+					"disebut sebagai “POKéMON.”{PAUSE 96}\p")
+		}
+	}
+}
+
+text gText_Birch_MainSpeech {
+	poryswitch(LANG) {
+		_ {
+			format(	"This world is largely inhabited by"
+					"these creatures we call as POKéMON.\p"
+
+					"We humans and humanoids live together"
+					"with POKéMON, either as friendly"
+					"playmates, or as cooperative"
+					"workmates.\p"
+
+					"And sometimes we also bond together"
+					"and battle others similar to us.\p"
+
+					"Despite our closeness however, there"
+					"is still many mysteries and secrets"
+					"surrounding POKéMON out there that"
+					"we still haven't know the answer of.\p"
+
+					"One of which is my main research,{PAUSE 16} which"
+					"is how we are connected to POKéMON.\p"
+
+					"There has been records of TRAINERs"
+					"bonded with their POKéMON so powerful,"
+					"that they became one! It's process is"
+					"VERY similar to the legends of the TAO"
+					"trios!\l"
+					"How fascinating is that?!\p"
+
+					"{PAUSE 30}…Sorry,{PAUSE 16} I got a bit excited there."
+					"Shows how much passionate I am"
+					"about this,{PAUSE 16} haha!\p"
+
+					"$")
+		}
+		INA {
+			format(	"Dunia ini kebanyakan dipenuhi oleh"
+					"makhluk-makhluk hidup yang kita panggil"
+					"sebagai POKéMON.\p"
+
+					"Kita manusia dan humanoid hidup"
+					"bersama dengan para POKéMON,"
+					"layak sebagai teman bermain, atau"
+					"rekan kerja yang kooperatif.\p"
+
+					"Dan terkadang juga kita bersatu serta"
+					"bertarung bersama dengan orang lain"
+					"yang mirip dengan kita.\p"
+
+					"Tetapi meski kedekatan kita, masih banyak"
+					"misteri-misteri serta rahasia-rahasia"
+					"mengenai POKéMON diluar sana yang kita"
+					"masih belum tahu jawabannya.\p"
+
+					"Salah satunya yaitu penelitian utamaku,{PAUSE 16}"
+					"yaitu bagaimana kita manusia dan humanoids"
+					"memiliki koneksi dengan POKéMON.\p"
+
+					"Terdapat catatan rekor terhadap para PELATIH"
+					"bersatu sangat kuat dengan POKéMONnya, mereka"
+					"benar-benar menjadi satu! Mirip seperti yang ada"
+					"di legenda TAO trio!\l"
+					"Tidakkah hal tersebut terdengar sangat"
+					"menakjubkan?!\p"
+
+					"{PAUSE 30}…Mohon maaf,{PAUSE 16} saya terlalu bersemangat."
+					"Benar-benar menunjukkan betapa bergairahnya"
+					"saya dengan persoalan ini,{PAUSE 16} haha!\p"
+
+					"$")
+		}
+	}
+}
+
+text gText_Birch_AndYouAre {
+	poryswitch(LANG) {
+		_ {
+			format(	"How about you?{PAUSE 30}\n"
+					"Are you excited as well?")
+		}
+		INA {
+			format(	"Bagaimana dengan mu?{PAUSE 30}\n"
+					"Apakah kamu juga bersemangat?")
+		}
+	}
+}
+
+text gText_Birch_BoyOrGirl {
+	poryswitch(LANG) {
+		_ {
+			format(	"But first,{PAUSE 16} tell me about yourself.\p"
+					"So,{PAUSE 16} are you a boy?\n"
+					"{PAUSE 16} Or a girl?{PAUSE 30}")
+		}
+		INA {
+			format(	"Tetapi pertama-tama,{PAUSE 16} jelaskan"
+					"siapa dirimu kepadaku.\p"
+					"Jadi,{PAUSE 16} apakah kamu anak laki?{PAUSE 16}\n"
+					"Atau anak perempuan?{PAUSE 30}")
+		}
+	}
+}
+
+text gText_Birch_WhatsYourName {
+	poryswitch(LANG) {
+		_ {
+			format(	"Alright, and your name?")
+		}
+		INA {
+			format(	"Baiklah, dan namamu ialah?")
+		}
+	}
+}
+
+text gText_Birch_SoItsPlayer {
+	poryswitch(LANG) {
+		_ {
+			format(	"Ah, so your name is\n"
+					"{PLAYER}{KUN}, correct?")
+		}
+		INA {
+			format(	"Ah, jadi namamu ialah\n"
+					"{PLAYER}{KUN}, benar?")
+		}
+	}
+}
+
+text gText_Birch_YourePlayer {
+	poryswitch(LANG) {
+		_ {
+			format(	"I see…\p"
+					"So, you're {PLAYER}!{PAUSE 30}\nThat…{PAUSE 30} sounds very familiar…"
+					"$")
+		}
+		INA {
+			format(	"Oh begitu…\p"
+					"Jadi, kamu {PLAYER}!{PAUSE 30}\nItu…{PAUSE 30} terdengar tidak asing…"
+					"$")
+		}
+	}
+}
+
+text gText_Birch_AreYouReady {
+	poryswitch(LANG) {
+		_ {
+			format(	"{PAUSE 30}…Oh!{PAUSE 16} I remember now!\p"
+					"You're {PLAYER} from PALLET TOWN,"
+					"and you're one of my grandkids that"
+					"lives there!\p"
+					"It has been a while since we met, eh?\p"
+					"Well, I am actually going to visit PALLET"
+					"TOWN today.\p"
+					"Grandpa also have a special gift for you"
+					"and your sibling while at it.\l"
+					"Just wait and see in the downstairs!\l"
+					"See you there!{PAUSE_UNTIL_PRESS}"
+					"$")
+		}
+		INA {
+			format(	"{PAUSE 30}…Oh!{PAUSE 16} Saya ingat sekarang!\p"
+					"Kamu adalah {PLAYER} dari KOTA PALLET,"
+					"dan kamu adalah salah satu anak cucuku"
+					"yang tinggal di sana!\p"
+					"Sudah lama tidak jumpa, eh?\p"
+					"Kebetulan, kakek akan mengunjungi KOTA"
+					"PALLET hari ini.\p"
+					"Kakek juga memiliki hadiah spesial untukmu"
+					"dan kakakmu juga.\l"
+					"Tunggu dan lihat saja dilantai bawah!\l"
+					"Sampai jumpa disana!{PAUSE_UNTIL_PRESS}"
+					"$")
+		}
+	}
+}
