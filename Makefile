@@ -295,8 +295,11 @@ mostlyclean: tidy tidycheck
 	rm -f $(AUTO_GEN_TARGETS)
 	@$(MAKE) clean -C libagbsyscall
 
-tidy:
-	find $(DATA_ASM_SUBDIR)/maps \( -iname 'connections.inc' -o -iname 'events.inc' -o -iname 'header.inc' -o -iname 'scripts.inc' -o -iname 'text.inc' \) -exec rm {} +
+clean-pory:
+	rm -f $(patsubst %.pory,%.inc,$(shell find $(DATA_ASM_SUBDIR) -type f -name '*.pory'))
+
+tidy: clean-pory
+	find $(DATA_ASM_SUBDIR)/maps \( -iname 'connections.inc' -o -iname 'events.inc' -o -iname 'header.inc' \) -exec rm {} +
 	$(RM) $(ALL_BUILDS:%=poke%{.gba,.elf,.map})
 	$(RM) $(MODERN_BUILDS:%=poke%{.gba,.elf,.map})
 	$(RM) -r build
