@@ -138,24 +138,16 @@ Debug_EventScript_Script_2::
 	playse SE_PIN
 	waitfieldeffect FLDEFF_EMOTE_ICON
 	waitse
-	applymovement OBJ_EVENT_ID_PLAYER, Debug_Movement_EmoteHeart
+	applymovement OBJ_EVENT_ID_PLAYER, Common_Movement_Heart
 	playse SE_PIN
 	waitfieldeffect FLDEFF_EMOTE_ICON
 	waitse
-	applymovement OBJ_EVENT_ID_PLAYER, Debug_Movement_EmoteDots
+	applymovement OBJ_EVENT_ID_PLAYER, Common_Movement_Dots
 	playse SE_PIN
 	waitfieldeffect FLDEFF_EMOTE_ICON
 	waitse
 	releaseall
 	end
-
-Debug_Movement_EmoteHeart:
-	emote_heart
-	step_end
-
-Debug_Movement_EmoteDots:
-	emote_dots
-	step_end
 
 Debug_EventScript_Script_3::
 	end
