@@ -3,26 +3,26 @@
 
 const u8 gOutfitFrontPics[OUTFIT_COUNT][GENDER_COUNT] = 
 {
-    [OUTFIT_A] = {TRAINER_PIC_BRENDAN, TRAINER_PIC_MAY},
-    [OUTFIT_B] = {TRAINER_PIC_RS_BRENDAN, TRAINER_PIC_RS_MAY},
+    [OUTFIT_USUAL_GREEN] = {TRAINER_PIC_BRENDAN, TRAINER_PIC_MAY},
+    [OUTFIT_UNUSUAL_RED] = {TRAINER_PIC_RS_BRENDAN, TRAINER_PIC_RS_MAY},
 };
 
 const u8 gOutfitBackPics[OUTFIT_COUNT][GENDER_COUNT] = 
 {
-    [OUTFIT_A] = {TRAINER_BACK_PIC_BRENDAN, TRAINER_BACK_PIC_MAY},
-    [OUTFIT_B] = {TRAINER_BACK_PIC_RUBY_SAPPHIRE_BRENDAN, TRAINER_BACK_PIC_RUBY_SAPPHIRE_MAY},
+    [OUTFIT_USUAL_GREEN] = {TRAINER_BACK_PIC_BRENDAN, TRAINER_BACK_PIC_MAY},
+    [OUTFIT_UNUSUAL_RED] = {TRAINER_BACK_PIC_RUBY_SAPPHIRE_BRENDAN, TRAINER_BACK_PIC_RUBY_SAPPHIRE_MAY},
 };
 
 const u16 gPlayerAvatarGfxIds[OUTFIT_COUNT][4][GENDER_COUNT] =
 {
-    [OUTFIT_A] =
+    [OUTFIT_USUAL_GREEN] =
     {
         [PLAYER_AVATAR_STATE_NORMAL]     = {OBJ_EVENT_GFX_BRENDAN_NORMAL,     OBJ_EVENT_GFX_MAY_NORMAL},
         [PLAYER_AVATAR_STATE_BIKE]       = {OBJ_EVENT_GFX_BRENDAN_ACRO_BIKE,  OBJ_EVENT_GFX_MAY_ACRO_BIKE},
         [PLAYER_AVATAR_STATE_SURFING]    = {OBJ_EVENT_GFX_BRENDAN_SURFING,    OBJ_EVENT_GFX_MAY_SURFING},
         [PLAYER_AVATAR_STATE_UNDERWATER] = {OBJ_EVENT_GFX_BRENDAN_UNDERWATER, OBJ_EVENT_GFX_MAY_UNDERWATER},
     },
-    [OUTFIT_B] =
+    [OUTFIT_UNUSUAL_RED] =
     {
         [PLAYER_AVATAR_STATE_NORMAL]     = {OBJ_EVENT_GFX_LINK_RS_BRENDAN,      OBJ_EVENT_GFX_LINK_RS_MAY},
         [PLAYER_AVATAR_STATE_BIKE]       = {OBJ_EVENT_GFX_RS_BRENDAN_ACRO_BIKE, OBJ_EVENT_GFX_RS_MAY_ACRO_BIKE},
@@ -33,13 +33,13 @@ const u16 gPlayerAvatarGfxIds[OUTFIT_COUNT][4][GENDER_COUNT] =
 
 const u16 gPlayerAvatarAnimGfxIds[OUTFIT_COUNT][3][GENDER_COUNT] =
 {
-    [OUTFIT_A] =
+    [OUTFIT_USUAL_GREEN] =
     {
         [PLAYER_AVATAR_GFX_FIELD_MOVE] = {OBJ_EVENT_GFX_BRENDAN_FIELD_MOVE, OBJ_EVENT_GFX_MAY_FIELD_MOVE},
         [PLAYER_AVATAR_GFX_FISHING]    = {OBJ_EVENT_GFX_BRENDAN_FISHING,    OBJ_EVENT_GFX_MAY_FISHING},
         [PLAYER_AVATAR_GFX_WATERING]   = {OBJ_EVENT_GFX_BRENDAN_WATERING,   OBJ_EVENT_GFX_MAY_WATERING},
     },
-    [OUTFIT_B] =
+    [OUTFIT_UNUSUAL_RED] =
     {
         [PLAYER_AVATAR_GFX_FIELD_MOVE] = {OBJ_EVENT_GFX_RS_BRENDAN_FIELD_MOVE, OBJ_EVENT_GFX_RS_MAY_FIELD_MOVE},
         [PLAYER_AVATAR_GFX_FISHING]    = {OBJ_EVENT_GFX_RS_BRENDAN_FISHING,    OBJ_EVENT_GFX_RS_MAY_FISHING},
@@ -61,10 +61,10 @@ static const u16 sRegionMapPlayerIcon_RSMayPal[] = INCBIN_U16("graphics/pokenav/
 
 const struct OutfitIcon gOutfitToRegionMapIcon[OUTFIT_COUNT * GENDER_COUNT] =
 {
-    { OUTFIT_A, MALE,   sRegionMapPlayerIcon_BrendanGfx,   sRegionMapPlayerIcon_BrendanPal },
-    { OUTFIT_A, FEMALE, sRegionMapPlayerIcon_MayGfx,       sRegionMapPlayerIcon_MayPal },
-    { OUTFIT_B, MALE,   sRegionMapPlayerIcon_RSBrendanGfx, sRegionMapPlayerIcon_RSBrendanPal },
-    { OUTFIT_B, FEMALE, sRegionMapPlayerIcon_RSMayGfx,     sRegionMapPlayerIcon_RSMayPal },
+    { OUTFIT_USUAL_GREEN, MALE,   sRegionMapPlayerIcon_BrendanGfx,   sRegionMapPlayerIcon_BrendanPal },
+    { OUTFIT_USUAL_GREEN, FEMALE, sRegionMapPlayerIcon_MayGfx,       sRegionMapPlayerIcon_MayPal },
+    { OUTFIT_UNUSUAL_RED, MALE,   sRegionMapPlayerIcon_RSBrendanGfx, sRegionMapPlayerIcon_RSBrendanPal },
+    { OUTFIT_UNUSUAL_RED, FEMALE, sRegionMapPlayerIcon_RSMayGfx,     sRegionMapPlayerIcon_RSMayPal },
 };
 
 static const u32 sFrontierPassPlayerIcons_Gfx[] = INCBIN_U32("graphics/frontier_pass/map_heads.4bpp.lz");
@@ -77,8 +77,8 @@ static const u16 sFrontierPassPlayerIcons_RSMay_Pal[] = INCBIN_U16("graphics/fro
 
 const struct OutfitIcon gOutfitToFrontierPassIcon[OUTFIT_COUNT * GENDER_COUNT] =
 {
-    { OUTFIT_A, MALE,   sFrontierPassPlayerIcons_Gfx, sFrontierPassPlayerIcons_Brendan_Pal },
-    { OUTFIT_A, FEMALE, sFrontierPassPlayerIcons_Gfx, sFrontierPassPlayerIcons_May_Pal },
-    { OUTFIT_B, MALE,   sFrontierPassPlayerIcons_RS_Gfx, sFrontierPassPlayerIcons_RSBrendan_Pal },
-    { OUTFIT_B, FEMALE, sFrontierPassPlayerIcons_RS_Gfx, sFrontierPassPlayerIcons_RSMay_Pal },
+    { OUTFIT_USUAL_GREEN, MALE,   sFrontierPassPlayerIcons_Gfx, sFrontierPassPlayerIcons_Brendan_Pal },
+    { OUTFIT_USUAL_GREEN, FEMALE, sFrontierPassPlayerIcons_Gfx, sFrontierPassPlayerIcons_May_Pal },
+    { OUTFIT_UNUSUAL_RED, MALE,   sFrontierPassPlayerIcons_RS_Gfx, sFrontierPassPlayerIcons_RSBrendan_Pal },
+    { OUTFIT_UNUSUAL_RED, FEMALE, sFrontierPassPlayerIcons_RS_Gfx, sFrontierPassPlayerIcons_RSMay_Pal },
 };
