@@ -2023,3 +2023,6 @@ const u32 gItemIconPalette_LustrousGlobe[] = INCBIN_U32("graphics/items/icon_pal
 
 const u32 gItemIcon_BerserkGene[] = INCBIN_U32("graphics/items/icons/berserk_gene.4bpp.lz");
 const u32 gItemIconPalette_BerserkGene[] = INCBIN_U32("graphics/items/icon_palettes/berserk_gene.gbapal.lz");
+
+const u32 gItemIcon_OutfitBox[] = INCBIN_U32("graphics/items/icons/outfit_box.4bpp.lz");
+const u32 gItemIconPalette_OutfitBox[] = INCBIN_U32("graphics/items/icon_palettes/outfit_box.gbapal.lz");

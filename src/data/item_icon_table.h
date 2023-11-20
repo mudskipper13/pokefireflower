@@ -859,6 +859,7 @@ const u32 *const gItemIconTable[ITEMS_COUNT + 1][2] =
     [ITEM_SWIFT_MOCHI] = {gItemIcon_QuestionMark, gItemIconPalette_QuestionMark}, // {gItemIcon_Mochi, gItemIconPalette_SwiftMochi},
     [ITEM_FRESH_START_MOCHI] = {gItemIcon_QuestionMark, gItemIconPalette_QuestionMark}, // {gItemIcon_Mochi, gItemIconPalette_FreshStartMochi},
     [ITEM_GLIMMERING_CHARM] = {gItemIcon_QuestionMark, gItemIconPalette_QuestionMark},  // {gItemIcon_GlimmeringCharm, gItemIconPalette_GlimmeringCharm},
+    [ITEM_OUTFIT_BOX] = {gItemIcon_OutfitBox, gItemIconPalette_OutfitBox},
     // Return to field arrow
     [ITEMS_COUNT] = {gItemIcon_ReturnToFieldArrow, gItemIconPalette_ReturnToFieldArrow},
 };

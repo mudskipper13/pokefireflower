@@ -3993,3 +3993,8 @@ static const u8 sGlimmeringCharmDesc[] = _(
     "A charm that will\n"
     "raise the shards\n"
     "from Tera Raids.");
+
+static const u8 sOutfitBoxDesc[] = _(
+    "A BOX for storing\n"
+    "your collections of\n"
+    "OUTFITS safely.");

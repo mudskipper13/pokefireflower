@@ -38,6 +38,7 @@
 #include "string_util.h"
 #include "task.h"
 #include "text.h"
+#include "outfit_menu.h"
 #include "constants/event_bg.h"
 #include "constants/event_objects.h"
 #include "constants/item_effects.h"
@@ -76,6 +77,8 @@ static void SetDistanceOfClosestHiddenItem(u8, s16, s16);
 static void CB2_OpenPokeblockFromBag(void);
 static void ItemUseOnFieldCB_Honey(u8 taskId);
 static bool32 CannotUseBagBattleItem(u16 itemId);
+static void CB2_OpenOutfitBoxFromBag(void);
+static void Task_OpenRegisteredOutfitBox(u8 taskId);
 
 // EWRAM variables
 EWRAM_DATA static void(*sItemUseOnFieldCB)(u8 taskId) = NULL;
@@ -1336,6 +1339,40 @@ void ItemUseOutOfBattle_Honey(u8 taskId)
 void ItemUseOutOfBattle_CannotUse(u8 taskId)
 {
     DisplayDadsAdviceCannotUseItemMessage(taskId, gTasks[taskId].tUsingRegisteredKeyItem);
+}
+
+void ItemUseOutOfBattle_OutfitBox(u8 taskId)
+{
+    if (MenuHelpers_IsLinkActive() == TRUE)
+    {
+        DisplayDadsAdviceCannotUseItemMessage(taskId, gTasks[taskId].tUsingRegisteredKeyItem);
+    }
+    else if (gTasks[taskId].tUsingRegisteredKeyItem != TRUE)
+    {
+        gBagMenu->newScreenCallback = CB2_OpenOutfitBoxFromBag;
+        Task_FadeAndCloseBagMenu(taskId);
+    }
+    else
+    {
+        gFieldCallback = FieldCB_ReturnToFieldNoScript;
+        FadeScreen(FADE_TO_BLACK, 0);
+        gTasks[taskId].func = Task_OpenRegisteredOutfitBox;
+    }
+}
+
+static void CB2_OpenOutfitBoxFromBag(void)
+{
+    OpenOutfitMenu(CB2_ReturnToBagMenuPocket);
+}
+
+static void Task_OpenRegisteredOutfitBox(u8 taskId)
+{
+    if (!gPaletteFade.active)
+    {
+        CleanupOverworldWindowsAndTilemaps();
+        OpenOutfitMenu(CB2_ReturnToField);
+        DestroyTask(taskId);
+    }
 }
 
 #undef tUsingRegisteredKeyItem
