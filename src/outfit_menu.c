@@ -13,6 +13,7 @@
 #include "field_player_avatar.h"
 #include "field_weather.h"
 #include "graphics.h"
+#include "list_menu.h"
 #include "menu.h"
 #include "menu_helpers.h"
 #include "outfit_menu.h"
@@ -32,7 +33,7 @@ enum BGs {
     BG_0 = 0,
     BG_1,
     BG_2,
-    BG_3,
+    BG_MAX = 2,
     BG_COUNT,
 };
 
@@ -53,6 +54,8 @@ enum States {
 enum Windows {
     WIN_NAME = 0,
     WIN_DESC,
+    WIN_HEADER,
+    WIN_OUTFIT_MAX = 2,
     WIN_COUNT,
 };
 
@@ -64,32 +67,54 @@ enum Sprites {
 
 enum {
     COLORID_NORMAL = 0,
-    COLORID_RED,
+    COLORID_HEADER,
     COLORID_BLUE,
     COLORID_NONE,
 };
 
 static const u8 sFontColors[][3] = { // bgColor, textColor, shadowColor
-    [COLORID_NORMAL] = {TEXT_COLOR_WHITE, TEXT_COLOR_DARK_GRAY,  TEXT_COLOR_LIGHT_GRAY},
-    [COLORID_RED]    = {TEXT_COLOR_WHITE, TEXT_COLOR_RED,        TEXT_COLOR_LIGHT_RED},
-    [COLORID_BLUE]   = {TEXT_COLOR_WHITE, TEXT_COLOR_BLUE,       TEXT_COLOR_LIGHT_BLUE},
+    [COLORID_NORMAL] = {TEXT_COLOR_TRANSPARENT, TEXT_COLOR_WHITE,      TEXT_COLOR_DARK_GRAY},
+    [COLORID_HEADER] = {15,                     TEXT_COLOR_WHITE,      TEXT_COLOR_DARK_GRAY},
+    [COLORID_BLUE]   = {TEXT_COLOR_WHITE,       TEXT_COLOR_BLUE,       TEXT_COLOR_LIGHT_BLUE},
 };
 
 typedef struct {
     MainCallback retCB;
-    u32 idx;
-    u32 gfxState;
-    u32 spriteIds[GFX_COUNT];
-    u32 tilemapBuffer[BG_SCREEN_SIZE];
+    u8 idx;
+    u8 gfxState;
+    u8 spriteIds[GFX_COUNT];
+    u8 tilemapBuffers[2][BG_SCREEN_SIZE];
+    u8 switchArrowsTask;
+    u16 switchArrowsPos;
 } OutfitMenuResources;
 
-static const u8 sText_WouldYouLikeToUseOutfit[] =
-{
-    "Would you like to use\n"
-    "{STR_VAR_1} outfit?"
-};
+static const u8 sText_Controls[] =
+_(
+    "{DPAD_LEFTRIGHT}PICK {A_BUTTON}CONFIRM {B_BUTTON}CANCEL"
+);
+
+static const u16 sTiles[] = INCBIN_U16("graphics/outfit_menu/tiles.4bpp");
+static const u32 sScrollingBG_Tilemap[] = INCBIN_U32("graphics/outfit_menu/tilemap.bin.lz");
+static const u32 sMsgbox_Tilemap[] = INCBIN_U32("graphics/outfit_menu/msgbox.bin.lz");
+static const u16 sPalette[] = INCBIN_U16("graphics/outfit_menu/tiles.gbapal");
 
 static EWRAM_DATA OutfitMenuResources *sOutfitMenu = NULL;
+
+#define TAG_SCROLL_WINDOW 0x1000
+
+static const struct ScrollArrowsTemplate sOutfitMenuScrollArrowsTemplate = {
+    .firstArrowType = SCROLL_ARROW_LEFT,
+    .firstX = 72,
+    .firstY = 56,
+    .secondArrowType = SCROLL_ARROW_RIGHT,
+    .secondX = 168,
+    .secondY = 56,
+    .fullyUpThreshold = -1,
+    .fullyDownThreshold = -1,
+    .tileTag = TAG_SCROLL_WINDOW,
+    .palTag = TAG_SCROLL_WINDOW,
+    .palNum = 0,
+};
 
 static const struct BgTemplate sBGTemplates[] =
 {
@@ -100,7 +125,7 @@ static const struct BgTemplate sBGTemplates[] =
         .charBaseIndex = 1,
         .mapBaseIndex = 29,
         .paletteMode = 0,
-        .priority = 0,
+        .priority = 1,
         .screenSize = 0,
     },
     [BG_1] =
@@ -108,11 +133,21 @@ static const struct BgTemplate sBGTemplates[] =
         .baseTile = 0,
         .bg = 1,
         .charBaseIndex = 0,
+        .mapBaseIndex = 30,
+        .paletteMode = 0,
+        .priority = 2,
+        .screenSize = 0,
+    },
+    [BG_2] =
+    { //! SCROLLING BG
+        .baseTile = 0,
+        .bg = 2,
+        .charBaseIndex = 0,
         .mapBaseIndex = 31,
         .paletteMode = 0,
-        .priority = 1,
+        .priority = 3,
         .screenSize = 0,
-    }
+    },
 };
 
 static const struct WindowTemplate sWindowTemplates[] =
@@ -120,22 +155,32 @@ static const struct WindowTemplate sWindowTemplates[] =
     [WIN_NAME] =
     {
         .bg = 0,
-        .tilemapLeft = 1,
-        .tilemapTop = 1,
+        .tilemapLeft = 2,
+        .tilemapTop = 14,
         .width = 12,
         .height = 2,
         .paletteNum = 15,
-        .baseBlock = 0x20,
+        .baseBlock = 1,
     },
     [WIN_DESC] =
     {
         .bg = 0,
-        .tilemapLeft = 2,
-        .tilemapTop = 15,
+        .tilemapLeft = 1,
+        .tilemapTop = 16,
         .width = 26,
         .height = 4,
         .paletteNum = 15,
-        .baseBlock = 0x40,
+        .baseBlock = 0x20,
+    },
+    [WIN_HEADER] =
+    {
+        .bg = 0,
+        .tilemapLeft = 0,
+        .tilemapTop = 0,
+        .width = 30,
+        .height = 2,
+        .paletteNum = 15,
+        .baseBlock = 0x90,
     },
     DUMMY_WIN_TEMPLATE,
 };
@@ -165,15 +210,15 @@ void Task_OpenOutfitMenu(u8 taskId)
 
 void OpenOutfitMenu(MainCallback retCB)
 {
-    sOutfitMenu = AllocZeroed(sizeof(OutfitMenuResources));
+    sOutfitMenu = AllocZeroed(sizeof(*sOutfitMenu));
     if (sOutfitMenu == NULL)
     {
         // Alloc failed, exit
         SetMainCallback2(retCB);
-        return;
     }
     sOutfitMenu->idx = gSaveBlock2Ptr->currOutfitId;
     sOutfitMenu->retCB = retCB;
+    sOutfitMenu->switchArrowsTask = TASK_NONE;
     SetMainCallback2(CB2_SetupOutfitMenu);
 }
 
@@ -247,29 +292,26 @@ static void VBlankCB_OutfitMenu(void)
     LoadOam();
     ProcessSpriteCopyRequests();
     TransferPlttBuffer();
+    ChangeBgX(BG_2, 96, BG_COORD_SUB);
+    ChangeBgY(BG_2, 96, BG_COORD_SUB);
 }
 
 static void SetupOutfitMenu_BGs(void)
 {
     SetGpuReg(REG_OFFSET_DISPCNT, 0);
-    CpuFastCopy(0, sOutfitMenu->tilemapBuffer, BG_SCREEN_SIZE);
     ResetBgsAndClearDma3BusyFlags(0);
-    ChangeBgX(BG_0, 0, BG_COORD_SET);
-    ChangeBgY(BG_0, 0, BG_COORD_SET);
-    ChangeBgX(BG_1, 0, BG_COORD_SET);
-    ChangeBgY(BG_1, 0, BG_COORD_SET);
-    ChangeBgX(BG_2, 0, BG_COORD_SET);
-    ChangeBgY(BG_2, 0, BG_COORD_SET);
-    ChangeBgX(BG_3, 0, BG_COORD_SET);
-    ChangeBgY(BG_3, 0, BG_COORD_SET);
+    ResetAllBgsCoordinates();
     InitBgsFromTemplates(0, sBGTemplates, ARRAY_COUNT(sBGTemplates));
-    SetBgTilemapBuffer(BG_1, sOutfitMenu->tilemapBuffer);
+    SetBgTilemapBuffer(BG_1, sOutfitMenu->tilemapBuffers[0]);
+    SetBgTilemapBuffer(BG_2, sOutfitMenu->tilemapBuffers[1]);
     ScheduleBgCopyTilemapToVram(BG_1);
+    ScheduleBgCopyTilemapToVram(BG_2);
     SetGpuReg(REG_OFFSET_DISPCNT, DISPCNT_OBJ_ON | DISPCNT_OBJ_1D_MAP);
     ShowBg(BG_0);
     ShowBg(BG_1);
-    SetGpuReg(REG_OFFSET_BLDCNT, 0);
-    SetGpuReg(REG_OFFSET_BLDALPHA, 0);
+    ShowBg(BG_2);
+    SetGpuReg(REG_OFFSET_BLDCNT, BLDCNT_TGT1_BG1 | BLDCNT_TGT2_BG2 | BLDCNT_EFFECT_BLEND);
+    SetGpuReg(REG_OFFSET_BLDALPHA, BLDALPHA_BLEND(8, 9));
     SetGpuReg(REG_OFFSET_BLDY, 0);
 }
 
@@ -279,15 +321,22 @@ static bool32 SetupOutfitMenu_Graphics(void)
     {
     case 0:
         ResetTempTileDataBuffers();
+        LoadBgTiles(BG_1, &sTiles, 512, 0);
+        LoadMessageBoxGfx(BG_0, 0x100, BG_PLTT_ID(13));
+        LoadUserWindowBorderGfx(BG_0, 0x10A, BG_PLTT_ID(14));
         sOutfitMenu->gfxState++;
         break;
     case 1:
-        LoadMessageBoxGfx(0, 0x100, BG_PLTT_ID(13));
-        LoadUserWindowBorderGfx(0, 0x10A, BG_PLTT_ID(14));
-        sOutfitMenu->gfxState++;
+        if (FreeTempTileDataBuffersIfPossible() != TRUE)
+        {
+            LZDecompressWram(sMsgbox_Tilemap, sOutfitMenu->tilemapBuffers[0]);
+            LZDecompressWram(sScrollingBG_Tilemap, sOutfitMenu->tilemapBuffers[1]);
+            sOutfitMenu->gfxState++;
+        }
         break;
     case 2:
-        LoadPalette(&gStandardMenuPalette, BG_PLTT_ID(15), PLTT_SIZE_4BPP);
+        LoadPalette(&sPalette, BG_PLTT_ID(0), PLTT_SIZE_4BPP);
+        LoadPalette(GetTextWindowPalette(2), BG_PLTT_ID(15), PLTT_SIZE_4BPP);
         SetBackdropFromColor(RGB2GBA(212, 115, 106));
         sOutfitMenu->gfxState++;
         break;
@@ -297,30 +346,52 @@ static bool32 SetupOutfitMenu_Graphics(void)
     return FALSE;
 }
 
+static inline void FillWindow(u8 winId, u8 fillVal)
+{
+    FillWindowPixelBuffer(winId, fillVal);
+    PutWindowTilemap(winId);
+}
+
+static inline void PrintTexts(u8 winId, u8 font, u8 x, u8 y, u8 letterSpacing, u8 lineSpacing, u8 color, const u8 *str)
+{
+    AddTextPrinterParameterized4(winId, font, x, y, letterSpacing, lineSpacing, sFontColors[color], TEXT_SKIP_DRAW, str);
+    CopyWindowToVram(winId, COPYWIN_GFX);
+}
+
 static void SetupOutfitMenu_Windows(void)
 {
     u32 i;
-
     InitWindows(sWindowTemplates);
     DeactivateAllTextPrinters();
-    for (i = 0; i < WIN_COUNT; i++)
-    {
-        FillWindowPixelBuffer(i, PIXEL_FILL(0));
-        PutWindowTilemap(i);
-    }
+    for (i = 0; i < WIN_OUTFIT_MAX; i++)
+        FillWindow(i, PIXEL_FILL(0));
+
+    FillWindow(WIN_HEADER, PIXEL_FILL(15));
     ScheduleBgCopyTilemapToVram(BG_0);
 }
 
 static void SetupOutfitMenu_PrintStr(void)
 {
-    DrawStdFrameWithCustomTileAndPalette(WIN_NAME, FALSE, 0x10A, 14);
-    DrawDialogFrameWithCustomTileAndPalette(WIN_DESC, FALSE, 0x100, 13);
+    u32 i;
+    for (i = 0; i < WIN_OUTFIT_MAX; i++)
+        PrintTexts(i, FONT_NORMAL, 0, 0, 0, 0, COLORID_NORMAL, gOutfitNameDescTables[sOutfitMenu->idx][i]);
 
-    AddTextPrinterParameterized4(WIN_NAME, FONT_NORMAL, 0, 0, 0, 0, sFontColors[COLORID_NORMAL], TEXT_SKIP_DRAW, gOutfitNameDescTables[sOutfitMenu->idx][0]);
-    AddTextPrinterParameterized4(WIN_DESC, FONT_NORMAL, 0, 0, 0, 0, sFontColors[COLORID_NORMAL], TEXT_SKIP_DRAW, gOutfitNameDescTables[sOutfitMenu->idx][1]);
+    PrintTexts(WIN_HEADER, FONT_SMALL, 0, 0, 0, 0, COLORID_HEADER, sText_Controls);
+}
 
-    CopyWindowToVram(WIN_NAME, COPYWIN_FULL);
-    CopyWindowToVram(WIN_DESC, COPYWIN_FULL);
+static inline void DestroyPocketSwitchArrowPair(void)
+{
+    if (sOutfitMenu->switchArrowsTask != TASK_NONE)
+    {
+        RemoveScrollIndicatorArrowPair(sOutfitMenu->switchArrowsTask);
+        sOutfitMenu->switchArrowsTask = TASK_NONE;
+    }
+}
+
+static inline void CreateOutfitSwitchArrowPair(void)
+{
+    if (sOutfitMenu->switchArrowsTask == TASK_NONE)
+        sOutfitMenu->switchArrowsTask = AddScrollIndicatorArrowPair(&sOutfitMenuScrollArrowsTemplate, &sOutfitMenu->switchArrowsPos);
 }
 
 static void SetupOutfitMenu_Sprites_DrawOverworldSprite(bool32 update)
@@ -330,7 +401,7 @@ static void SetupOutfitMenu_Sprites_DrawOverworldSprite(bool32 update)
     if (update)
         DestroySprite(&gSprites[sOutfitMenu->spriteIds[GFX_OW]]);
 
-    sOutfitMenu->spriteIds[GFX_OW] = CreateObjectGraphicsSpriteNoTint(gfxId, SpriteCallbackDummy, 150, 40, 0);
+    sOutfitMenu->spriteIds[GFX_OW] = CreateObjectGraphicsSpriteNoTint(gfxId, SpriteCallbackDummy, 90, 70, 0);
     StartSpriteAnim(&gSprites[sOutfitMenu->spriteIds[GFX_OW]], ANIM_STD_GO_SOUTH);
 }
 
@@ -340,34 +411,30 @@ static void SetupOutfitMenu_Sprites_DrawTrainerSprite(bool32 update)
     if (update)
         FreeAndDestroyTrainerPicSprite(sOutfitMenu->spriteIds[GFX_TS]);
 
-    sOutfitMenu->spriteIds[GFX_TS] = CreateTrainerPicSprite(id, TRUE, 200, 40, 8, id);
+    sOutfitMenu->spriteIds[GFX_TS] = CreateTrainerPicSprite(id, TRUE, 125, 58, 8, id);
 }
 
 static void SetupOutfitMenu_Sprites(void)
 {
     SetupOutfitMenu_Sprites_DrawOverworldSprite(FALSE);
     SetupOutfitMenu_Sprites_DrawTrainerSprite(FALSE);
+    CreateOutfitSwitchArrowPair();
 }
 
 //! Similar to above, but without redrawing the frame
 //! and also clean up the frame.
-static void UpdateOutfitInfo(void)
+static inline void UpdateOutfitInfo(void)
 {
     u32 i;
-
-    for (i = 0; i < WIN_COUNT; i++)
+    for (i = 0; i < WIN_OUTFIT_MAX; i++)
     {
-        FillWindowPixelBuffer(i, PIXEL_FILL(TEXT_COLOR_WHITE));
-        PutWindowTilemap(i);
-        AddTextPrinterParameterized4(i, FONT_NORMAL, 0, 0, 0, 0, sFontColors[COLORID_NORMAL], TEXT_SKIP_DRAW, gOutfitNameDescTables[sOutfitMenu->idx][i]);
-        CopyWindowToVram(i, COPYWIN_FULL);
+        FillWindow(i, PIXEL_FILL(0));
+        PrintTexts(i, FONT_NORMAL, 0, 0, 0, 0, COLORID_NORMAL, gOutfitNameDescTables[sOutfitMenu->idx][i]);
     }
     SetupOutfitMenu_Sprites_DrawOverworldSprite(TRUE);
     SetupOutfitMenu_Sprites_DrawTrainerSprite(TRUE);
-    #ifdef DINFO
     DebugPrintf("sOutfitMenu->spriteIds[GFX_OW] = %d", sOutfitMenu->spriteIds[GFX_OW]);
     DebugPrintf("sOutfitMenu->spriteIds[GFX_TS] = %d", sOutfitMenu->spriteIds[GFX_TS]);
-    #endif
 }
 
 static void Task_WaitFadeInOutfitMenu(u8 taskId)
@@ -398,9 +465,7 @@ static void Task_OutfitMenuHandleInput(u8 taskId)
             sOutfitMenu->idx = OUTFIT_BEGIN;
 
         UpdateOutfitInfo();
-        #ifdef DINFO
         DebugPrintf("DPAD_RIGHT, sOutfitMenu->idx = %d", sOutfitMenu->idx);
-        #endif
     }
 
     if (JOY_NEW(DPAD_LEFT))
@@ -411,9 +476,7 @@ static void Task_OutfitMenuHandleInput(u8 taskId)
             sOutfitMenu->idx = OUTFIT_END;
 
         UpdateOutfitInfo();
-        #ifdef DINFO
         DebugPrintf("DPAD_LEFT, sOutfitMenu->idx = %d", sOutfitMenu->idx);
-        #endif
     }
 
     if (JOY_NEW(ANY_BUTTONS))
@@ -424,6 +487,7 @@ static void FreeOutfitMenuResources(void)
 {
     DestroySprite(&gSprites[sOutfitMenu->spriteIds[GFX_OW]]);
     FreeAndDestroyTrainerPicSprite(sOutfitMenu->spriteIds[GFX_TS]);
+    DestroyPocketSwitchArrowPair();
     TRY_FREE_AND_SET_NULL(sOutfitMenu);
     ResetSpriteData();
     FreeAllSpritePalettes();
