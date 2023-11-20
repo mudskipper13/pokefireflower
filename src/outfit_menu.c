@@ -311,7 +311,7 @@ static void SetupOutfitMenu_BGs(void)
     ShowBg(BG_1);
     ShowBg(BG_2);
     SetGpuReg(REG_OFFSET_BLDCNT, BLDCNT_TGT1_BG1 | BLDCNT_TGT2_BG2 | BLDCNT_EFFECT_BLEND);
-    SetGpuReg(REG_OFFSET_BLDALPHA, BLDALPHA_BLEND(8, 9));
+    SetGpuReg(REG_OFFSET_BLDALPHA, BLDALPHA_BLEND(1, 9));
     SetGpuReg(REG_OFFSET_BLDY, 0);
 }
 
