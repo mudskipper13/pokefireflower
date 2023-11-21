@@ -16,6 +16,7 @@
 #include "constants/pokemon.h"
 #include "constants/easy_chat.h"
 #include "constants/trainer_hill.h"
+#include "constants/outfits.h"
 
 // Prevent cross-jump optimization.
 #define BLOCK_CROSS_JUMP asm("");
@@ -505,9 +506,9 @@ struct SaveBlock2
              u16 regionMapZoom:1; // whether the map is zoomed in
              u16 playerBike:1;
              u16 currOutfitId:4;
-             u16 padding1:15;
+             u16 outfits[OUTFIT_COUNT];
     /*0x18*/ struct Pokedex pokedex;
-    /*0x90*/ u8 filler_90[0x8];
+    /*0x90*/ u8 filler_90[0x6];
     /*0x98*/ struct Time localTimeOffset;
     /*0xA0*/ struct Time lastBerryTreeUpdate;
     /*0xA8*/ u32 gcnLinkFlags; // Read by Pokemon Colosseum/XD
