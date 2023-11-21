@@ -20,6 +20,7 @@
 #include "task.h"
 #include "trig.h"
 #include "util.h"
+#include "data/outfit_tables.h"
 #include "constants/field_effects.h"
 #include "constants/songs.h"
 #include "constants/trainers.h"
@@ -2328,7 +2329,7 @@ static bool8 Mugshot_SetGfx(struct Task *task)
     GetBg0TilesDst(&tilemap, &tileset);
     CpuSet(sEliteFour_Tileset, tileset, 0xF0);
     LoadPalette(sOpponentMugshotsPals[task->tMugshotId], BG_PLTT_ID(15), PLTT_SIZE_4BPP);
-    LoadPalette(sPlayerMugshotsPals[gSaveBlock2Ptr->playerGender], BG_PLTT_ID(15) + 10, PLTT_SIZEOF(6));
+    LoadPalette(gPlayerMugshotTransitionsPals[gSaveBlock2Ptr->playerGender][gSaveBlock2Ptr->currOutfitId], BG_PLTT_ID(15) + 10, PLTT_SIZEOF(6));
 
     for (i = 0; i < 20; i++)
     {
