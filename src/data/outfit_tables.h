@@ -1,5 +1,6 @@
 #include "constants/global.h"
 #include "constants/event_objects.h"
+#include "constants/trainers.h"
 
 const u8 gOutfitFrontPics[OUTFIT_COUNT][GENDER_COUNT] = 
 {
@@ -86,7 +87,7 @@ const struct OutfitIcon gOutfitToFrontierPassIcon[OUTFIT_COUNT * GENDER_COUNT] =
 static const u16 sMugshotPal_Brendan[] = INCBIN_U16("graphics/battle_transitions/brendan_bg.gbapal");
 static const u16 sMugshotPal_May[] = INCBIN_U16("graphics/battle_transitions/may_bg.gbapal");
 
-static const u16 *const gPlayerMugshotTransitionsPals[GENDER_COUNT][OUTFIT_COUNT] =
+const u16 *const gPlayerMugshotTransitionsPals[GENDER_COUNT][OUTFIT_COUNT] =
 {
     [MALE] =
     {

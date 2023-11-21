@@ -139,4 +139,6 @@ extern const struct OutfitIcon gOutfitToFrontierPassIcon[OUTFIT_COUNT * GENDER_C
 
 extern const u8 *const gOutfitNameDescTables[OUTFIT_COUNT][2];
 
+extern const u16 *const gPlayerMugshotTransitionsPals[GENDER_COUNT][OUTFIT_COUNT];
+
 #endif // GUARD_DATA_H
