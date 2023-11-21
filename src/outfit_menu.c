@@ -448,14 +448,22 @@ static void Task_WaitFadeInOutfitMenu(u8 taskId)
 
 #define ANY_BUTTONS (DPAD_RIGHT | DPAD_LEFT | B_BUTTON)
 
+static inline void CloseOutfitMenu(u8 taskId)
+{
+    BeginNormalPaletteFade(PALETTES_ALL, 0, 0, 16, RGB_BLACK);
+    gTasks[taskId].func = Task_CloseOutfitMenu;
+}
+
 static void Task_OutfitMenuHandleInput(u8 taskId)
 {
     if (JOY_NEW(A_BUTTON))
     {
         gSaveBlock2Ptr->currOutfitId = sOutfitMenu->idx;
-        BeginNormalPaletteFade(PALETTES_ALL, 0, 0, 16, RGB_BLACK);
-        gTasks[taskId].func = Task_CloseOutfitMenu;
+        CloseOutfitMenu(taskId);
     }
+
+    if (JOY_NEW(B_BUTTON))
+        CloseOutfitMenu(taskId);
 
     if (JOY_NEW(DPAD_RIGHT))
     {
