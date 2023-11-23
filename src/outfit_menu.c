@@ -450,6 +450,7 @@ static void Task_WaitFadeInOutfitMenu(u8 taskId)
 
 static inline void CloseOutfitMenu(u8 taskId)
 {
+    PlaySE(SE_RG_HELP_CLOSE);
     BeginNormalPaletteFade(PALETTES_ALL, 0, 0, 16, RGB_BLACK);
     gTasks[taskId].func = Task_CloseOutfitMenu;
 }
@@ -506,7 +507,6 @@ static void Task_CloseOutfitMenu(u8 taskId)
 {
     if (!gPaletteFade.active)
     {
-        PlaySE(SE_RG_HELP_CLOSE);
         SetMainCallback2(sOutfitMenu->retCB);
         FreeOutfitMenuResources();
         DestroyTask(taskId);
