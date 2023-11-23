@@ -62,20 +62,27 @@ enum Windows {
 enum Sprites {
     GFX_OW = 0,
     GFX_TS,
+    GFX_LOCK,
     GFX_COUNT,
 };
 
-enum {
+enum SpriteTags {
+    TAG_SCROLL_ARROWS = 0x1000,
+    GFXTAG_LOCK = 0x1100,
+    PALTAG_LOCK = 0x1200,
+};
+
+enum ColorId {
     COLORID_NORMAL = 0,
     COLORID_HEADER,
-    COLORID_BLUE,
+    COLORID_MSGBOX,
     COLORID_NONE,
 };
 
 static const u8 sFontColors[][3] = { // bgColor, textColor, shadowColor
     [COLORID_NORMAL] = {TEXT_COLOR_TRANSPARENT, TEXT_COLOR_WHITE,      TEXT_COLOR_DARK_GRAY},
     [COLORID_HEADER] = {15,                     TEXT_COLOR_WHITE,      TEXT_COLOR_DARK_GRAY},
-    [COLORID_BLUE]   = {TEXT_COLOR_WHITE,       TEXT_COLOR_BLUE,       TEXT_COLOR_LIGHT_BLUE},
+    [COLORID_MSGBOX] = {TEXT_COLOR_WHITE,       TEXT_COLOR_DARK_GRAY,  TEXT_COLOR_LIGHT_GRAY},
 };
 
 typedef struct {
@@ -88,9 +95,52 @@ typedef struct {
     u16 switchArrowsPos;
 } OutfitMenuResources;
 
+static void CB2_SetupOutfitMenu(void);
+static void CB2_OutfitMenu(void);
+static void VBlankCB_OutfitMenu(void);
+static void SetupOutfitMenu_BGs(void);
+static bool32 SetupOutfitMenu_Graphics(void);
+static void SetupOutfitMenu_Windows(void);
+static void SetupOutfitMenu_PrintStr(void);
+static void SetupOutfitMenu_Sprites(void);
+static void Task_WaitFadeInOutfitMenu(u8 taskId);
+static void Task_OutfitMenuHandleInput(u8 taskId);
+static void Task_CloseOutfitMenu(u8 taskId);
+
 static const u8 sText_Controls[] =
 _(
-    "{DPAD_LEFTRIGHT}PICK {A_BUTTON}CONFIRM {B_BUTTON}CANCEL"
+    "{DPAD_LEFTRIGHT}PICK {A_BUTTON}CONFIRM {START_BUTTON}{B_BUTTON}CLOSE"
+);
+
+static const u8 sText_OutfitLocked[] = _("???");
+static const u8 sText_OutfitLockedMsg[] =
+_(
+    "You don't have this OUTFIT yet.\n"
+    "Unlock it to be able to use it."
+);
+
+static const u8 sText_OutfitError[] =
+_(
+    "You can't change your outfit {STR_VAR_1}"
+);
+
+static const u8 sText_OutfitError_Cycling[] =
+_(
+    "while\ncycling! You might get tripped over!"
+);
+
+static const u8 sText_OutfitError_Surfing[] =
+_(
+    "while\nsurfing! You might get wet!"
+);
+
+static const u8 sText_OutfitError_Diving[] =
+_(
+    "while\ndiving! Have common sense!" //! :masuda:
+);
+
+static const u8 sText_OutfitError_Default[] = _(
+    "now!"
 );
 
 static const u16 sTiles[] = INCBIN_U16("graphics/outfit_menu/tiles.4bpp");
@@ -98,9 +148,10 @@ static const u32 sScrollingBG_Tilemap[] = INCBIN_U32("graphics/outfit_menu/tilem
 static const u32 sMsgbox_Tilemap[] = INCBIN_U32("graphics/outfit_menu/msgbox.bin.lz");
 static const u16 sPalette[] = INCBIN_U16("graphics/outfit_menu/tiles.gbapal");
 
-static EWRAM_DATA OutfitMenuResources *sOutfitMenu = NULL;
+static const u16 sLockSprite_Gfx[] = INCBIN_U16("graphics/outfit_menu/lock.4bpp");
+static const u16 sLockSprite_Pal[] = INCBIN_U16("graphics/outfit_menu/lock.gbapal");
 
-#define TAG_SCROLL_WINDOW 0x1000
+static EWRAM_DATA OutfitMenuResources *sOutfitMenu = NULL;
 
 static const struct ScrollArrowsTemplate sOutfitMenuScrollArrowsTemplate = {
     .firstArrowType = SCROLL_ARROW_LEFT,
@@ -111,8 +162,8 @@ static const struct ScrollArrowsTemplate sOutfitMenuScrollArrowsTemplate = {
     .secondY = 56,
     .fullyUpThreshold = -1,
     .fullyDownThreshold = -1,
-    .tileTag = TAG_SCROLL_WINDOW,
-    .palTag = TAG_SCROLL_WINDOW,
+    .tileTag = TAG_SCROLL_ARROWS,
+    .palTag = TAG_SCROLL_ARROWS,
     .palNum = 0,
 };
 
@@ -170,7 +221,7 @@ static const struct WindowTemplate sWindowTemplates[] =
         .width = 26,
         .height = 4,
         .paletteNum = 15,
-        .baseBlock = 0x20,
+        .baseBlock = 25,
     },
     [WIN_HEADER] =
     {
@@ -185,17 +236,41 @@ static const struct WindowTemplate sWindowTemplates[] =
     DUMMY_WIN_TEMPLATE,
 };
 
-static void CB2_SetupOutfitMenu(void);
-static void CB2_OutfitMenu(void);
-static void VBlankCB_OutfitMenu(void);
-static void SetupOutfitMenu_BGs(void);
-static bool32 SetupOutfitMenu_Graphics(void);
-static void SetupOutfitMenu_Windows(void);
-static void SetupOutfitMenu_PrintStr(void);
-static void SetupOutfitMenu_Sprites(void);
-static void Task_WaitFadeInOutfitMenu(u8 taskId);
-static void Task_OutfitMenuHandleInput(u8 taskId);
-static void Task_CloseOutfitMenu(u8 taskId);
+static const struct SpriteSheet sLockSpriteSheet = {
+    .data = sLockSprite_Gfx,
+    .size = 0x200,
+    .tag = GFXTAG_LOCK,
+};
+
+static const struct SpritePalette sLockSpritePalette = {
+    .data = sLockSprite_Pal,
+    .tag = PALTAG_LOCK,
+};
+
+static const struct OamData sLockSpriteOamData = {
+    .y = 0,
+    .affineMode = ST_OAM_AFFINE_OFF,
+    .objMode = ST_OAM_OBJ_NORMAL,
+    .mosaic = FALSE,
+    .bpp = ST_OAM_4BPP,
+    .shape = SPRITE_SHAPE(32x32),
+    .x = 0,
+    .matrixNum = 0,
+    .size = SPRITE_SIZE(32x32),
+    .tileNum = 0,
+    .priority = 0,
+    .affineParam = 0,
+};
+
+static const struct SpriteTemplate sLockSpriteTemplate = {
+    .tileTag = GFXTAG_LOCK,
+    .paletteTag = PALTAG_LOCK,
+    .callback = SpriteCallbackDummy,
+    .anims = gDummySpriteAnimTable,
+    .affineAnims = gDummySpriteAffineAnimTable,
+    .images = NULL,
+    .oam = &sLockSpriteOamData,
+};
 
 void Task_OpenOutfitMenu(u8 taskId)
 {
@@ -213,7 +288,7 @@ void OpenOutfitMenu(MainCallback retCB)
     sOutfitMenu = AllocZeroed(sizeof(*sOutfitMenu));
     if (sOutfitMenu == NULL)
     {
-        // Alloc failed, exit
+        //! Alloc failed, exit
         SetMainCallback2(retCB);
     }
     sOutfitMenu->idx = gSaveBlock2Ptr->currOutfitId;
@@ -337,7 +412,6 @@ static bool32 SetupOutfitMenu_Graphics(void)
     case 2:
         LoadPalette(&sPalette, BG_PLTT_ID(0), PLTT_SIZE_4BPP);
         LoadPalette(GetTextWindowPalette(2), BG_PLTT_ID(15), PLTT_SIZE_4BPP);
-        SetBackdropFromColor(RGB2GBA(212, 115, 106));
         sOutfitMenu->gfxState++;
         break;
     default:
@@ -394,30 +468,42 @@ static inline void CreateOutfitSwitchArrowPair(void)
         sOutfitMenu->switchArrowsTask = AddScrollIndicatorArrowPair(&sOutfitMenuScrollArrowsTemplate, &sOutfitMenu->switchArrowsPos);
 }
 
-static void SetupOutfitMenu_Sprites_DrawOverworldSprite(bool32 update)
+static inline void SetupOutfitMenu_Sprites_DrawOverworldSprite(bool32 update, bool32 locked)
 {
     u16 gfxId = gPlayerAvatarGfxIds[sOutfitMenu->idx][PLAYER_AVATAR_STATE_NORMAL][gSaveBlock2Ptr->playerGender];
 
     if (update)
         DestroySprite(&gSprites[sOutfitMenu->spriteIds[GFX_OW]]);
 
-    sOutfitMenu->spriteIds[GFX_OW] = CreateObjectGraphicsSpriteNoTint(gfxId, SpriteCallbackDummy, 90, 70, 0);
+    sOutfitMenu->spriteIds[GFX_OW] = CreateObjectGraphicsSpriteNoTint(gfxId, SpriteCallbackDummy, 88, 76, 0);
     StartSpriteAnim(&gSprites[sOutfitMenu->spriteIds[GFX_OW]], ANIM_STD_GO_SOUTH);
 }
 
-static void SetupOutfitMenu_Sprites_DrawTrainerSprite(bool32 update)
+static inline void SetupOutfitMenu_Sprites_DrawTrainerSprite(bool32 update, bool32 locked)
 {
     u16 id = gOutfitFrontPics[sOutfitMenu->idx][gSaveBlock2Ptr->playerGender];
     if (update)
         FreeAndDestroyTrainerPicSprite(sOutfitMenu->spriteIds[GFX_TS]);
 
-    sOutfitMenu->spriteIds[GFX_TS] = CreateTrainerPicSprite(id, TRUE, 125, 58, 8, id);
+    sOutfitMenu->spriteIds[GFX_TS] = CreateTrainerPicSprite(id, TRUE, 128, 60, 8, id);
+}
+
+static inline void SetupOutfitMenu_Sprites_DrawLockSprite(void)
+{
+    LoadSpriteSheet(&sLockSpriteSheet);
+    LoadSpritePalette(&sLockSpritePalette);
+    sOutfitMenu->spriteIds[GFX_LOCK] = CreateSprite(&sLockSpriteTemplate, 120, 59, 0);
+    //! always true as the player gonna meet
+    //! the current outfit that the player
+    //! has whenever they open the menu.
+    gSprites[sOutfitMenu->spriteIds[GFX_LOCK]].invisible = TRUE;
 }
 
 static void SetupOutfitMenu_Sprites(void)
 {
-    SetupOutfitMenu_Sprites_DrawOverworldSprite(FALSE);
-    SetupOutfitMenu_Sprites_DrawTrainerSprite(FALSE);
+    SetupOutfitMenu_Sprites_DrawOverworldSprite(FALSE, gSaveBlock2Ptr->outfits[sOutfitMenu->idx]);
+    SetupOutfitMenu_Sprites_DrawTrainerSprite(FALSE, gSaveBlock2Ptr->outfits[sOutfitMenu->idx]);
+    SetupOutfitMenu_Sprites_DrawLockSprite();
     CreateOutfitSwitchArrowPair();
 }
 
@@ -425,14 +511,24 @@ static void SetupOutfitMenu_Sprites(void)
 //! and also clean up the frame.
 static inline void UpdateOutfitInfo(void)
 {
-    u32 i;
-    for (i = 0; i < WIN_OUTFIT_MAX; i++)
+    FillWindow(WIN_NAME, PIXEL_FILL(0));
+    FillWindow(WIN_DESC, PIXEL_FILL(0));
+
+    if (gSaveBlock2Ptr->outfits[sOutfitMenu->idx] == FALSE)
     {
-        FillWindow(i, PIXEL_FILL(0));
-        PrintTexts(i, FONT_NORMAL, 0, 0, 0, 0, COLORID_NORMAL, gOutfitNameDescTables[sOutfitMenu->idx][i]);
+        PrintTexts(WIN_NAME, FONT_NORMAL, 0, 0, 0, 0, COLORID_NORMAL, sText_OutfitLocked);
+        PrintTexts(WIN_DESC, FONT_NORMAL, 0, 0, 0, 0, COLORID_NORMAL, sText_OutfitLocked);
+        gSprites[sOutfitMenu->spriteIds[GFX_LOCK]].invisible = FALSE;
     }
-    SetupOutfitMenu_Sprites_DrawOverworldSprite(TRUE);
-    SetupOutfitMenu_Sprites_DrawTrainerSprite(TRUE);
+    else
+    {
+        PrintTexts(WIN_NAME, FONT_NORMAL, 0, 0, 0, 0, COLORID_NORMAL, gOutfitNameDescTables[sOutfitMenu->idx][WIN_NAME]);
+        PrintTexts(WIN_DESC, FONT_NORMAL, 0, 0, 0, 0, COLORID_NORMAL, gOutfitNameDescTables[sOutfitMenu->idx][WIN_DESC]);
+        gSprites[sOutfitMenu->spriteIds[GFX_LOCK]].invisible = TRUE;
+    }
+
+    SetupOutfitMenu_Sprites_DrawOverworldSprite(TRUE, gSaveBlock2Ptr->outfits[sOutfitMenu->idx]);
+    SetupOutfitMenu_Sprites_DrawTrainerSprite(TRUE, gSaveBlock2Ptr->outfits[sOutfitMenu->idx]);
     DebugPrintf("sOutfitMenu->spriteIds[GFX_OW] = %d", sOutfitMenu->spriteIds[GFX_OW]);
     DebugPrintf("sOutfitMenu->spriteIds[GFX_TS] = %d", sOutfitMenu->spriteIds[GFX_TS]);
 }
@@ -446,7 +542,51 @@ static void Task_WaitFadeInOutfitMenu(u8 taskId)
     }
 }
 
-#define ANY_BUTTONS (DPAD_RIGHT | DPAD_LEFT | B_BUTTON)
+static void Task_WaitMessage(u8 taskId)
+{
+    if (--gTasks[taskId].data[0] == 0)
+    {
+        ClearDialogWindowAndFrame(WIN_DESC, TRUE);
+        gWindows[WIN_DESC].window.tilemapTop = sWindowTemplates[WIN_DESC].tilemapTop;
+        gWindows[WIN_DESC].window.tilemapLeft = sWindowTemplates[WIN_DESC].tilemapLeft;
+        UpdateOutfitInfo();
+        gTasks[taskId].func = Task_OutfitMenuHandleInput;
+    }
+}
+
+static inline void PrintDialogueBoxWithDescWin(const u8 *str, bool32 expandPlaceholders, u8 taskId)
+{
+    const u8 *txt = expandPlaceholders ? gStringVar4 : str;
+    gWindows[WIN_DESC].window.tilemapTop = 15;
+    gWindows[WIN_DESC].window.tilemapLeft = 2;
+    DrawDialogFrameWithCustomTileAndPalette(WIN_DESC, TRUE, 0x100, 13);
+
+    if (expandPlaceholders)
+        StringExpandPlaceholders(gStringVar4, str);
+
+    PrintTexts(WIN_DESC, FONT_NORMAL, 0, 0, 0, 0, COLORID_MSGBOX, txt);
+    gTasks[taskId].data[0] = 70;
+    gTasks[taskId].func = Task_WaitMessage;
+}
+
+static void Task_PrintCantChangeOutfit(u8 taskId)
+{
+    if (gPlayerAvatar.flags & PLAYER_AVATAR_FLAG_BIKE)
+        StringCopy(gStringVar1, sText_OutfitError_Cycling);
+    else if (gPlayerAvatar.flags & PLAYER_AVATAR_FLAG_SURFING)
+        StringCopy(gStringVar1, sText_OutfitError_Surfing);
+    else if (gPlayerAvatar.flags & PLAYER_AVATAR_FLAG_UNDERWATER)
+        StringCopy(gStringVar1, sText_OutfitError_Diving);
+    else
+        StringCopy(gStringVar1, sText_OutfitError_Default);
+
+    PrintDialogueBoxWithDescWin(sText_OutfitError, TRUE, taskId);
+}
+
+static void Task_PrintOutfitLocked(u8 taskId)
+{
+    PrintDialogueBoxWithDescWin(sText_OutfitLockedMsg, FALSE, taskId);
+}
 
 static inline void CloseOutfitMenu(u8 taskId)
 {
@@ -455,16 +595,35 @@ static inline void CloseOutfitMenu(u8 taskId)
     gTasks[taskId].func = Task_CloseOutfitMenu;
 }
 
+#define PICK_BUTTONS  (DPAD_RIGHT | DPAD_LEFT)
+#define CLOSE_BUTTONS (B_BUTTON | START_BUTTON)
+
 static void Task_OutfitMenuHandleInput(u8 taskId)
 {
+    if (JOY_NEW(CLOSE_BUTTONS))
+        CloseOutfitMenu(taskId);
+
     if (JOY_NEW(A_BUTTON))
     {
-        gSaveBlock2Ptr->currOutfitId = sOutfitMenu->idx;
-        CloseOutfitMenu(taskId);
+        if (gPlayerAvatar.flags & PLAYER_AVATAR_FLAG_ON_FOOT)
+        {
+            if (gSaveBlock2Ptr->outfits[sOutfitMenu->idx])
+                gSaveBlock2Ptr->currOutfitId = sOutfitMenu->idx;
+            else
+            {
+                PlaySE(SE_BOO);
+                gTasks[taskId].func = Task_PrintOutfitLocked;
+            }
+        }
+        else
+        {
+            PlaySE(SE_BOO);
+            if (gSaveBlock2Ptr->outfits[sOutfitMenu->idx])
+                gTasks[taskId].func = Task_PrintCantChangeOutfit;
+            else
+                gTasks[taskId].func = Task_PrintOutfitLocked; //! might be confusing?
+        }
     }
-
-    if (JOY_NEW(B_BUTTON))
-        CloseOutfitMenu(taskId);
 
     if (JOY_NEW(DPAD_RIGHT))
     {
@@ -488,7 +647,7 @@ static void Task_OutfitMenuHandleInput(u8 taskId)
         DebugPrintf("DPAD_LEFT, sOutfitMenu->idx = %d", sOutfitMenu->idx);
     }
 
-    if (JOY_NEW(ANY_BUTTONS))
+    if (JOY_NEW(PICK_BUTTONS))
         PlaySE(SE_RG_BAG_CURSOR);
 }
 
@@ -496,6 +655,7 @@ static void FreeOutfitMenuResources(void)
 {
     DestroySprite(&gSprites[sOutfitMenu->spriteIds[GFX_OW]]);
     FreeAndDestroyTrainerPicSprite(sOutfitMenu->spriteIds[GFX_TS]);
+    DestroySprite(&gSprites[sOutfitMenu->spriteIds[GFX_LOCK]]);
     DestroyPocketSwitchArrowPair();
     TRY_FREE_AND_SET_NULL(sOutfitMenu);
     ResetSpriteData();
