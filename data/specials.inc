@@ -537,4 +537,3 @@ gSpecials::
 	def_special SetTotemBoost
 	def_special TrySpecialOverworldEvo
 	def_special DisableMsgBoxWalkaway
-	def_special GetCurrentOutfitGfxId

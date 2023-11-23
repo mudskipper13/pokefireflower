@@ -96,37 +96,7 @@ Debug_BoxFilledMessage_Text:
 	.string "Storage boxes filled!$"
 
 Debug_EventScript_Script_1::
-	lockall
-	callnative BufferCurrentOutfitName
-	msgbox Debug_Text_YoureUsingOutfitSwapIt, MSGBOX_YESNO
-	goto_if_ne VAR_RESULT, YES, Debug_Script_1_End
-	msgbox Debug_Text_ChooseAOutfit, MSGBOX_DEFAULT
-	dynmultichoice 1, 1, FALSE, 2, 0, DYN_MULTICHOICE_CB_NONE, Debug_Text_OptionA, Debug_Text_OptionB
-	goto_if_eq VAR_RESULT, MULTI_B_PRESSED, Debug_Script_1_End
-	setorcopyvar VAR_TEMP_1, VAR_RESULT
-	fadescreen FADE_TO_BLACK
-	closemessage
-	callnative SwapCurrentOutfit
-	fadescreen FADE_FROM_BLACK
-Debug_Script_1_End:
-	releaseall
 	end
-
-Debug_Text_YoureUsingOutfitSwapIt:
-	.string "You're using the {STR_VAR_1}\n"
-	.string "OUTFIT.\p"
-	.string "Would you like to wear\n"
-	.string "another OUTFIT?$"
-
-Debug_Text_ChooseAOutfit:
-	.string "Choose a new OUTFIT\n"
-	.string "to wear.$"
-
-Debug_Text_OptionA:
-	.string "BASIC A$"
-
-Debug_Text_OptionB:
-	.string "BASIC B$"
 
 Debug_EventScript_Script_2::
 	lockall
