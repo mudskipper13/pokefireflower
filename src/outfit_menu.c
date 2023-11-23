@@ -82,8 +82,8 @@ typedef struct {
     MainCallback retCB;
     u8 idx;
     u8 gfxState;
-    u8 spriteIds[GFX_COUNT];
     u8 tilemapBuffers[2][BG_SCREEN_SIZE];
+    u8 spriteIds[GFX_COUNT];
     u8 switchArrowsTask;
     u16 switchArrowsPos;
 } OutfitMenuResources;
