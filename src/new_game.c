@@ -146,6 +146,16 @@ void ResetMenuAndMonGlobals(void)
     ResetPokeblockScrollPositions();
 }
 
+static void ResetOutfitData(void)
+{
+    u16 i;
+
+    for (i = 0; i < OUTFIT_END; i++)
+        gSaveBlock2Ptr->outfits[i] = FALSE;
+
+    gSaveBlock2Ptr->outfits[DEFAULT_OUTFIT] = TRUE;
+}
+
 void NewGameInitData(void)
 {
     if (gSaveFileStatus == SAVE_STATUS_EMPTY || gSaveFileStatus == SAVE_STATUS_CORRUPT)
@@ -204,6 +214,7 @@ void NewGameInitData(void)
     WipeTrainerNameRecords();
     ResetTrainerHillResults();
     ResetContestLinkResults();
+    ResetOutfitData();
     gSaveBlock2Ptr->currOutfitId = DEFAULT_OUTFIT;
 }
 
