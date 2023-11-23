@@ -608,7 +608,10 @@ static void Task_OutfitMenuHandleInput(u8 taskId)
         if (gPlayerAvatar.flags & PLAYER_AVATAR_FLAG_ON_FOOT)
         {
             if (gSaveBlock2Ptr->outfits[sOutfitMenu->idx])
+            {
+                PlaySE(SE_SUCCESS);
                 gSaveBlock2Ptr->currOutfitId = sOutfitMenu->idx;
+            }
             else
             {
                 PlaySE(SE_BOO);
