@@ -512,3 +512,44 @@ static void Task_CloseOutfitMenu(u8 taskId)
         DestroyTask(taskId);
     }
 }
+
+//! misc funcs for scripting
+
+void UnlockOutfit(u8 outfitId)
+{
+    gSaveBlock2Ptr->outfits[outfitId] = TRUE;
+}
+
+u32 CheckOutfitData(u8 outfitId, u8 dataType)
+{
+    switch(dataType)
+    {
+    case OUTFIT_MENU_CHECK_UNLOCKED:
+        return gSaveBlock2Ptr->outfits[outfitId] == TRUE;
+        break;
+    case OUTFIT_MENU_CHECK_LOCKED:
+        return gSaveBlock2Ptr->outfits[outfitId] == FALSE;
+        break;
+    case OUTFIT_MENU_CHECK_USED:
+        return gSaveBlock2Ptr->currOutfitId == gSaveBlock2Ptr->outfits[outfitId];
+        break;
+    }
+
+    return 0;
+}
+
+void BufferOutfitStrings(u8 *dest, u8 outfitId, u8 dataType)
+{
+    const u8 *src = NULL;
+    switch(dataType)
+    {
+    default:
+    case OUTFIT_MENU_BUFFER_NAME:
+        src = gOutfitNameDescTables[outfitId][0];
+        break;
+    case OUTFIT_MENU_BUFFER_DESC:
+        src = gOutfitNameDescTables[outfitId][1];
+        break;
+    }
+    StringCopy(dest, src);
+}

@@ -4,4 +4,9 @@
 void OpenOutfitMenu(MainCallback retCB);
 void Task_OpenOutfitMenu(u8 taskId);
 
+//! misc script funcs
+void UnlockOutfit(u8 outfitId);
+u32 CheckOutfitData(u8 outfitId, u8 dataType);
+void BufferOutfitStrings(u8 *dest, u8 outfitId, u8 dataType);
+
 #endif //! GUARD_OUTFIT_MENU_H
