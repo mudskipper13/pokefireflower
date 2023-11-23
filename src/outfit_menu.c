@@ -680,7 +680,7 @@ void UnlockOutfit(u8 outfitId)
     gSaveBlock2Ptr->outfits[outfitId] = TRUE;
 }
 
-u32 CheckOutfitData(u8 outfitId, u8 dataType)
+u16 GetOutfitData(u8 outfitId, u8 dataType)
 {
     switch(dataType)
     {
@@ -695,7 +695,7 @@ u32 CheckOutfitData(u8 outfitId, u8 dataType)
         break;
     }
 
-    return 0;
+    return 0xFF;
 }
 
 void BufferOutfitStrings(u8 *dest, u8 outfitId, u8 dataType)

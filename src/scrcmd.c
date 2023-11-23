@@ -52,6 +52,7 @@
 #include "malloc.h"
 #include "constants/event_objects.h"
 #include "day_night.h"
+#include "outfit_menu.h"
 
 typedef u16 (*SpecialFunc)(void);
 typedef void (*NativeFunc)(struct ScriptContext *ctx);
@@ -2545,4 +2546,32 @@ bool8 ScrCmd_warpwhitefade(struct ScriptContext *ctx)
     DoWhiteFadeWarp();
     ResetInitialPlayerAvatarState();
     return TRUE;
+}
+
+bool8 ScrCmd_unlockoutfit(struct ScriptContext *ctx)
+{
+    u8 outfitId = VarGet(ScriptReadByte(ctx));
+
+    UnlockOutfit(outfitId);
+    return TRUE;
+}
+
+bool8 ScrCmd_getoutfitstatus(struct ScriptContext *ctx)
+{
+    u8 outfitId = VarGet(ScriptReadByte(ctx));
+    u8 data = ScriptReadByte(ctx);
+
+    gSpecialVar_Result = GetOutfitData(outfitId, data);
+    return TRUE;
+}
+
+//! UNTESTED
+bool8 ScrCmd_bufferoutfitstr(struct ScriptContext *ctx)
+{
+    u8 stringVarIndex = ScriptReadByte(ctx);
+    u16 outfit = VarGet(ScriptReadHalfword(ctx));
+    u8 type = ScriptReadByte(ctx);
+
+    StringCopy(sScriptStringVars[stringVarIndex], gOutfitNameDescTables[outfit][type]);
+    return FALSE;
 }
