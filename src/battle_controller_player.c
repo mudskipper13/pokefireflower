@@ -1822,7 +1822,7 @@ u32 LinkPlayerGetTrainerPicId(u32 multiplayerId)
     if (version == VERSION_FIRE_RED || version == VERSION_LEAF_GREEN)
         trainerPicId = gender + TRAINER_BACK_PIC_RED;
     else if (version == VERSION_RUBY || version == VERSION_SAPPHIRE)
-        trainerPicId = gender + TRAINER_BACK_PIC_RUBY_SAPPHIRE_BRENDAN;
+        trainerPicId = gender + TRAINER_BACK_PIC_RS_BRENDAN;
     else
         trainerPicId = gender + TRAINER_BACK_PIC_BRENDAN;
 

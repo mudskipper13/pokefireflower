@@ -248,8 +248,8 @@ static const u16 sFRLGAvatarGfxIds[GENDER_COUNT] =
 
 static const u16 sRSAvatarGfxIds[GENDER_COUNT] =
 {
-    [MALE]   = OBJ_EVENT_GFX_LINK_RS_BRENDAN,
-    [FEMALE] = OBJ_EVENT_GFX_LINK_RS_MAY
+    [MALE]   = OBJ_EVENT_GFX_RS_BRENDAN_NORMAL,
+    [FEMALE] = OBJ_EVENT_GFX_RS_MAY_NORMAL
 };
 
 static const u16 sPlayerAvatarGfxToStateFlag[4] =

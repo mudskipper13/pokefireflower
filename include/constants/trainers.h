@@ -116,8 +116,8 @@
 #define TRAINER_BACK_PIC_MAY                    1
 #define TRAINER_BACK_PIC_RED                    2
 #define TRAINER_BACK_PIC_LEAF                   3
-#define TRAINER_BACK_PIC_RUBY_SAPPHIRE_BRENDAN  4
-#define TRAINER_BACK_PIC_RUBY_SAPPHIRE_MAY      5
+#define TRAINER_BACK_PIC_RS_BRENDAN             4
+#define TRAINER_BACK_PIC_RS_MAY                 5
 #define TRAINER_BACK_PIC_WALLY                  6
 #define TRAINER_BACK_PIC_STEVEN                 7
 

@@ -551,9 +551,9 @@ void SpawnLinkPartnerObjectEvent(void)
             case VERSION_RUBY:
             case VERSION_SAPPHIRE:
                 if (gLinkPlayers[i].gender == 0)
-                    linkSpriteId = OBJ_EVENT_GFX_LINK_RS_BRENDAN;
+                    linkSpriteId = OBJ_EVENT_GFX_RS_BRENDAN_NORMAL;
                 else
-                    linkSpriteId = OBJ_EVENT_GFX_LINK_RS_MAY;
+                    linkSpriteId = OBJ_EVENT_GFX_RS_MAY_NORMAL;
                 break;
             case VERSION_EMERALD:
                 if (gLinkPlayers[i].gender == 0)
@@ -582,8 +582,8 @@ static void LoadLinkPartnerObjectEventSpritePalette(u16 graphicsId, u8 localEven
     u8 adjustedPaletteNum;
     // Note: This temp var is necessary; paletteNum += 6 doesn't match.
     adjustedPaletteNum = paletteNum + 6;
-    if (graphicsId == OBJ_EVENT_GFX_LINK_RS_BRENDAN ||
-        graphicsId == OBJ_EVENT_GFX_LINK_RS_MAY ||
+    if (graphicsId == OBJ_EVENT_GFX_RS_BRENDAN_NORMAL ||
+        graphicsId == OBJ_EVENT_GFX_RS_MAY_NORMAL ||
         graphicsId == OBJ_EVENT_GFX_RIVAL_BRENDAN_NORMAL ||
         graphicsId == OBJ_EVENT_GFX_RIVAL_MAY_NORMAL)
     {
@@ -596,10 +596,10 @@ static void LoadLinkPartnerObjectEventSpritePalette(u16 graphicsId, u8 localEven
 
             switch (graphicsId)
             {
-            case OBJ_EVENT_GFX_LINK_RS_BRENDAN:
+            case OBJ_EVENT_GFX_RS_BRENDAN_NORMAL:
                 LoadPalette(gObjectEventPal_RubySapphireBrendan, OBJ_PLTT_ID(adjustedPaletteNum), PLTT_SIZE_4BPP);
                 break;
-            case OBJ_EVENT_GFX_LINK_RS_MAY:
+            case OBJ_EVENT_GFX_RS_MAY_NORMAL:
                 LoadPalette(gObjectEventPal_RubySapphireMay, OBJ_PLTT_ID(adjustedPaletteNum), PLTT_SIZE_4BPP);
                 break;
             case OBJ_EVENT_GFX_RIVAL_BRENDAN_NORMAL:
