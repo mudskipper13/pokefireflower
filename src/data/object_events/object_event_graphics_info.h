@@ -4444,6 +4444,24 @@ const struct ObjectEventGraphicsInfo gObjectEventGraphicsInfo_RubySapphireBrenda
     .affineAnims = gDummySpriteAffineAnimTable,
 };
 
+const struct ObjectEventGraphicsInfo gObjectEventGraphicsInfo_RubySapphireBrendanDecorating = {
+    .tileTag = TAG_NONE,
+    .paletteTag = OBJ_EVENT_PAL_TAG_RS_BRENDAN,
+    .size = 256,
+    .width = 16,
+    .height = 32,
+    .textColor = NPC_TEXT_COLOR_MALE,
+    .shadowSize = SHADOW_SIZE_M,
+    .inanimate = TRUE,
+    .disableReflectionPaletteLoad = FALSE,
+    .tracks = TRACKS_FOOT,
+    .oam = &gObjectEventBaseOam_16x32,
+    .subspriteTables = sOamTables_16x32,
+    .anims = OBJ_EVENT_ANIM_INANIMATE,
+    .images = sPicTable_BrendanDecorating,
+    .affineAnims = gDummySpriteAffineAnimTable,
+};
+
 const struct ObjectEventGraphicsInfo gObjectEventGraphicsInfo_RubySapphireMay = {
     .tileTag = TAG_NONE,
     .paletteTag = OBJ_EVENT_PAL_TAG_RS_MAY,
@@ -4549,6 +4567,24 @@ const struct ObjectEventGraphicsInfo gObjectEventGraphicsInfo_RubySapphireMayWat
     .subspriteTables = sOamTables_32x32,
     .anims = OBJ_EVENT_ANIM_STANDARD,
     .images = sPicTable_RubySapphireMayWatering,
+    .affineAnims = gDummySpriteAffineAnimTable,
+};
+
+const struct ObjectEventGraphicsInfo gObjectEventGraphicsInfo_RubySapphireMayDecorating = {
+    .tileTag = TAG_NONE,
+    .paletteTag = OBJ_EVENT_PAL_TAG_RS_MAY,
+    .size = 256,
+    .width = 16,
+    .height = 32,
+    .textColor = NPC_TEXT_COLOR_FEMALE,
+    .shadowSize = SHADOW_SIZE_M,
+    .inanimate = TRUE,
+    .disableReflectionPaletteLoad = FALSE,
+    .tracks = TRACKS_FOOT,
+    .oam = &gObjectEventBaseOam_16x32,
+    .subspriteTables = sOamTables_16x32,
+    .anims = OBJ_EVENT_ANIM_INANIMATE,
+    .images = sPicTable_MayDecorating,
     .affineAnims = gDummySpriteAffineAnimTable,
 };
 

@@ -49,22 +49,6 @@ static const u16 sMugshotPal_May[] = INCBIN_U16("graphics/battle_transitions/may
     }, \
 }
 
-#define AVATAR_GFX_ID2(m, f) \
-{ \
-    { \
-        [PLAYER_AVATAR_STATE_NORMAL]     = CAT(OBJ_EVENT_GFX_##m, _NORMAL), \
-        [PLAYER_AVATAR_STATE_BIKE]       = CAT(OBJ_EVENT_GFX_##m, _ACRO_BIKE), \
-        [PLAYER_AVATAR_STATE_SURFING]    = CAT(OBJ_EVENT_GFX_##m, _SURFING), \
-        [PLAYER_AVATAR_STATE_UNDERWATER] = CAT(OBJ_EVENT_GFX_##m, _SURFING), \
-    }, \
-    { \
-        [PLAYER_AVATAR_STATE_NORMAL]     = CAT(OBJ_EVENT_GFX_##f, _NORMAL), \
-        [PLAYER_AVATAR_STATE_BIKE]       = CAT(OBJ_EVENT_GFX_##f, _ACRO_BIKE), \
-        [PLAYER_AVATAR_STATE_SURFING]    = CAT(OBJ_EVENT_GFX_##f, _SURFING), \
-        [PLAYER_AVATAR_STATE_UNDERWATER] = CAT(OBJ_EVENT_GFX_##f, _SURFING), \
-    }, \
-}
-
 #define ANIM_GFX_ID(m, f) \
 { \
     { \
@@ -80,23 +64,6 @@ static const u16 sMugshotPal_May[] = INCBIN_U16("graphics/battle_transitions/may
         [PLAYER_AVATAR_GFX_DECORATING] = CAT(OBJ_EVENT_GFX_##f, _DECORATING), \
     }, \
 }
-
-#define ANIM_GFX_ID2(m, f) \
-{ \
-    { \
-        [PLAYER_AVATAR_GFX_FIELD_MOVE] = CAT(OBJ_EVENT_GFX_RS_##m, _FIELD_MOVE), \
-        [PLAYER_AVATAR_GFX_FISHING]    = CAT(OBJ_EVENT_GFX_RS_##m, _FISHING), \
-        [PLAYER_AVATAR_GFX_WATERING]   = CAT(OBJ_EVENT_GFX_RS_##m, _WATERING), \
-        [PLAYER_AVATAR_GFX_DECORATING] = CAT(OBJ_EVENT_GFX_##m, _DECORATING), \
-    }, \
-    { \
-        [PLAYER_AVATAR_GFX_FIELD_MOVE] = CAT(OBJ_EVENT_GFX_RS_##f, _FIELD_MOVE), \
-        [PLAYER_AVATAR_GFX_FISHING]    = CAT(OBJ_EVENT_GFX_RS_##f, _FISHING), \
-        [PLAYER_AVATAR_GFX_WATERING]   = CAT(OBJ_EVENT_GFX_RS_##f, _WATERING), \
-        [PLAYER_AVATAR_GFX_DECORATING] = CAT(OBJ_EVENT_GFX_##f, _DECORATING), \
-    }, \
-}
-
 
 #define REGION_MAP_GFX(m, f) { CAT(sRegionMapPlayerIcon_##m, Gfx), CAT(sRegionMapPlayerIcon_##f, Gfx) }
 #define FRONTIER_PASS_GFX(id) { CAT(sFrontierPassPlayerIcons_##id, _Gfx), CAT(sFrontierPassPlayerIcons_##id, _Gfx) + 1 * 0x80 }
@@ -125,8 +92,8 @@ const struct Outfit gOutfits[OUTFIT_COUNT] =
         .desc = COMPOUND_STRING("Rather unusual, but still basic OUTFIT."),
         .mugshotPals = MUGSHOT_PAL(Brendan, May),
         .trainerPics = TRAINER_ID(RS_BRENDAN, RS_MAY),
-        .avatarGfxIds = AVATAR_GFX_ID2(RS_BRENDAN, RS_MAY),
-        .animGfxIds = ANIM_GFX_ID2(BRENDAN, MAY),
+        .avatarGfxIds = AVATAR_GFX_ID(RS_BRENDAN, RS_MAY),
+        .animGfxIds = ANIM_GFX_ID(RS_BRENDAN, RS_MAY),
         .iconGfx = { REGION_MAP_GFX(RSBrendan, RSMay), FRONTIER_PASS_GFX(RSBrendanMay) },
         .iconPal = { REGION_MAP_PAL(RSBrendan, RSMay), FRONTIER_PASS_PAL(RSBrendan, RSMay) },
     },
