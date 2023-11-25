@@ -1893,7 +1893,7 @@ static void CreateTrainerCardTrainerPic(void)
     }
     else
     {
-        CreateTrainerCardTrainerPicSprite(gOutfitFrontPics[gSaveBlock2Ptr->currOutfitId][sData->trainerCard.gender],
+        CreateTrainerCardTrainerPicSprite(gOutfits[gSaveBlock2Ptr->currOutfitId].trainerPics[sData->trainerCard.gender][0],
                     TRUE,
                     sTrainerPicOffset[sData->isHoenn][sData->trainerCard.gender][0],
                     sTrainerPicOffset[sData->isHoenn][sData->trainerCard.gender][1],

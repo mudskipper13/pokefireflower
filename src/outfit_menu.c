@@ -446,9 +446,8 @@ static void SetupOutfitMenu_Windows(void)
 
 static void SetupOutfitMenu_PrintStr(void)
 {
-    u32 i;
-    for (i = 0; i < WIN_OUTFIT_MAX; i++)
-        PrintTexts(i, FONT_NORMAL, 0, 0, 0, 0, COLORID_NORMAL, gOutfitNameDescTables[sOutfitMenu->idx][i]);
+    PrintTexts(WIN_NAME, FONT_NORMAL, 0, 0, 0, 0, COLORID_NORMAL, gOutfits[sOutfitMenu->idx].name);
+    PrintTexts(WIN_DESC, FONT_NORMAL, 0, 0, 0, 0, COLORID_NORMAL, gOutfits[sOutfitMenu->idx].desc);
 
     PrintTexts(WIN_HEADER, FONT_SMALL, 0, 0, 0, 0, COLORID_HEADER, sText_Controls);
 }
@@ -470,7 +469,7 @@ static inline void CreateOutfitSwitchArrowPair(void)
 
 static inline void SetupOutfitMenu_Sprites_DrawOverworldSprite(bool32 update, bool32 locked)
 {
-    u16 gfxId = gPlayerAvatarGfxIds[sOutfitMenu->idx][PLAYER_AVATAR_STATE_NORMAL][gSaveBlock2Ptr->playerGender];
+    u16 gfxId = gOutfits[sOutfitMenu->idx].avatarGfxIds[gSaveBlock2Ptr->playerGender][PLAYER_AVATAR_STATE_NORMAL];
 
     if (update)
         DestroySprite(&gSprites[sOutfitMenu->spriteIds[GFX_OW]]);
@@ -481,7 +480,7 @@ static inline void SetupOutfitMenu_Sprites_DrawOverworldSprite(bool32 update, bo
 
 static inline void SetupOutfitMenu_Sprites_DrawTrainerSprite(bool32 update, bool32 locked)
 {
-    u16 id = gOutfitFrontPics[sOutfitMenu->idx][gSaveBlock2Ptr->playerGender];
+    u16 id = gOutfits[sOutfitMenu->idx].trainerPics[gSaveBlock2Ptr->playerGender][0];
     if (update)
         FreeAndDestroyTrainerPicSprite(sOutfitMenu->spriteIds[GFX_TS]);
 
@@ -522,8 +521,8 @@ static inline void UpdateOutfitInfo(void)
     }
     else
     {
-        PrintTexts(WIN_NAME, FONT_NORMAL, 0, 0, 0, 0, COLORID_NORMAL, gOutfitNameDescTables[sOutfitMenu->idx][WIN_NAME]);
-        PrintTexts(WIN_DESC, FONT_NORMAL, 0, 0, 0, 0, COLORID_NORMAL, gOutfitNameDescTables[sOutfitMenu->idx][WIN_DESC]);
+        PrintTexts(WIN_NAME, FONT_NORMAL, 0, 0, 0, 0, COLORID_NORMAL, gOutfits[sOutfitMenu->idx].name);
+        PrintTexts(WIN_DESC, FONT_NORMAL, 0, 0, 0, 0, COLORID_NORMAL, gOutfits[sOutfitMenu->idx].desc);
         gSprites[sOutfitMenu->spriteIds[GFX_LOCK]].invisible = TRUE;
     }
 
@@ -708,10 +707,10 @@ void BufferOutfitStrings(u8 *dest, u8 outfitId, u8 dataType)
     {
     default:
     case OUTFIT_MENU_BUFFER_NAME:
-        src = gOutfitNameDescTables[outfitId][0];
+        src = gOutfits[sOutfitMenu->idx].name;
         break;
     case OUTFIT_MENU_BUFFER_DESC:
-        src = gOutfitNameDescTables[outfitId][1];
+        src = gOutfits[sOutfitMenu->idx].desc;
         break;
     }
     StringCopy(dest, src);

@@ -508,9 +508,9 @@ static const struct SpriteTemplate sSpriteTemplate_Medal =
 static const struct SpriteTemplate sSpriteTemplate_PlayerHead =
 {
     .tileTag = TAG_HEAD_MALE,
-    .paletteTag = TAG_HEAD_MALE,
+    .paletteTag = TAG_HEAD_FEMALE,
     .oam = &gOamData_AffineOff_ObjNormal_16x16,
-    .anims = sAnims_TwoFrame,
+    .anims = gDummySpriteAnimTable,
     .images = NULL,
     .affineAnims = gDummySpriteAffineAnimTable,
     .callback = SpriteCB_PlayerHead,
@@ -1619,25 +1619,18 @@ static u8 MapNumToFrontierFacilityId(u16 mapNum) // id + 1, zero means not a fro
 
 static void InitFrontierMapSprites(void)
 {
-    u32 i;
-    struct SpriteTemplate sprite;
-    //! Male, Outfit 0
-    struct CompressedSpriteSheet gfx = { gOutfitToFrontierPassIcon[0].gfx, 0x100, TAG_HEAD_MALE };
-    struct SpritePalette pal = { gOutfitToFrontierPassIcon[0].pal, gSaveBlock2Ptr->playerGender + TAG_HEAD_MALE };
+    struct SpriteSheet gfx = {
+        .data = gOutfits[gSaveBlock2Ptr->currOutfitId].iconGfx[1][gSaveBlock2Ptr->playerGender],
+        .size = 0x80,
+        .tag = TAG_HEAD_MALE
+    };
+    struct SpritePalette pal = {
+        .data = gOutfits[gSaveBlock2Ptr->currOutfitId].iconPal[1][gSaveBlock2Ptr->playerGender],
+        .tag = TAG_HEAD_FEMALE
+    };
     u8 spriteId;
     u8 id;
     s16 x = 0, y;
-
-    for (i = 0; i < ARRAY_COUNT(gOutfitToFrontierPassIcon); i++)
-    {
-        const struct OutfitIcon *icon = &gOutfitToFrontierPassIcon[i];
-        if (gSaveBlock2Ptr->currOutfitId == icon->outfit
-             && gSaveBlock2Ptr->playerGender == icon->gender)
-        {
-            gfx.data = icon->gfx;
-            pal.data = icon->pal;
-        }
-    }
 
     FreeAllSpritePalettes();
     LoadSpritePalettes(sSpritePalettes);
@@ -1696,24 +1689,20 @@ static void InitFrontierMapSprites(void)
             }
         }
 
-        LoadCompressedSpriteSheet(&gfx);
-        sprite = sSpriteTemplate_PlayerHead;
-        sprite.paletteTag = gSaveBlock2Ptr->playerGender + TAG_HEAD_MALE; // TAG_HEAD_FEMALE if gender is FEMALE
+        LoadSpriteSheet(&gfx);
         if (id != 0)
         {
-            spriteId = CreateSprite(&sprite, x, y, 0);
+            spriteId = CreateSprite(&sSpriteTemplate_PlayerHead, x, y, 0);
         }
         else
         {
             x *= 8;
             y *= 8;
-            spriteId = CreateSprite(&sprite, x + 20, y + 36, 0);
+            spriteId = CreateSprite(&sSpriteTemplate_PlayerHead, x + 20, y + 36, 0);
         }
 
         sMapData->playerHeadSprite = &gSprites[spriteId];
         sMapData->playerHeadSprite->oam.priority = 0;
-        if (gSaveBlock2Ptr->playerGender != MALE)
-            StartSpriteAnim(sMapData->playerHeadSprite, 1);
     }
 }
 

@@ -246,7 +246,7 @@ static void SafariBufferExecCompleted(u32 battler)
 
 static void SafariHandleDrawTrainerPic(u32 battler)
 {
-    u32 trainerPicId = gOutfitBackPics[gSaveBlock2Ptr->currOutfitId][gSaveBlock2Ptr->playerGender];
+    u32 trainerPicId = gOutfits[gSaveBlock2Ptr->currOutfitId].trainerPics[gSaveBlock2Ptr->playerGender][1];
 
     BtlController_HandleDrawTrainerPic(battler, trainerPicId, FALSE,
                                        80, 80 + 4 * (8 - gTrainerBackPicCoords[trainerPicId].size),

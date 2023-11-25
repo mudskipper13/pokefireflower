@@ -121,24 +121,23 @@ extern const u8 gMoveNames[MOVES_COUNT_DYNAMAX][MOVE_NAME_LENGTH + 1];
 extern const u8 *const gZMoveNames[];
 extern const u8 *const gMaxMoveNames[];
 
-extern const u8 gOutfitFrontPics[OUTFIT_COUNT][GENDER_COUNT];
-extern const u8 gOutfitBackPics[OUTFIT_COUNT][GENDER_COUNT];
-extern const u16 gPlayerAvatarGfxIds[OUTFIT_COUNT][4][GENDER_COUNT];
-extern const u16 gPlayerAvatarAnimGfxIds[OUTFIT_COUNT][3][GENDER_COUNT];
+//! outfits
 
-struct OutfitIcon
+struct Outfit
 {
-    u8 outfit;
-    u8 gender;
-    const void *gfx;
-    const void *pal;
+    u8 isHidden:1; //! Will not shows up in the menu if unlocked.
+    u32 prices[GENDER_COUNT]; //! heh
+    const u8 *name;
+    const u8 *desc;
+    const u16 *mugshotPals[GENDER_COUNT]; //! mugshot battle transition palette
+    u16 trainerPics[GENDER_COUNT][2];
+    u16 avatarGfxIds[GENDER_COUNT][4];
+    u16 animGfxIds[GENDER_COUNT][4];
+    //! region map & frontier pass
+    const void *iconGfx[2][GENDER_COUNT];
+    const void *iconPal[2][GENDER_COUNT];
 };
 
-extern const struct OutfitIcon gOutfitToRegionMapIcon[OUTFIT_COUNT * GENDER_COUNT];
-extern const struct OutfitIcon gOutfitToFrontierPassIcon[OUTFIT_COUNT * GENDER_COUNT];
-
-extern const u8 *const gOutfitNameDescTables[OUTFIT_COUNT][2];
-
-extern const u16 *const gPlayerMugshotTransitionsPals[GENDER_COUNT][OUTFIT_COUNT];
+extern const struct Outfit gOutfits[OUTFIT_COUNT];
 
 #endif // GUARD_DATA_H

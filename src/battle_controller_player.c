@@ -1836,7 +1836,7 @@ static u32 PlayerGetTrainerBackPicId(void)
     if (gBattleTypeFlags & BATTLE_TYPE_LINK)
         trainerPicId = LinkPlayerGetTrainerPicId(GetMultiplayerId());
     else
-        trainerPicId = gOutfitBackPics[gSaveBlock2Ptr->currOutfitId][gSaveBlock2Ptr->playerGender];
+        trainerPicId = gOutfits[gSaveBlock2Ptr->currOutfitId].trainerPics[gSaveBlock2Ptr->playerGender][1];
 
     return trainerPicId;
 }
@@ -1878,7 +1878,7 @@ static void PlayerHandleDrawTrainerPic(u32 battler)
     // Use front pic table for any tag battles unless your partner is Steven or a custom partner.
     if (gBattleTypeFlags & BATTLE_TYPE_INGAME_PARTNER && gPartnerTrainerId != TRAINER_STEVEN_PARTNER && gPartnerTrainerId < TRAINER_CUSTOM_PARTNER)
     {
-        trainerPicId = gOutfitFrontPics[gSaveBlock2Ptr->currOutfitId][gSaveBlock2Ptr->playerGender];
+        trainerPicId = gOutfits[gSaveBlock2Ptr->currOutfitId].trainerPics[gSaveBlock2Ptr->playerGender][0];
         isFrontPic = TRUE;
     }
     else // Use back pic in all the other usual circumstances.
@@ -2215,7 +2215,7 @@ static void PlayerHandleOneReturnValue_Duplicate(u32 battler)
 
 static void PlayerHandleIntroTrainerBallThrow(u32 battler)
 {
-    const u32 *trainerPal = gTrainerBackPicPaletteTable[gOutfitBackPics[gSaveBlock2Ptr->currOutfitId][gSaveBlock2Ptr->playerGender]].data;
+    const u32 *trainerPal = gTrainerBackPicPaletteTable[gOutfits[gSaveBlock2Ptr->currOutfitId].trainerPics[gSaveBlock2Ptr->playerGender][1]].data;
     BtlController_HandleIntroTrainerBallThrow(battler, 0xD6F8, trainerPal, 31, Intro_TryShinyAnimShowHealthbox);
 }
 

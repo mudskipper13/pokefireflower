@@ -1448,22 +1448,9 @@ static void UNUSED ClearUnkCursorSpriteData(void)
 void CreateRegionMapPlayerIcon(u16 tileTag, u16 paletteTag)
 {
     u8 spriteId;
-    struct SpriteSheet sheet = {sRegionMapPlayerIcon_BrendanGfx, 0x80, tileTag};
-    struct SpritePalette palette = {sRegionMapPlayerIcon_BrendanPal, paletteTag};
+    struct SpriteSheet sheet = {gOutfits[gSaveBlock2Ptr->currOutfitId].iconGfx[0][gSaveBlock2Ptr->playerGender], 0x80, tileTag};
+    struct SpritePalette palette = {gOutfits[gSaveBlock2Ptr->currOutfitId].iconPal[0][gSaveBlock2Ptr->playerGender], paletteTag};
     struct SpriteTemplate template = {tileTag, paletteTag, &sRegionMapPlayerIconOam, sRegionMapPlayerIconAnimTable, NULL, gDummySpriteAffineAnimTable, SpriteCallbackDummy};
-    u32 i;
-
-    //! I wonder if there's anything better than this tbh.
-    for (i = 0; i < ARRAY_COUNT(gOutfitToRegionMapIcon); i++)
-    {
-        const struct OutfitIcon *icon = &gOutfitToRegionMapIcon[i];
-        if (gSaveBlock2Ptr->currOutfitId == icon->outfit
-             && gSaveBlock2Ptr->playerGender == icon->gender)
-        {
-            sheet.data = icon->gfx;
-            palette.data = icon->pal;
-        }
-    }
 
     if (IsEventIslandMapSecId(gMapHeader.regionMapSectionId))
     {
