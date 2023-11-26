@@ -1448,8 +1448,8 @@ static void UNUSED ClearUnkCursorSpriteData(void)
 void CreateRegionMapPlayerIcon(u16 tileTag, u16 paletteTag)
 {
     u8 spriteId;
-    struct SpriteSheet sheet = {gOutfits[gSaveBlock2Ptr->currOutfitId].iconGfx[0][gSaveBlock2Ptr->playerGender], 0x80, tileTag};
-    struct SpritePalette palette = {gOutfits[gSaveBlock2Ptr->currOutfitId].iconPal[0][gSaveBlock2Ptr->playerGender], paletteTag};
+    struct SpriteSheet sheet = {gOutfits[gSaveBlock2Ptr->currOutfitId].iconsRM[gSaveBlock2Ptr->playerGender][0], 0x80, tileTag};
+    struct SpritePalette palette = {gOutfits[gSaveBlock2Ptr->currOutfitId].iconsRM[gSaveBlock2Ptr->playerGender][1], paletteTag};
     struct SpriteTemplate template = {tileTag, paletteTag, &sRegionMapPlayerIconOam, sRegionMapPlayerIconAnimTable, NULL, gDummySpriteAffineAnimTable, SpriteCallbackDummy};
 
     if (IsEventIslandMapSecId(gMapHeader.regionMapSectionId))

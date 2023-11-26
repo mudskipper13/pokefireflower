@@ -134,8 +134,8 @@ struct Outfit
     u16 avatarGfxIds[GENDER_COUNT][4];
     u16 animGfxIds[GENDER_COUNT][4];
     //! region map & frontier pass
-    const void *iconGfx[2][GENDER_COUNT];
-    const void *iconPal[2][GENDER_COUNT];
+    const void *iconsRM[GENDER_COUNT][2]; //! region map
+    const void *iconsFP[GENDER_COUNT][2]; //! frontier pass
 };
 
 extern const struct Outfit gOutfits[OUTFIT_COUNT];

@@ -1620,12 +1620,12 @@ static u8 MapNumToFrontierFacilityId(u16 mapNum) // id + 1, zero means not a fro
 static void InitFrontierMapSprites(void)
 {
     struct SpriteSheet gfx = {
-        .data = gOutfits[gSaveBlock2Ptr->currOutfitId].iconGfx[1][gSaveBlock2Ptr->playerGender],
+        .data = gOutfits[gSaveBlock2Ptr->currOutfitId].iconsFP[gSaveBlock2Ptr->playerGender][0],
         .size = 0x80,
         .tag = TAG_HEAD_MALE
     };
     struct SpritePalette pal = {
-        .data = gOutfits[gSaveBlock2Ptr->currOutfitId].iconPal[1][gSaveBlock2Ptr->playerGender],
+        .data = gOutfits[gSaveBlock2Ptr->currOutfitId].iconsFP[gSaveBlock2Ptr->playerGender][1],
         .tag = TAG_HEAD_FEMALE
     };
     u8 spriteId;
