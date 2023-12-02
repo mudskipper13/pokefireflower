@@ -353,9 +353,11 @@ gFldEffScript_UseVsSeeker::
 	field_eff_end
 
 gFldEffScript_XIcon::
-	field_eff_callnative FldEff_XIcon
+	@ field_eff_callnative FldEff_XIcon
+	field_eff_loadfadedpaldaynight_callnative gSpritePalette_ArrowEmotionsFieldEffect, FldEff_Nop47
 	field_eff_end
 
 gFldEffScript_DoubleExclMarkIcon::
-	field_eff_callnative FldEff_DoubleExclMarkIcon
+	@ field_eff_callnative FldEff_DoubleExclMarkIcon
+	field_eff_loadfadedpaldaynight_callnative gSpritePalette_ArrowEmotionsFieldEffect, FldEff_Nop47
 	field_eff_end

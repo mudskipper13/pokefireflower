@@ -96,6 +96,7 @@ Debug_BoxFilledMessage_Text:
 	.string "Storage boxes filled!$"
 
 Debug_EventScript_Script_1::
+	unlockoutfit OUTFIT_UNUSUAL_RED
 	end
 
 Debug_EventScript_Script_2::

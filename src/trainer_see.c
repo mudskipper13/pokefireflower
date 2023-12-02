@@ -66,11 +66,10 @@ static const u8 sEmoticons[][0x80] = {
     INCBIN_U8("graphics/field_effects/pics/emotion_exclamation.4bpp"),
     INCBIN_U8("graphics/field_effects/pics/emotion_question.4bpp"),
     INCBIN_U8("graphics/field_effects/pics/emotion_heart.4bpp"),
-    INCBIN_U8("graphics/field_effects/pics/emotion_dots.4bpp")
+    INCBIN_U8("graphics/field_effects/pics/emotion_dots.4bpp"),
+    INCBIN_U8("graphics/field_effects/pics/emote_x.4bpp"),
+    INCBIN_U8("graphics/field_effects/pics/emotion_double_exclamation.4bpp"),
 };
-
-static const u8 sEmotion_DoubleExclamationMarkGfx[] = INCBIN_U8("graphics/field_effects/pics/emotion_double_exclamation.4bpp");
-static const u8 sEmotion_XGfx[] = INCBIN_U8("graphics/field_effects/pics/emote_x.4bpp");
 
 static u8 (*const sDirectionalApproachDistanceFuncs[])(struct ObjectEvent *trainerObj, s16 range, s16 x, s16 y) =
 {
@@ -136,19 +135,6 @@ static const struct OamData sOamData_Icons =
     .affineParam = 0,
 };
 
-static const struct SpriteFrameImage sSpriteImageTable_ExclamationQuestionMark[] =
-{
-    {
-        .data = sEmotion_DoubleExclamationMarkGfx,
-        .size = sizeof(sEmotion_DoubleExclamationMarkGfx)
-    },
-    {
-        .data = sEmotion_XGfx,
-        .size = sizeof(sEmotion_XGfx)
-    }
-};
-
-
 static const union AnimCmd sSpriteAnim_IconExclamation[] =
 {
     ANIMCMD_FRAME(0, 60),
@@ -165,33 +151,6 @@ static const union AnimCmd sSpriteAnim_IconHeart[] =
 {
     ANIMCMD_FRAME(2, 60),
     ANIMCMD_END
-}
-
-static const union AnimCmd sSpriteAnim_Icons3[] =
-{
-    ANIMCMD_FRAME(2, 60),
-    ANIMCMD_END
-};
-
-static const union AnimCmd sSpriteAnim_Icons4[] =
-{
-    ANIMCMD_FRAME(3, 60),
-    ANIMCMD_END
-};
-
-static const union AnimCmd *const sSpriteAnimTable_Icons[] =
-{
-    sSpriteAnim_Icons3,
-    sSpriteAnim_Icons4
-};
-
-#define ICON_SIZE 128
-static const struct SpriteFrameImage sSpriteImageTable_EmoteIcon[] =
-{
-    [ICON_EXCLAMATION] = { (u8 *)sEmoticons + 0 * ICON_SIZE, ICON_SIZE },
-    [ICON_QUESTION]    = { (u8 *)sEmoticons + 1 * ICON_SIZE, ICON_SIZE },
-    [ICON_HEART]       = { (u8 *)sEmoticons + 2 * ICON_SIZE, ICON_SIZE },
-    [ICON_DOTS]        = { (u8 *)sEmoticons + 3 * ICON_SIZE, ICON_SIZE },
 };
 
 static const union AnimCmd sSpriteAnim_IconDots[] =
@@ -200,12 +159,38 @@ static const union AnimCmd sSpriteAnim_IconDots[] =
     ANIMCMD_END
 };
 
+static const union AnimCmd sSpriteAnim_IconX[] =
+{
+    ANIMCMD_FRAME(4, 60),
+    ANIMCMD_END
+};
+
+static const union AnimCmd sSpriteAnim_IconDoubleExclamation[] =
+{
+    ANIMCMD_FRAME(5, 60),
+    ANIMCMD_END
+};
+
+#define ICON_SIZE 128
+
+static const struct SpriteFrameImage sSpriteImageTable_EmoteIcon[] =
+{
+    [ICON_EXCLAMATION] = { (u8 *)sEmoticons + ICON_EXCLAMATION * ICON_SIZE, ICON_SIZE },
+    [ICON_QUESTION]    = { (u8 *)sEmoticons + ICON_QUESTION * ICON_SIZE, ICON_SIZE },
+    [ICON_HEART]       = { (u8 *)sEmoticons + ICON_HEART * ICON_SIZE, ICON_SIZE },
+    [ICON_DOTS]        = { (u8 *)sEmoticons + ICON_DOTS * ICON_SIZE, ICON_SIZE },
+    [ICON_X]           = { (u8 *)sEmoticons + ICON_X * ICON_SIZE, ICON_SIZE },
+    [ICON_DOUBLE_EXCL] = { (u8 *)sEmoticons + ICON_DOUBLE_EXCL * ICON_SIZE, ICON_SIZE },
+};
+
 static const union AnimCmd *const sSpriteAnimTable_Icons[] =
 {
     sSpriteAnim_IconExclamation,
     sSpriteAnim_IconQuestion,
     sSpriteAnim_IconHeart,
     sSpriteAnim_IconDots,
+    sSpriteAnim_IconX,
+    sSpriteAnim_IconDoubleExclamation,
 };
 
 static const struct SpriteTemplate sSpriteTemplate_EmoteIcons =
@@ -758,42 +743,6 @@ u8 FldEff_EmoteIcon(void)
         SetIconSpriteData(&gSprites[spriteId]);
 
     return 0;
-}
-
-static void SetIconSpriteData2(struct Sprite *sprite, u16 fldEffId, u8 spriteAnimNum);
-
-u8 FldEff_DoubleExclMarkIcon(void)
-{
-    u8 spriteId = CreateSpriteAtEnd(&sSpriteTemplate_ExclamationQuestionMark, 0, 0, 0x53);
-
-    if (spriteId != MAX_SPRITES)
-        SetIconSpriteData2(&gSprites[spriteId], FLDEFF_EXCLAMATION_MARK_ICON, 2);
-
-    return 0;
-}
-
-u8 FldEff_XIcon(void)
-{
-    u8 spriteId = CreateSpriteAtEnd(&sSpriteTemplate_ExclamationQuestionMark, 0, 0, 0x53);
-
-    if (spriteId != MAX_SPRITES)
-        SetIconSpriteData2(&gSprites[spriteId], FLDEFF_EXCLAMATION_MARK_ICON, 3);
-
-    return 0;
-}
-
-static void SetIconSpriteData2(struct Sprite *sprite, u16 fldEffId, u8 spriteAnimNum)
-{
-    sprite->oam.priority = 1;
-    sprite->coordOffsetEnabled = 1;
-
-    sprite->sLocalId = gFieldEffectArguments[0];
-    sprite->sMapNum = gFieldEffectArguments[1];
-    sprite->sMapGroup = gFieldEffectArguments[2];
-    sprite->sYVelocity = -5;
-    sprite->sFldEffId = fldEffId;
-
-    StartSpriteAnim(sprite, spriteAnimNum);
 }
 
 static void SpriteCB_TrainerIcons(struct Sprite *sprite)

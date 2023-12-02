@@ -128,5 +128,7 @@
 #define ICON_QUESTION    1
 #define ICON_HEART       2
 #define ICON_DOTS        3
+#define ICON_X           4
+#define ICON_DOUBLE_EXCL 5
 
 #endif // GUARD_FIELD_EFFECT_CONSTANTS_H

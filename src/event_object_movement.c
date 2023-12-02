@@ -8711,7 +8711,8 @@ u8 MovementAction_EmoteDots_Step0(struct ObjectEvent *objectEvent, struct Sprite
 bool8 MovementAction_EmoteX_Step0(struct ObjectEvent *objectEvent, struct Sprite *sprite)
 {
     ObjectEventGetLocalIdAndMap(objectEvent, &gFieldEffectArguments[0], &gFieldEffectArguments[1], &gFieldEffectArguments[2]);
-    FieldEffectStart(FLDEFF_X_ICON);
+    gFieldEffectArguments[3] = ICON_X;
+    FieldEffectStart(FLDEFF_EMOTE_ICON);
     sprite->sActionFuncId = 1;
     return TRUE;
 }
@@ -8719,7 +8720,8 @@ bool8 MovementAction_EmoteX_Step0(struct ObjectEvent *objectEvent, struct Sprite
 bool8 MovementAction_EmoteDoubleExclamationMark_Step0(struct ObjectEvent *objectEvent, struct Sprite *sprite)
 {
     ObjectEventGetLocalIdAndMap(objectEvent, &gFieldEffectArguments[0], &gFieldEffectArguments[1], &gFieldEffectArguments[2]);
-    FieldEffectStart(FLDEFF_DOUBLE_EXCL_MARK_ICON);
+    gFieldEffectArguments[3] = ICON_DOUBLE_EXCL;
+    FieldEffectStart(FLDEFF_EMOTE_ICON);
     sprite->sActionFuncId = 1;
     return TRUE;
 }
