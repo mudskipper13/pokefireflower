@@ -393,6 +393,7 @@ struct BattleMove
     u32 instructBanned:1;
     u32 encoreBanned:1;
     u32 parentalBondBanned:1;
+    u32 skyBattleBanned:1;
 };
 
 #define SPINDA_SPOT_WIDTH 16
@@ -425,6 +426,19 @@ struct FormChange
     u16 param2;
     u16 param3;
 };
+
+struct Fusion
+{
+    u16 fusionStorageIndex;
+    u16 itemId;
+    u16 targetSpecies1;
+    u16 targetSpecies2;
+    u16 fusingIntoMon;
+    u16 fusionMove;
+    u16 unfuseForgetMove;
+};
+
+extern const struct Fusion *const gFusionTablePointers[NUM_SPECIES];
 
 #define NUM_UNOWN_FORMS 28
 
@@ -627,6 +641,7 @@ bool32 SpeciesHasGenderDifferences(u16 species);
 bool32 TryFormChange(u32 monId, u32 side, u16 method);
 void TryToSetBattleFormChangeMoves(struct Pokemon *mon, u16 method);
 u32 GetMonFriendshipScore(struct Pokemon *pokemon);
+u32 GetMonAffectionHearts(struct Pokemon *pokemon);
 void UpdateMonPersonality(struct BoxPokemon *boxMon, u32 personality);
 u8 CalculatePartyCount(struct Pokemon *party);
 u16 SanitizeSpeciesId(u16 species);

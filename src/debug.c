@@ -43,6 +43,7 @@
 #include "pokemon_storage_system.h"
 #include "random.h"
 #include "region_map.h"
+#include "rtc.h"
 #include "script.h"
 #include "script_pokemon_util.h"
 #include "sound.h"
@@ -55,6 +56,7 @@
 #include "constants/battle_ai.h"
 #include "constants/battle_frontier.h"
 #include "constants/coins.h"
+#include "constants/expansion.h"
 #include "constants/flags.h"
 #include "constants/items.h"
 #include "constants/map_groups.h"
@@ -97,6 +99,7 @@ enum UtilMenu
     DEBUG_UTIL_MENU_ITEM_CLEAR_BOXES,
     DEBUG_UTIL_MENU_ITEM_CHEAT,
     DEBUG_UTIL_MENU_ITEM_HATCH_AN_EGG,
+    DEBUG_UTIL_MENU_ITEM_EXPANSION_VER,
 };
 
 enum ScriptMenu
@@ -339,6 +342,7 @@ static void DebugAction_Util_Player_Id(u8 taskId);
 static void DebugAction_Util_Clear_Boxes(u8 taskId);
 static void DebugAction_Util_CheatStart(u8 taskId);
 static void DebugAction_Util_HatchAnEgg(u8 taskId);
+static void DebugAction_Util_ExpansionVersion(u8 taskId);
 
 static void DebugAction_FlagsVars_Flags(u8 taskId);
 static void DebugAction_FlagsVars_FlagsSelect(u8 taskId);
@@ -398,6 +402,7 @@ static void DebugAction_Sound_MUS_SelectId(u8 taskId);
 
 extern const u8 Debug_FlagsNotSetOverworldConfigMessage[];
 extern const u8 Debug_FlagsNotSetBattleConfigMessage[];
+extern const u8 Debug_FlagsAndVarNotSetBattleConfigMessage[];
 extern const u8 Debug_EventScript_Script_1[];
 extern const u8 Debug_EventScript_Script_2[];
 extern const u8 Debug_EventScript_Script_3[];
@@ -418,6 +423,7 @@ extern const u8 PlayersHouse_2F_EventScript_CheckWallClock[];
 extern const u8 Debug_CheckSaveBlock[];
 extern const u8 Debug_CheckROMSpace[];
 extern const u8 Debug_BoxFilledMessage[];
+extern const u8 Debug_ShowExpansionVersion[];
 
 #include "data/map_group_count.h"
 
@@ -471,6 +477,7 @@ static const u8 sDebugText_Util_Player_Id[] =                _("New Trainer Id")
 static const u8 sDebugText_Util_Clear_Boxes[] =              _("Clear Storage Boxes");
 static const u8 sDebugText_Util_CheatStart[] =               _("CHEAT Start");
 static const u8 sDebugText_Util_HatchAnEgg[] =               _("Hatch an Egg");
+static const u8 sDebugText_Util_ExpansionVersion[] =         _("Expansion Version");
 // Flags/Vars Menu
 static const u8 sDebugText_FlagsVars_Flags[] =                  _("Set Flag XYZ…{CLEAR_TO 110}{RIGHT_ARROW}");
 static const u8 sDebugText_FlagsVars_Flag[] =                   _("Flag: {STR_VAR_1}{CLEAR_TO 90}\n{STR_VAR_2}{CLEAR_TO 90}\n{STR_VAR_3}");
@@ -637,6 +644,7 @@ static const struct ListMenuItem sDebugMenu_Items_Utilities[] =
     [DEBUG_UTIL_MENU_ITEM_CLEAR_BOXES]    = {sDebugText_Util_Clear_Boxes,    DEBUG_UTIL_MENU_ITEM_CLEAR_BOXES},
     [DEBUG_UTIL_MENU_ITEM_CHEAT]          = {sDebugText_Util_CheatStart,     DEBUG_UTIL_MENU_ITEM_CHEAT},
     [DEBUG_UTIL_MENU_ITEM_HATCH_AN_EGG]   = {sDebugText_Util_HatchAnEgg,     DEBUG_UTIL_MENU_ITEM_HATCH_AN_EGG},
+    [DEBUG_UTIL_MENU_ITEM_EXPANSION_VER]  = {sDebugText_Util_ExpansionVersion,DEBUG_UTIL_MENU_ITEM_EXPANSION_VER},
 };
 
 static const struct ListMenuItem sDebugMenu_Items_Scripts[] =
@@ -780,6 +788,7 @@ static void (*const sDebugMenu_Actions_Utilities[])(u8) =
     [DEBUG_UTIL_MENU_ITEM_CLEAR_BOXES]    = DebugAction_Util_Clear_Boxes,
     [DEBUG_UTIL_MENU_ITEM_CHEAT]          = DebugAction_Util_CheatStart,
     [DEBUG_UTIL_MENU_ITEM_HATCH_AN_EGG]   = DebugAction_Util_HatchAnEgg,
+    [DEBUG_UTIL_MENU_ITEM_EXPANSION_VER]  = DebugAction_Util_ExpansionVersion,
 };
 
 static void (*const sDebugMenu_Actions_Scripts[])(u8) =
@@ -2113,6 +2122,9 @@ static void DebugAction_Util_Clear_Boxes(u8 taskId)
 
 static void DebugAction_Util_CheatStart(u8 taskId)
 {
+    if (!FlagGet(FLAG_SYS_CLOCK_SET))
+        RtcInitLocalTimeOffset(0, 0);
+
     InitTimeBasedEvents();
     Debug_DestroyMenu_Full_Script(taskId, Debug_CheatStart);
 }
@@ -2120,6 +2132,30 @@ static void DebugAction_Util_CheatStart(u8 taskId)
 static void DebugAction_Util_HatchAnEgg(u8 taskId)
 {
     Debug_DestroyMenu_Full_Script(taskId, Debug_HatchAnEgg);
+}
+
+static void DebugAction_Util_ExpansionVersion(u8 taskId)
+{
+    Debug_DestroyMenu_Full(taskId);
+    LockPlayerFieldControls();
+    ScriptContext_SetupScript(Debug_ShowExpansionVersion);
+}
+
+void BufferExpansionVersion(struct ScriptContext *ctx)
+{
+    static const u8 sText_Released[] = _("\nRelease Build");
+    static const u8 sText_Unreleased[] = _("\nDevelopment Build");
+    u8 *string = gStringVar1;
+    *string++ = CHAR_v;
+    string = ConvertIntToDecimalStringN(string, EXPANSION_VERSION_MAJOR, STR_CONV_MODE_LEFT_ALIGN, 3);
+    *string++ = CHAR_PERIOD;
+    string = ConvertIntToDecimalStringN(string, EXPANSION_VERSION_MINOR, STR_CONV_MODE_LEFT_ALIGN, 3);
+    *string++ = CHAR_PERIOD;
+    string = ConvertIntToDecimalStringN(string, EXPANSION_VERSION_PATCH, STR_CONV_MODE_LEFT_ALIGN, 3);
+    if (EXPANSION_TAGGED_RELEASE)
+        string = StringCopy(string, sText_Released);
+    else
+        string = StringCopy(string, sText_Unreleased);
 }
 
 // *******************************

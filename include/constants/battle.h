@@ -183,17 +183,17 @@
 #define STATUS3_SEMI_INVULNERABLE       (STATUS3_UNDERGROUND | STATUS3_ON_AIR | STATUS3_UNDERWATER | STATUS3_PHANTOM_FORCE)
 
 #define STATUS4_ELECTRIFIED             (1 << 0)
-#define STATUS4_PLASMA_FISTS            (1 << 1)
-#define STATUS4_MUD_SPORT               (1 << 2)    // Only used if B_SPORT_TURNS < GEN_6
-#define STATUS4_WATER_SPORT             (1 << 3)    // Only used if B_SPORT_TURNS < GEN_6
-#define STATUS4_INFINITE_CONFUSION      (1 << 4)    // Used for Berserk Gene
-#define STATUS4_SALT_CURE               (1 << 5)
-#define STATUS4_SYRUP_BOMB              (1 << 6)
+#define STATUS4_MUD_SPORT               (1 << 1)    // Only used if B_SPORT_TURNS < GEN_6
+#define STATUS4_WATER_SPORT             (1 << 2)    // Only used if B_SPORT_TURNS < GEN_6
+#define STATUS4_INFINITE_CONFUSION      (1 << 3)    // Used for Berserk Gene
+#define STATUS4_SALT_CURE               (1 << 4)
+#define STATUS4_SYRUP_BOMB              (1 << 5)
+#define STATUS4_GLAIVE_RUSH             (1 << 6)
 
 #define HITMARKER_WAKE_UP_CLEAR         (1 << 4) // Cleared when waking up. Never set or checked.
 #define HITMARKER_SKIP_DMG_TRACK        (1 << 5)
 #define HITMARKER_DESTINYBOND           (1 << 6)
-#define HITMARKER_NO_ANIMATIONS         (1 << 7)
+#define HITMARKER_NO_ANIMATIONS         (1 << 7)   // set from battleSceneOff. Never changed during battle
 #define HITMARKER_IGNORE_SUBSTITUTE     (1 << 8)
 #define HITMARKER_NO_ATTACKSTRING       (1 << 9)
 #define HITMARKER_ATTACKSTRING_PRINTED  (1 << 10)
@@ -203,6 +203,7 @@
 #define HITMARKER_SYNCHRONISE_EFFECT    (1 << 14)
 #define HITMARKER_RUN                   (1 << 15)
 #define HITMARKER_IGNORE_DISGUISE       (1 << 16)
+#define HITMARKER_DISABLE_ANIMATION     (1 << 17)   // disable animations during battle scripts, e.g. for Bug Bite
 // 3 free spots because of change in handling of UNDERGROUND/UNDERWATER/ON AIR
 #define HITMARKER_UNABLE_TO_USE_MOVE    (1 << 19)
 #define HITMARKER_PASSIVE_DAMAGE        (1 << 20)
@@ -238,9 +239,13 @@
 #define SIDE_STATUS_MAT_BLOCK               (1 << 21)
 #define SIDE_STATUS_STEELSURGE              (1 << 22)
 #define SIDE_STATUS_DAMAGE_NON_TYPES        (1 << 23)
+#define SIDE_STATUS_RAINBOW                 (1 << 24)
+#define SIDE_STATUS_SEA_OF_FIRE             (1 << 25)
+#define SIDE_STATUS_SWAMP                   (1 << 26)
 
 #define SIDE_STATUS_HAZARDS_ANY    (SIDE_STATUS_SPIKES | SIDE_STATUS_STICKY_WEB | SIDE_STATUS_TOXIC_SPIKES | SIDE_STATUS_STEALTH_ROCK | SIDE_STATUS_STEELSURGE)
 #define SIDE_STATUS_SCREEN_ANY     (SIDE_STATUS_REFLECT | SIDE_STATUS_LIGHTSCREEN | SIDE_STATUS_AURORA_VEIL)
+#define SIDE_STATUS_PLEDGE_ANY     (SIDE_STATUS_RAINBOW | SIDE_STATUS_SEA_OF_FIRE | SIDE_STATUS_SWAMP)
 
 // Field affecting statuses.
 #define STATUS_FIELD_MAGIC_ROOM                     (1 << 0)
@@ -378,18 +383,17 @@
 #define MOVE_EFFECT_INCINERATE          67
 #define MOVE_EFFECT_BUG_BITE            68
 #define MOVE_EFFECT_RECOIL_HP_25        69
-#define MOVE_EFFECT_RELIC_SONG          70
-#define MOVE_EFFECT_TRAP_BOTH           71
-#define MOVE_EFFECT_DOUBLE_SHOCK        72
-#define MOVE_EFFECT_ROUND               73
-#define MOVE_EFFECT_STOCKPILE_WORE_OFF  74
-#define MOVE_EFFECT_DIRE_CLAW           75
-#define MOVE_EFFECT_STEALTH_ROCK        76
-#define MOVE_EFFECT_SPIKES              77
-#define MOVE_EFFECT_TRIPLE_ARROWS       78
-#define MOVE_EFFECT_SYRUP_BOMB          79
+#define MOVE_EFFECT_TRAP_BOTH           70
+#define MOVE_EFFECT_DOUBLE_SHOCK        71
+#define MOVE_EFFECT_ROUND               72
+#define MOVE_EFFECT_STOCKPILE_WORE_OFF  73
+#define MOVE_EFFECT_DIRE_CLAW           74
+#define MOVE_EFFECT_STEALTH_ROCK        75
+#define MOVE_EFFECT_SPIKES              76
+#define MOVE_EFFECT_TRIPLE_ARROWS       77
+#define MOVE_EFFECT_SYRUP_BOMB          78
 
-#define NUM_MOVE_EFFECTS                80
+#define NUM_MOVE_EFFECTS                79
 
 #define MOVE_EFFECT_AFFECTS_USER        0x4000
 #define MOVE_EFFECT_CERTAIN             0x8000

@@ -3,6 +3,7 @@
 
 #include "list_menu.h"
 #include "constants/script_menu.h"
+#include "menu.h"
 
 // The default size the stack for dynamic multichoice is initialized to
 // If you try to push an element when the stack is full, it will be reallocated
@@ -33,6 +34,7 @@ void MultichoiceDynamic_DestroyStack(void);
 bool8 ScriptMenu_MultichoiceDynamic(u8 left, u8 top, u8 argc, struct ListMenuItem *items, bool8 ignoreBPress, u8 maxBeforeScroll, u32 initialRow, u32 callbackSet);
 bool8 ScriptMenu_Multichoice(u8 left, u8 top, u8 multichoiceId, bool8 ignoreBPress);
 bool8 ScriptMenu_MultichoiceWithDefault(u8 left, u8 top, u8 multichoiceId, bool8 ignoreBPress, u8 defaultChoice);
+void DrawMultichoiceMenuInternal(u8 left, u8 top, u8 multichoiceId, bool8 ignoreBPress, u8 cursorPos, const struct MenuAction *actions, int count);
 bool8 ScriptMenu_YesNo(u8 left, u8 top);
 bool8 ScriptMenu_MultichoiceGrid(u8 left, u8 top, u8 multichoiceId, bool8 ignoreBPress, u8 columnCount);
 bool8 ScriptMenu_ShowPokemonPic(u16 species, u8 x, u8 y);

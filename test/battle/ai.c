@@ -53,7 +53,6 @@ AI_SINGLE_BATTLE_TEST("AI prefers Water Gun over Bubble if it knows that foe has
 
     PARAMETRIZE { abilityAI = ABILITY_MOXIE; }
     PARAMETRIZE { abilityAI = ABILITY_MOLD_BREAKER; } // Mold Breaker ignores Contrary.
-
     GIVEN {
         AI_FLAGS(AI_FLAG_CHECK_BAD_MOVE | AI_FLAG_CHECK_VIABILITY | AI_FLAG_TRY_TO_FAINT);
         PLAYER(SPECIES_SHUCKLE) { Ability(ABILITY_CONTRARY); }
@@ -223,8 +222,7 @@ AI_SINGLE_BATTLE_TEST("AI prefers a weaker move over a one with a downside effec
             TURN { EXPECT_MOVE(opponent, expectedMove); SEND_OUT(player, 1); }
             break;
         }
-    }
-    SCENE {
+    } SCENE {
         MESSAGE("Wobbuffet fainted!");
     }
 }
@@ -248,7 +246,7 @@ AI_SINGLE_BATTLE_TEST("AI can choose a status move that boosts the attack by two
 {
     GIVEN {
         AI_FLAGS(AI_FLAG_CHECK_BAD_MOVE | AI_FLAG_CHECK_VIABILITY | AI_FLAG_TRY_TO_FAINT);
-        PLAYER(SPECIES_WOBBUFFET) { HP(250); };
+        PLAYER(SPECIES_WOBBUFFET) { HP(278); };
         PLAYER(SPECIES_WOBBUFFET);
         OPPONENT(SPECIES_KANGASKHAN) { Moves(MOVE_STRENGTH, MOVE_HORN_ATTACK, MOVE_SWORDS_DANCE); }
     } WHEN {
@@ -260,8 +258,8 @@ AI_SINGLE_BATTLE_TEST("AI can choose a status move that boosts the attack by two
 AI_SINGLE_BATTLE_TEST("AI chooses the safest option to faint the target, taking into account accuracy and move effect")
 {
     u16 move1 = MOVE_NONE, move2 = MOVE_NONE, move3 = MOVE_NONE, move4 = MOVE_NONE;
-    u16 expectedMove, abilityAtk = ABILITY_NONE;
-    u16 expectedMove2 = MOVE_NONE;
+    u16 expectedMove, expectedMove2 = MOVE_NONE;
+    u16 abilityAtk = ABILITY_NONE, holdItemAtk = ITEM_NONE;
 
     // Psychic is not very effective, but always hits. Solarbeam requires a charging turn, Double Edge has recoil and Focus Blast can miss;
     PARAMETRIZE { abilityAtk = ABILITY_STURDY; move1 = MOVE_FOCUS_BLAST; move2 = MOVE_SOLAR_BEAM; move3 = MOVE_PSYCHIC; move4 = MOVE_DOUBLE_EDGE; expectedMove = MOVE_PSYCHIC; }
@@ -272,18 +270,60 @@ AI_SINGLE_BATTLE_TEST("AI chooses the safest option to faint the target, taking 
     // This time it's Solarbeam + Psychic, because the weather is sunny.
     PARAMETRIZE { abilityAtk = ABILITY_DROUGHT; move1 = MOVE_FOCUS_BLAST; move2 = MOVE_SOLAR_BEAM; move3 = MOVE_PSYCHIC; move4 = MOVE_DOUBLE_EDGE;
                   expectedMove = MOVE_PSYCHIC; expectedMove2 = MOVE_SOLAR_BEAM; }
+    // Psychic and Solar Beam are chosen because user is holding Power Herb
+    PARAMETRIZE { abilityAtk = ABILITY_STURDY; holdItemAtk = ITEM_POWER_HERB; move1 = MOVE_FOCUS_BLAST; move2 = MOVE_SOLAR_BEAM; move3 = MOVE_PSYCHIC; move4 = MOVE_DOUBLE_EDGE;
+                  expectedMove = MOVE_PSYCHIC; expectedMove2 = MOVE_SOLAR_BEAM; }
+    // Psychic and Skull Bash are chosen because user is holding Power Herb
+    PARAMETRIZE { abilityAtk = ABILITY_STURDY; holdItemAtk = ITEM_POWER_HERB; move1 = MOVE_FOCUS_BLAST; move2 = MOVE_SKULL_BASH; move3 = MOVE_PSYCHIC; move4 = MOVE_DOUBLE_EDGE;
+                  expectedMove = MOVE_PSYCHIC; expectedMove2 = MOVE_SKULL_BASH; }
+    // Skull Bash is chosen because it's the most accurate and is holding Power Herb
+    PARAMETRIZE { abilityAtk = ABILITY_STURDY; holdItemAtk = ITEM_POWER_HERB; move1 = MOVE_FOCUS_BLAST; move2 = MOVE_SKULL_BASH; move3 = MOVE_SLAM; move4 = MOVE_DOUBLE_EDGE;
+                  expectedMove = MOVE_SKULL_BASH; }
+    // Crabhammer is chosen even if Skull Bash is more accurate, the user has no Power Herb
+    PARAMETRIZE { abilityAtk = ABILITY_STURDY; move1 = MOVE_FOCUS_BLAST; move2 = MOVE_SKULL_BASH; move3 = MOVE_SLAM; move4 = MOVE_CRABHAMMER;
+                  expectedMove = MOVE_CRABHAMMER; }
 
     GIVEN {
         AI_FLAGS(AI_FLAG_CHECK_BAD_MOVE | AI_FLAG_CHECK_VIABILITY | AI_FLAG_TRY_TO_FAINT);
         PLAYER(SPECIES_WOBBUFFET) { HP(5); }
         PLAYER(SPECIES_WOBBUFFET);
-        OPPONENT(SPECIES_GEODUDE) { Moves(move1, move2, move3, move4); Ability(abilityAtk); }
+        OPPONENT(SPECIES_GEODUDE) { Moves(move1, move2, move3, move4); Ability(abilityAtk); Item(holdItemAtk); }
     } WHEN {
         TURN {  if (expectedMove2 == MOVE_NONE) { EXPECT_MOVE(opponent, expectedMove); SEND_OUT(player, 1); }
                 else {EXPECT_MOVES(opponent, expectedMove, expectedMove2); SCORE_EQ(opponent, expectedMove, expectedMove2); SEND_OUT(player, 1);}
              }
     }
     SCENE {
+        MESSAGE("Wobbuffet fainted!");
+    }
+}
+
+AI_SINGLE_BATTLE_TEST("AI won't use Solar Beam if there is no Sun up or the user is not holding Power Herb")
+{
+    u16 abilityAtk = ABILITY_NONE;
+    u16 holdItemAtk = ITEM_NONE;
+
+    PARAMETRIZE { abilityAtk = ABILITY_DROUGHT; }
+    PARAMETRIZE { holdItemAtk = ITEM_POWER_HERB; }
+    PARAMETRIZE { }
+
+    GIVEN {
+        AI_FLAGS(AI_FLAG_CHECK_BAD_MOVE | AI_FLAG_CHECK_VIABILITY | AI_FLAG_TRY_TO_FAINT);
+        PLAYER(SPECIES_WOBBUFFET) { HP(211); }
+        PLAYER(SPECIES_WOBBUFFET);
+        OPPONENT(SPECIES_TYPHLOSION) { Moves(MOVE_SOLAR_BEAM, MOVE_GRASS_PLEDGE); Ability(abilityAtk); Item(holdItemAtk); }
+    } WHEN {
+        if (abilityAtk == ABILITY_DROUGHT) {
+            TURN { EXPECT_MOVES(opponent, MOVE_SOLAR_BEAM, MOVE_GRASS_PLEDGE); }
+            TURN { EXPECT_MOVES(opponent, MOVE_SOLAR_BEAM, MOVE_GRASS_PLEDGE); SEND_OUT(player, 1); }
+        } else if (holdItemAtk == ITEM_POWER_HERB) {
+            TURN { EXPECT_MOVES(opponent, MOVE_SOLAR_BEAM, MOVE_GRASS_PLEDGE); MOVE(player, MOVE_KNOCK_OFF); }
+            TURN { EXPECT_MOVE(opponent, MOVE_GRASS_PLEDGE); SEND_OUT(player, 1); }
+        } else {
+            TURN { EXPECT_MOVE(opponent, MOVE_GRASS_PLEDGE); }
+            TURN { EXPECT_MOVE(opponent, MOVE_GRASS_PLEDGE); SEND_OUT(player, 1); }
+        }
+    } SCENE {
         MESSAGE("Wobbuffet fainted!");
     }
 }
@@ -329,23 +369,6 @@ AI_SINGLE_BATTLE_TEST("AI will not switch in a Pokemon which is slower and gets 
         } else {
             MESSAGE("{PKMN} TRAINER LEAF sent out Blastoise!");
         }
-    }
-}
-
-AI_SINGLE_BATTLE_TEST("AI switches if Perish Song is about to kill")
-{
-    GIVEN {
-        AI_FLAGS(AI_FLAG_CHECK_BAD_MOVE | AI_FLAG_CHECK_VIABILITY | AI_FLAG_TRY_TO_FAINT);
-        PLAYER(SPECIES_WOBBUFFET);
-        OPPONENT(SPECIES_WOBBUFFET) {Moves(MOVE_TACKLE); }
-        OPPONENT(SPECIES_CROBAT) {Moves(MOVE_TACKLE); }
-    } WHEN {
-            TURN { MOVE(player, MOVE_PERISH_SONG); }
-            TURN { ; }
-            TURN { ; }
-            TURN { EXPECT_SWITCH(opponent, 1); }
-    } SCENE {
-        MESSAGE("{PKMN} TRAINER LEAF sent out Crobat!");
     }
 }
 
@@ -468,5 +491,159 @@ AI_DOUBLE_BATTLE_TEST("AI without any flags chooses moves at random - doubles")
                    SCORE_EQ_VAL(opponentRight, MOVE_RAGE, AI_SCORE_DEFAULT, target:playerLeft);
                    SCORE_EQ_VAL(opponentRight, MOVE_HELPING_HAND, AI_SCORE_DEFAULT, target:playerLeft);
                 }
+    }
+}
+
+AI_SINGLE_BATTLE_TEST("AI_FLAG_SMART_MON_CHOICES: AI will not switch in a Pokemon which is slower and gets 1HKOed after fainting")
+{
+    bool32 alakazamFirst;
+    u32 speedAlakazm;
+    u32 aiSmartSwitchFlags = 0;
+
+    PARAMETRIZE{ speedAlakazm = 200; alakazamFirst = TRUE; } // AI will always send out Alakazan as it sees a KO with Focus Blast, even if Alakazam dies before it can get it off
+    PARAMETRIZE{ speedAlakazm = 200; alakazamFirst = FALSE; aiSmartSwitchFlags = AI_FLAG_SMART_SWITCHING | AI_FLAG_SMART_MON_CHOICES; } // AI_FLAG_SMART_MON_CHOICES lets AI see that Alakazam would be KO'd before it can KO, and won't switch it in
+    PARAMETRIZE{ speedAlakazm = 400; alakazamFirst = TRUE; aiSmartSwitchFlags = AI_FLAG_SMART_SWITCHING | AI_FLAG_SMART_MON_CHOICES; } // AI_FLAG_SMART_MON_CHOICES recognizes that Alakazam is faster and can KO, and will switch it in
+
+    GIVEN {
+        AI_FLAGS(AI_FLAG_CHECK_BAD_MOVE | AI_FLAG_CHECK_VIABILITY | AI_FLAG_TRY_TO_FAINT | aiSmartSwitchFlags);
+        PLAYER(SPECIES_WEAVILE) { Speed(300); Ability(ABILITY_SHADOW_TAG); } // Weavile has Shadow Tag, so AI can't switch on the first turn, but has to do it after fainting.
+        OPPONENT(SPECIES_KADABRA) { Speed(200); Moves(MOVE_PSYCHIC, MOVE_DISABLE, MOVE_TAUNT, MOVE_CALM_MIND); }
+        OPPONENT(SPECIES_ALAKAZAM) { Speed(speedAlakazm); Moves(MOVE_FOCUS_BLAST, MOVE_PSYCHIC); } // Alakazam has a move which OHKOes Weavile, but it doesn't matter if he's getting KO-ed first.
+        OPPONENT(SPECIES_BLASTOISE) { Speed(200); Moves(MOVE_BUBBLE_BEAM, MOVE_WATER_GUN, MOVE_LEER, MOVE_STRENGTH); } // Can't OHKO, but survives a hit from Weavile's Night Slash.
+    } WHEN {
+            TURN { MOVE(player, MOVE_NIGHT_SLASH) ; EXPECT_SEND_OUT(opponent, alakazamFirst ? 1 : 2); } // AI doesn't send out Alakazam if it gets outsped
+    } SCENE {
+        MESSAGE("Foe Kadabra fainted!");
+        if (alakazamFirst) {
+            MESSAGE("{PKMN} TRAINER LEAF sent out Alakazam!");
+        } else {
+            MESSAGE("{PKMN} TRAINER LEAF sent out Blastoise!");
+        }
+    }
+}
+
+AI_SINGLE_BATTLE_TEST("AI switches if Perish Song is about to kill")
+{
+    GIVEN {
+        AI_FLAGS(AI_FLAG_CHECK_BAD_MOVE | AI_FLAG_CHECK_VIABILITY | AI_FLAG_TRY_TO_FAINT);
+        PLAYER(SPECIES_WOBBUFFET);
+        OPPONENT(SPECIES_WOBBUFFET) {Moves(MOVE_TACKLE); }
+        OPPONENT(SPECIES_CROBAT) {Moves(MOVE_TACKLE); }
+    } WHEN {
+            TURN { MOVE(player, MOVE_PERISH_SONG); }
+            TURN { ; }
+            TURN { ; }
+            TURN { EXPECT_SWITCH(opponent, 1); }
+    } SCENE {
+        MESSAGE("{PKMN} TRAINER LEAF sent out Crobat!");
+    }
+}
+
+AI_SINGLE_BATTLE_TEST("AI_FLAG_SMART_MON_CHOICES: AI considers hazard damage when choosing which Pokemon to switch in")
+{
+    u32 aiIsSmart = 0;
+    u32 aiSmartSwitchFlags = 0;
+
+    PARAMETRIZE{ aiIsSmart = 0; aiSmartSwitchFlags = 0; } // AI doesn't care about hazard damage resulting in Pokemon being KO'd
+    PARAMETRIZE{ aiIsSmart = 1; aiSmartSwitchFlags = AI_FLAG_SMART_MON_CHOICES; } // AI_FLAG_SMART_MON_CHOICES avoids being KO'd as a result of hazards damage
+
+    GIVEN {
+        AI_FLAGS(AI_FLAG_CHECK_BAD_MOVE | AI_FLAG_CHECK_VIABILITY | AI_FLAG_TRY_TO_FAINT | aiSmartSwitchFlags);
+        PLAYER(SPECIES_MEGANIUM) { Speed(100); SpDefense(328); SpAttack(265); Moves(MOVE_STEALTH_ROCK, MOVE_SURF); } // Meganium does ~56% minimum ~66% maximum, enough to KO Charizard after rocks and never KO Typhlosion after rocks
+        OPPONENT(SPECIES_PONYTA) { Level(5); Speed(5); Moves(MOVE_TACKLE); }
+        OPPONENT(SPECIES_CHARIZARD) { Speed(200); Moves(MOVE_FLAMETHROWER); SpAttack(317); SpDefense(207); MaxHP(297); } // Outspeends and 2HKOs Meganium
+        OPPONENT(SPECIES_TYPHLOSION) { Speed(200); Moves(MOVE_FLAMETHROWER); SpAttack(317); SpDefense(207); MaxHP(297); } // Outspeends and 2HKOs Meganium
+    } WHEN {
+            TURN { MOVE(player, MOVE_STEALTH_ROCK) ;}
+            TURN { MOVE(player, MOVE_SURF) ; EXPECT_SEND_OUT(opponent, aiIsSmart ? 2 : 1); } // AI sends out Typhlosion to get the KO with the flag rather than Charizard
+    }
+}
+
+AI_SINGLE_BATTLE_TEST("AI_FLAG_SMART_MON_CHOICES: Mid-battle switches prioritize type matchup + SE move, then type matchup")
+{
+    u32 aiSmartSwitchFlags = 0;
+    u32 move1;
+    u32 move2;
+    u32 expectedIndex;
+
+    PARAMETRIZE{ expectedIndex = 3; move1 = MOVE_TACKLE; move2 = MOVE_TACKLE; aiSmartSwitchFlags = 0; } // When not smart, AI will only switch in a defensive mon if it has a SE move, otherwise will just default to damage
+    PARAMETRIZE{ expectedIndex = 1; move1 = MOVE_GIGA_DRAIN; move2 = MOVE_TACKLE; aiSmartSwitchFlags = 0; }
+    PARAMETRIZE{ expectedIndex = 2; move1 = MOVE_TACKLE; move2 = MOVE_TACKLE; aiSmartSwitchFlags = AI_FLAG_SMART_MON_CHOICES; } // When smart, AI will prioritize SE move, but still switch in good type matchup without SE move
+    PARAMETRIZE{ expectedIndex = 1; move1 = MOVE_GIGA_DRAIN; move2 = MOVE_TACKLE; aiSmartSwitchFlags = AI_FLAG_SMART_MON_CHOICES; }
+
+    GIVEN {
+        AI_FLAGS(AI_FLAG_CHECK_BAD_MOVE | AI_FLAG_CHECK_VIABILITY | AI_FLAG_TRY_TO_FAINT | aiSmartSwitchFlags);
+        PLAYER(SPECIES_MARSHTOMP) { Level(30); Moves(MOVE_MUD_BOMB, MOVE_WATER_GUN, MOVE_GROWL, MOVE_MUD_SHOT); Speed(5); } 
+        OPPONENT(SPECIES_PONYTA) { Level(1); Moves(MOVE_NONE); Speed(6); } // Forces switchout
+        OPPONENT(SPECIES_TANGELA) { Level(30); Moves(move1); Speed(4); }
+        OPPONENT(SPECIES_LOMBRE) { Level(30); Moves(move2); Speed(4); }
+        OPPONENT(SPECIES_HARIYAMA) { Level(30); Moves(MOVE_VITAL_THROW); Speed(4); }
+    } WHEN {
+            TURN { MOVE(player, MOVE_GROWL) ; EXPECT_SWITCH(opponent, expectedIndex); }
+    }
+}
+
+AI_SINGLE_BATTLE_TEST("AI_FLAG_SMART_MON_CHOICES: Mid-battle switches prioritize defensive options")
+{
+    GIVEN {
+        AI_FLAGS(AI_FLAG_CHECK_BAD_MOVE | AI_FLAG_CHECK_VIABILITY | AI_FLAG_TRY_TO_FAINT | AI_FLAG_SMART_MON_CHOICES);
+        PLAYER(SPECIES_SWELLOW) { Level(30); Moves(MOVE_WING_ATTACK, MOVE_BOOMBURST); Speed(5); } 
+        OPPONENT(SPECIES_PONYTA) { Level(1); Moves(MOVE_NONE); Speed(4); } // Forces switchout
+        OPPONENT(SPECIES_ARON) { Level(30); Moves(MOVE_HEADBUTT); Speed(4); } // Mid battle, AI sends out Aron
+        OPPONENT(SPECIES_ELECTRODE) { Level(30); Moves(MOVE_CHARGE_BEAM); Speed(6); }
+    } WHEN {
+            TURN { MOVE(player, MOVE_WING_ATTACK) ; EXPECT_SWITCH(opponent, 1); }
+    }
+}
+
+AI_SINGLE_BATTLE_TEST("AI_FLAG_SMART_MON_CHOICES: Post-KO switches prioritize offensive options")
+{
+    GIVEN {
+        AI_FLAGS(AI_FLAG_CHECK_BAD_MOVE | AI_FLAG_CHECK_VIABILITY | AI_FLAG_TRY_TO_FAINT | AI_FLAG_SMART_MON_CHOICES);
+        PLAYER(SPECIES_SWELLOW) { Level(30); Moves(MOVE_WING_ATTACK, MOVE_BOOMBURST); Speed(5); } 
+        OPPONENT(SPECIES_PONYTA) { Level(1); Moves(MOVE_TACKLE); Speed(4); }
+        OPPONENT(SPECIES_ARON) { Level(30); Moves(MOVE_HEADBUTT); Speed(4); } // Mid battle, AI sends out Aron
+        OPPONENT(SPECIES_ELECTRODE) { Level(30); Moves(MOVE_CHARGE_BEAM); Speed(6); }
+    } WHEN {
+            TURN { MOVE(player, MOVE_WING_ATTACK) ; EXPECT_SEND_OUT(opponent, 2); }
+    }
+}
+
+AI_SINGLE_BATTLE_TEST("AI_FLAG_SMART_SWITCHING: AI switches out after sufficient stat drops")
+{
+    GIVEN {
+        AI_FLAGS(AI_FLAG_CHECK_BAD_MOVE | AI_FLAG_CHECK_VIABILITY | AI_FLAG_TRY_TO_FAINT | AI_FLAG_SMART_SWITCHING);
+        PLAYER(SPECIES_HITMONTOP) { Level(30); Moves(MOVE_CHARM, MOVE_TACKLE); Ability(ABILITY_INTIMIDATE); Speed(5); } 
+        OPPONENT(SPECIES_GRIMER) { Level(30); Moves(MOVE_TACKLE); Speed(4); }
+        OPPONENT(SPECIES_PONYTA) { Level(30); Moves(MOVE_HEADBUTT); Speed(4); }
+    } WHEN {
+            TURN { MOVE(player, MOVE_CHARM) ;}
+            TURN { MOVE(player, MOVE_TACKLE) ; EXPECT_SWITCH(opponent, 1); }
+    }
+}
+
+AI_SINGLE_BATTLE_TEST("AI_FLAG_SMART_SWITCHING: AI will not switch out if Pokemon would faint to hazards unless party member can clear them")
+{
+    u32 move1;
+
+    PARAMETRIZE{move1 = MOVE_TACKLE; }
+    PARAMETRIZE{move1 = MOVE_RAPID_SPIN; }
+
+    GIVEN {
+        AI_FLAGS(AI_FLAG_CHECK_BAD_MOVE | AI_FLAG_CHECK_VIABILITY | AI_FLAG_TRY_TO_FAINT | AI_FLAG_SMART_SWITCHING);
+        PLAYER(SPECIES_HITMONTOP) { Level(30); Moves(MOVE_CHARM, MOVE_TACKLE, MOVE_STEALTH_ROCK, MOVE_EARTHQUAKE); Ability(ABILITY_INTIMIDATE); Speed(5); } 
+        OPPONENT(SPECIES_GRIMER) { Level(30); Moves(MOVE_TACKLE); Item(ITEM_FOCUS_SASH); Speed(4); }
+        OPPONENT(SPECIES_PONYTA) { Level(30); Moves(MOVE_HEADBUTT, move1); Speed(4); }
+    } WHEN {
+            TURN { MOVE(player, MOVE_STEALTH_ROCK) ;}
+            TURN { MOVE(player, MOVE_EARTHQUAKE) ;}
+            TURN { MOVE(player, MOVE_CHARM) ;}
+            TURN { // If the AI has a mon that can remove hazards, don't prevent them switching out
+                MOVE(player, MOVE_CHARM);
+                if (move1 == MOVE_RAPID_SPIN)
+                    EXPECT_SWITCH(opponent, 1);
+                else if (move1 == MOVE_TACKLE)
+                    EXPECT_MOVE(opponent, MOVE_TACKLE);
+            }        
     }
 }
