@@ -33,6 +33,56 @@ script PalletTown_EventScript_Twin {
 	end
 }
 
+script PalletTown_EventScript_Fanny {
+	msgbox(PalletTown_Text_MyGoodness, MSGBOX_NPC)
+	end
+}
+
+script PalletTown_EventScript_Mel {
+	lock
+	faceplayer
+	if (var(VAR_PALLET_TOWN_STATE) <= 1) { //! TODO
+		message(PalletTown_Text_HiWelcome)
+		waitmessage
+		pokemart(PalletTown_Mart_Mel)
+		msgbox(PalletTown_Text_ThanksForVisiting, MSGBOX_DEFAULT)
+	} else {
+		msgbox(PalletTown_Text_HeyThereSorry, MSGBOX_DEFAULT)
+	}
+	release
+	end
+}
+
+mart PalletTown_Mart_Mel {
+	ITEM_POTION
+	ITEM_ANTIDOTE
+	ITEM_PARALYZE_HEAL
+}
+
+script PalletTown_EventScript_Mei {
+	lock
+	faceplayer
+	if (var(VAR_PALLET_TOWN_STATE) <= 1) { //! TODO
+		message(PalletTown_Text_WelcomeToShop)
+		waitmessage
+		pokemart(PalletTown_Mart_Mei)
+		msgbox(PalletTown_Text_ThanksForPurchasing, MSGBOX_DEFAULT)
+	} else {
+		msgbox(PalletTown_Text_SorryButNoMoreStock, MSGBOX_DEFAULT)
+	}
+	release
+	end
+}
+
+mart PalletTown_Mart_Mei {
+	ITEM_ORAN_BERRY
+}
+
+script PalletTown_EventScript_Eric {
+	msgbox(PalletTown_Text_IWonder, MSGBOX_NPC)
+	end
+}
+
 //! Signs
 
 script PalletTown_EventScript_TrainerTipsSign {
@@ -45,8 +95,8 @@ script PalletTown_EventScript_TownSign {
 	end
 }
 
-script PalletTown_EventScript_OakLabSign {
-	msgbox(PalletTown_Text_OakLabSign, MSGBOX_SIGN)
+script PalletTown_EventScript_RoadSign {
+	msgbox(PalletTown_Text_RoadSign, MSGBOX_SIGN)
 	end
 }
 
@@ -57,5 +107,10 @@ script PalletTown_EventScript_PlayerHouseSign {
 
 script PalletTown_EventScript_RivalHouseSign {
 	msgbox(PalletTown_Text_RivalsHouseSign, MSGBOX_NPC)
+	end
+}
+
+script PalletTown_EventScript_PalletMarketSign {
+	msgbox(PalletTown_Text_PalletTownMarketSign, MSGBOX_SIGN)
 	end
 }

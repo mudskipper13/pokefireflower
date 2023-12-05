@@ -4,50 +4,112 @@
 //! overworlds
 
 text PalletTown_Text_CanModifyGames {
-	"Today's technology is pretty rad!\p"
+	format(
+		"FAB: Today's technology is kinda cool!\p"
 
-	"You can now modify your favorite\n"
-	"games to whatever you want them to\l"
-	"be with no such worries, unlike\l"
-	"before!\p"
+		"FAB: You can now change certain games"
+		"to be whatever you want without"
+		"any worries!\p"
 
-	"…If only those fan games people did\n"
-	"not try and steal our potential users,\l"
-	"though."
+		"FAB: …I honestly don't know what that"
+		"means, but it sounds cool!")
 }
 
 text PalletTown_Text_RaisingMonsToo {
-	"I'm raising POKéMON, too.\p"
+	format(
+		"TINA: I'm raising POKéMON, too.\p"
 
-	"When they get strong, they can\n"
-	"protect me."
+		"TINA: When they get strong, they can\n"
+		"protect me.")
+}
+
+text PalletTown_Text_HiWelcome {
+	format(
+		"MEL: Hi, welcome to our SHOP!\n"
+		"How can I help you with?")
+}
+
+text PalletTown_Text_ThanksForVisiting {
+	format("MEL: Thanks for visiting us!")
+}
+
+text PalletTown_Text_HeyThereSorry {
+	format(
+		"MEY: Hey there! Sorry, but we're out of"
+		"stocks now. Come again at later time!"
+	)
+}
+
+text PalletTown_Text_WelcomeToShop {
+	format(
+		"MEI: Welcome to “our” SHOP.\n"
+		"What do you want…"
+	)
+}
+
+text PalletTown_Text_ThanksForPurchasing {
+	format("MEI: Thanks for the purchase.")
+}
+
+text PalletTown_Text_SorryButNoMoreStock {
+	format(
+		"MEI: Sorry but you're out of luck, kid.\n"
+		"We have no more stocks, come back here later.")
+}
+
+text PalletTown_Text_MyGoodness {
+	format(
+		"MRS. FANNY: Ah… Thank goodness I was"
+		"just in the perfect time to shop here."
+		"Imagine coming here long enough that"
+		"everything has solds out…")
+}
+
+text PalletTown_Text_IWonder {
+	format(
+		"ERIC: Hm, I wonder… If I ever get that"
+		"damn Seadra! This has been 20+ years!"
+		"All I got is just Magikarp, Magikarp,"
+		"and Magikarp! Argh!")
 }
 
 //! signs
 
 text PalletTown_Text_TrainerTipsSign {
-	"TRAINER TIPS!\p"
+	format(
+		"TRAINER TIPS!\p"
 
-	"Don't forget to use the SAVE\n"
-	"option to save your progress.\p"
+		"Never forget to save your progress!\p"
 
-	"The SAVE option is located\n"
-	"in the START menu."
+		"The option to SAVE is located"
+		"in the START menu.")
 }
 
 text PalletTown_Text_TownSign {
-	"PALLET TOWN\n"
-	"The colorful journey awaits!"
+	format(
+		"PALLET TOWN\n"
+		"The colorful journey awaits!")
 }
 
-text PalletTown_Text_OakLabSign {
-	"PALLET TOWN'S POKéMON RESEARCH INSTITUTE"
+text PalletTown_Text_RoadSign {
+	format(
+		"{RIGHT_ARROW} PALLET TOWN'S POKéMON RESEARCH INSTITUTE\l"
+		"{UP_ARROW} ROUTE 1\l"
+		"{DOWN_ARROW} ROUTE 21")
 }
 
 text PalletTown_Text_PlayersHouseSign {
-	"{PLAYER}'s HOUSE"
+	format(
+		"STARKSON FAMILY's HOUSE")
 }
 
 text PalletTown_Text_RivalsHouseSign {
-	"PROF. OAK'S HOUSE"
+	format(
+		"OAK FAMILY'S HOUSE")
+}
+
+text PalletTown_Text_PalletTownMarketSign {
+	format(
+		"PALLET TOWN MARKET\n"
+		"Get your basic 'n cheap needs here!")
 }
