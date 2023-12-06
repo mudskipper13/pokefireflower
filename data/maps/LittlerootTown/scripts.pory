@@ -41,7 +41,7 @@ script PalletTown_EventScript_Fanny {
 script PalletTown_EventScript_Mel {
 	lock
 	faceplayer
-	if (var(VAR_PALLET_TOWN_STATE) <= 1) { //! TODO
+	if (var(VAR_PALLET_TOWN_STATE) > 1) { //! TODO
 		message(PalletTown_Text_HiWelcome)
 		waitmessage
 		pokemart(PalletTown_Mart_Mel)
@@ -62,7 +62,7 @@ mart PalletTown_Mart_Mel {
 script PalletTown_EventScript_Mei {
 	lock
 	faceplayer
-	if (var(VAR_PALLET_TOWN_STATE) <= 1) { //! TODO
+	if (var(VAR_PALLET_TOWN_STATE) > 1) { //! TODO
 		message(PalletTown_Text_WelcomeToShop)
 		waitmessage
 		pokemart(PalletTown_Mart_Mei)

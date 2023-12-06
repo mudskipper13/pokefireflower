@@ -4,112 +4,207 @@
 //! overworlds
 
 text PalletTown_Text_CanModifyGames {
-	format(
-		"FAB: Today's technology is kinda cool!\p"
+	poryswitch(LANG) {
+		_:		format(
+				"FAB: Today's technology is kinda cool!\p"
 
-		"FAB: You can now change certain games"
-		"to be whatever you want without"
-		"any worries!\p"
+				"FAB: You can now change certain games"
+				"to be whatever you want without"
+				"any worries!\p"
 
-		"FAB: …I honestly don't know what that"
-		"means, but it sounds cool!")
+				"FAB: …I honestly don't know what that"
+				"means, but it sounds cool!")
+
+		INA:	format(
+				"FAB: Teknologi zaman sekarang lumayan"
+				"keren!\p"
+
+				"FAB: Sekarang kamu bisa memodifikasi suatu"
+				"gim menjadi apapun yang kamu mau tanpa"
+				"khawatir!\p"
+
+				"FAB: …Aku sungguh tak tahu apa arti dari"
+				"itu, tapi itu kedengarannya keren!")
+	}
 }
 
 text PalletTown_Text_RaisingMonsToo {
-	format(
-		"TINA: I'm raising POKéMON, too.\p"
+	poryswitch(LANG) {
+		_:		format(
+				"TINA: I'm raising POKéMON, too.\p"
 
-		"TINA: When they get strong, they can\n"
-		"protect me.")
+				"TINA: When they get strong, they can\n"
+				"protect me.")
+
+		INA:	format(
+				"TINA: Aku juga merawat POKéMON.\p"
+
+				"TINA: Saat mereka menjadi lebih kuat,"
+				"mereka bisa melindungi ku.")
+	}
 }
 
 text PalletTown_Text_HiWelcome {
-	format(
-		"MEL: Hi, welcome to our SHOP!\n"
-		"How can I help you with?")
+	poryswitch(LANG) {
+		_:		format(
+				"MEL: Hi, welcome to our SHOP!\n"
+				"How can I help you with?")
+		INA:	format(
+				"MEL: Hai, selamat datang ke TOKO kami!"
+				"Apa yang bisa ku bantu?")
+	}
 }
 
 text PalletTown_Text_ThanksForVisiting {
-	format("MEL: Thanks for visiting us!")
+	poryswitch(LANG) {
+		_:		format("MEL: Thanks for visiting us!")
+		INA:	format("MEL: Terima kasih telah mengunjungi kami!")
+	}
 }
 
 text PalletTown_Text_HeyThereSorry {
-	format(
-		"MEY: Hey there! Sorry, but we're out of"
-		"stocks now. Come again at later time!"
-	)
+	poryswitch(LANG) {
+	_:		format(
+			"MEY: Hey there! Sorry, but we're out of "
+			"stocks now. Come again at later time!")
+	INA:	format(
+			"MEY: Halo! Maaf, tapi persediaan stok "
+			"kami baru saja habis. Kembali lagi di "
+			"waktu lain!")
+	}
 }
 
 text PalletTown_Text_WelcomeToShop {
-	format(
-		"MEI: Welcome to “our” SHOP.\n"
-		"What do you want…"
-	)
+	poryswitch(LANG) {
+		_:		format(
+				"MEI: Welcome to “our” SHOP.\n"
+				"What do you want…")
+		INA:	format(
+				"MEI: Selamat datang ke TOKO “kami”.\n"
+				"Kamu mau apa…")
+	}
 }
 
 text PalletTown_Text_ThanksForPurchasing {
-	format("MEI: Thanks for the purchase.")
+	poryswitch(LANG) {
+		_:		format("MEI: Thanks for the purchase.")
+		INA:	format("MEI: Terima kasih atas pembeliannya.")
+	}
 }
 
 text PalletTown_Text_SorryButNoMoreStock {
-	format(
-		"MEI: Sorry but you're out of luck, kid.\n"
-		"We have no more stocks, come back here later.")
+	poryswitch(LANG) {
+		_:		format(
+				"MEI: Sorry but you're out of luck, kid.\p"
+				"MEI: We have no more stocks, come back here"
+				"later.")
+		INA:	format(
+				"MEI: Maaf tapi kamu ketinggalan, dik.\p"
+				"MEI: Kita kehabisan stok, kembali kesini"
+				"nanti.")
+	}
 }
 
 text PalletTown_Text_MyGoodness {
-	format(
-		"MRS. FANNY: Ah… Thank goodness I was"
-		"just in the perfect time to shop here."
-		"Imagine coming here long enough that"
-		"everything has solds out…")
+	poryswitch(LANG) {
+		_:		format(
+				"MRS. FANNY: Ah… Thank goodness I was"
+				"just in the perfect time to shop here."
+				"Imagine coming here long enough that"
+				"everything has solds out…")
+		INA:	format(
+				"BU FANNY: Ah… Syukurlah saya datang"
+				"berbelanja disini di waktu yang tepat."
+				"Bayangkan telat datang kesini sampai"
+				"-sampai semua barangnya sudah ludes habis…")
+	}
 }
 
 text PalletTown_Text_IWonder {
-	format(
-		"ERIC: Hm, I wonder… If I ever get that"
-		"damn Seadra! This has been 20+ years!"
-		"All I got is just Magikarp, Magikarp,"
-		"and Magikarp! Argh!")
+	poryswitch(LANG) {
+		_:		format(
+				"ERIC: Hm, I wonder… If I ever get that"
+				"damn SEADRA! This has been 20+ years!\p"
+
+				"All I got is just MAGIKARP, MAGIKARP,"
+				"and MAGIKARP! Argh!")
+		INA:	format(
+				"ERIC: Hm, kapan… Kapan aku akhirnya"
+				"mendapatkan SEADRA menyebalkan itu! Ini"
+				"sudah 20+ tahun!\p"
+
+				"Semua yang aku dapat hanyalah MAGIKARP,"
+				"MAGIKARP, dan MAGIKARP! Argh!")
+	}
 }
 
 //! signs
 
 text PalletTown_Text_TrainerTipsSign {
-	format(
-		"TRAINER TIPS!\p"
+	poryswitch(LANG) {
+		_:		format(
+				"TRAINER TIPS!\p"
 
-		"Never forget to save your progress!\p"
+				"Never forget to save your progress!\p"
 
-		"The option to SAVE is located"
-		"in the START menu.")
+				"The option to SAVE is located"
+				"in the START menu.")
+		INA:	format(
+				"TIPS PELATIH!\p"
+
+				"Jangan lupa untuk menyimpan progres-mu!\p"
+
+				"Pengaturan untuk SIMPAN dapat ditemukan."
+				"di menu START.")
+	}
 }
 
 text PalletTown_Text_TownSign {
-	format(
-		"PALLET TOWN\n"
-		"The colorful journey awaits!")
+	poryswitch(LANG) {
+	_:		format(
+			"PALLET TOWN\n"
+			"The colorful journey awaits!")
+	INA:	format(
+			"DESA PALLET\n"
+			"Petualangan penuh warna menunggu!")
+	}
 }
 
 text PalletTown_Text_RoadSign {
-	format(
-		"{RIGHT_ARROW} PALLET TOWN'S POKéMON RESEARCH INSTITUTE\l"
-		"{UP_ARROW} ROUTE 1\l"
-		"{DOWN_ARROW} ROUTE 21")
+	poryswitch(LANG) {
+		_:		format(
+				"{RIGHT_ARROW} PALLET TOWN'S POKéMON RESEARCH INSTITUTE\l"
+				"{UP_ARROW} ROUTE 1\l"
+				"{DOWN_ARROW} ROUTE 21")
+		INA:	format(
+				"{RIGHT_ARROW} INSTITUSI PENELITIAN POKéMON DESA PALLET\l"
+				"{UP_ARROW} RUTE 1\l"
+				"{DOWN_ARROW} RUTE 21")
+	}
 }
 
 text PalletTown_Text_PlayersHouseSign {
-	format(
-		"STARKSON FAMILY's HOUSE")
+	poryswitch(LANG) {
+		_:		format("STARKSON FAMILY's HOUSE")
+		INA:	format("RUMAH KELUARGA STARKSON")
+	}
 }
 
 text PalletTown_Text_RivalsHouseSign {
-	format(
-		"OAK FAMILY'S HOUSE")
+	poryswitch(LANG) {
+		_:		format("OAK FAMILY'S HOUSE")
+		INA:	format("RUMAH KELUARGA OAK")
+	}
 }
 
 text PalletTown_Text_PalletTownMarketSign {
-	format(
-		"PALLET TOWN MARKET\n"
-		"Get your basic 'n cheap needs here!")
+	poryswitch(LANG) {
+		_:		format(
+				"PALLET TOWN MARKET\n"
+				"Get your basic but cheap needs here!")
+		INA:	format(
+				"MARKET DESA PALLET\n"
+				"Dapatkan kebutuhan yang biasa tetapi"
+				"murah-mu disini!")
+	}
 }
