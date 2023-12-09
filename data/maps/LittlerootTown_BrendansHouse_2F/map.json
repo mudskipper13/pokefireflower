@@ -15,7 +15,7 @@
   "connections": [
     {
       "map": "MAP_LITTLEROOT_TOWN_MAYS_HOUSE_1F",
-      "offset": 5,
+      "offset": 3,
       "direction": "up"
     }
   ],

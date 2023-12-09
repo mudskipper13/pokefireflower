@@ -15,14 +15,14 @@
   "connections": [
     {
       "map": "MAP_LITTLEROOT_TOWN_BRENDANS_HOUSE_2F",
-      "offset": -5,
+      "offset": -3,
       "direction": "down"
     }
   ],
   "object_events": [
     {
       "graphics_id": "OBJ_EVENT_GFX_VAR_0",
-      "x": 7,
+      "x": 8,
       "y": 5,
       "elevation": 0,
       "movement_type": "MOVEMENT_TYPE_FACE_UP",
@@ -36,28 +36,28 @@
   ],
   "warp_events": [
     {
-      "x": 10,
+      "x": 3,
       "y": 2,
       "elevation": 0,
       "dest_map": "MAP_LITTLEROOT_TOWN_BRENDANS_HOUSE_1F",
       "dest_warp_id": "1"
     },
     {
-      "x": 2,
+      "x": 4,
       "y": 5,
       "elevation": 0,
       "dest_map": "MAP_LITTLEROOT_TOWN_BRENDANS_HOUSE_2F",
       "dest_warp_id": "0"
     },
     {
-      "x": 0,
+      "x": 9,
       "y": 2,
       "elevation": 0,
       "dest_map": "MAP_LITTLEROOT_TOWN_BRENDANS_HOUSE_2F",
       "dest_warp_id": "0"
     },
     {
-      "x": 7,
+      "x": 8,
       "y": 5,
       "elevation": 0,
       "dest_map": "MAP_LITTLEROOT_TOWN_BRENDANS_HOUSE_2F",
@@ -74,16 +74,7 @@
   "coord_events": [
     {
       "type": "trigger",
-      "x": 0,
-      "y": 2,
-      "elevation": 0,
-      "var": "VAR_PALLET_TOWN_STATE",
-      "var_value": "0",
-      "script": "PlayersHouse_2F_MainInterior_TriggerScript_Attics"
-    },
-    {
-      "type": "trigger",
-      "x": 10,
+      "x": 3,
       "y": 2,
       "elevation": 0,
       "var": "VAR_LITTLEROOT_INTRO_STATE",
@@ -94,7 +85,7 @@
   "bg_events": [
     {
       "type": "sign",
-      "x": 11,
+      "x": 3,
       "y": 1,
       "elevation": 0,
       "player_facing_dir": "BG_EVENT_PLAYER_FACING_ANY",

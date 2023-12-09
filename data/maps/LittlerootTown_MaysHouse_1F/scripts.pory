@@ -9,12 +9,6 @@ script PlayersHouse_2F_MainInterior_MapScript_OnLoad {
 	call(Common_EventScript_SetupRivalGfxId)
 }
 
-script PlayersHouse_2F_MainInterior_TriggerScript_Attics {
-	lockall
-	msgbox(PlayersHouse_2F_MainInterior_Text_CantGoToAttics, MSGBOX_DEFAULT)
-	releaseall
-}
-
 script PlayersHouse_2F_MainInterior_TriggerScript_StoryTrigger {
 	lockall
 	special(SpawnCameraObject)
@@ -28,7 +22,7 @@ script PlayersHouse_2F_MainInterior_TriggerScript_StoryTrigger {
 	playse(SE_PIN)
 	waitfieldeffect(FLDEFF_EMOTE_ICON)
 	playbgm(MUS_ENCOUNTER_MAY, FALSE)
-	textcolor(NPC_TEXT_COLOR_FEMALE)
+	textcolor(NPC_TEXT_COLOR_RIVAL)
 	msgbox(PlayersHouse_2F_MainInterior_Text_OhHeyGoodMorning, MSGBOX_DEFAULT)
 	closemessage
 	applymovement(OBJ_EVENT_ID_PLAYER, Common_Movement_WalkInPlaceFasterDown)
@@ -39,27 +33,30 @@ script PlayersHouse_2F_MainInterior_TriggerScript_StoryTrigger {
 	applymovement(OBJ_EVENT_ID_CAMERA, PlayersHouse_2F_MainInterior_Movement_CameraApproachToStairs)
 	applymovement(LOCALID_RIVAL, PlayersHouse_2F_MainInterior_Movement_RivalApproachToStairs)
 	msgbox(PlayersHouse_2F_MainInterior_Text_ByTheWay, MSGBOX_DEFAULT)
-	textcolor(NPC_TEXT_COLOR_MALE)
+	waitmessage
+	textcolor(NPC_TEXT_COLOR_PLAYER)
 	msgbox(PlayersHouse_2F_MainInterior_Text_OhIsThatSo, MSGBOX_DEFAULT)
 	applymovement(LOCALID_RIVAL, Common_Movement_ExclamationMark)
 	playse(SE_PIN)
 	waitfieldeffect(FLDEFF_EMOTE_ICON)
-	textcolor(NPC_TEXT_COLOR_FEMALE)
+	textcolor(NPC_TEXT_COLOR_RIVAL)
 	msgbox(PlayersHouse_2F_MainInterior_Text_WhatYoureJoking, MSGBOX_DEFAULT)
-	textcolor(NPC_TEXT_COLOR_MALE)
+	textcolor(NPC_TEXT_COLOR_PLAYER)
 	msgbox(PlayersHouse_2F_MainInterior_Text_WaitYouMean, MSGBOX_DEFAULT)
-	textcolor(NPC_TEXT_COLOR_FEMALE)
+	textcolor(NPC_TEXT_COLOR_RIVAL)
 	msgbox(PlayersHouse_2F_MainInterior_Text_Yeah, MSGBOX_DEFAULT)
-	textcolor(NPC_TEXT_COLOR_MALE)
+	textcolor(NPC_TEXT_COLOR_PLAYER)
 	msgbox(PlayersHouse_2F_MainInterior_Text_OhRight, MSGBOX_DEFAULT)
-	textcolor(NPC_TEXT_COLOR_FEMALE)
+	textcolor(NPC_TEXT_COLOR_RIVAL)
 	msgbox(PlayersHouse_2F_MainInterior_Text_OhReally, MSGBOX_DEFAULT)
+	textcolor(NPC_TEXT_COLOR_FEMALE)
 	msgbox(PlayersHouse_2F_MainInterior_Text_GuestsComing, MSGBOX_DEFAULT)
 	applymovement(LOCALID_RIVAL, Common_Movement_ExclamationMark)
 	applymovement(OBJ_EVENT_ID_PLAYER, Common_Movement_ExclamationMark)
 	playse(SE_PIN)
 	waitfieldeffect(FLDEFF_EMOTE_ICON)
 	applymovement(LOCALID_RIVAL, Common_Movement_FaceLeft)
+	textcolor(NPC_TEXT_COLOR_RIVAL)
 	msgbox(PlayersHouse_2F_MainInterior_Text_AlrightMom, MSGBOX_DEFAULT)
 	applymovement(LOCALID_RIVAL, Common_Movement_FaceUp)
 	msgbox(PlayersHouse_2F_MainInterior_Text_LookAtThat, MSGBOX_DEFAULT)
@@ -76,26 +73,27 @@ script PlayersHouse_2F_MainInterior_TriggerScript_StoryTrigger {
 	fadedefaultbgm
 	special(RemoveCameraObject)
 	setvar(VAR_LITTLEROOT_INTRO_STATE, 1)
+	textcolor(NPC_TEXT_COLOR_DEFAULT)
 	releaseall
 }
 
 movement PlayersHouse_2F_MainInterior_Movement_RivalApproachToStairs {
-	walk_right * 3
+	walk_left * 5
 	walk_up * 2
 	delay_16
 	delay_16
 }
 
 movement PlayersHouse_2F_MainInterior_Movement_CameraApproachToStairs {
-	walk_right * 3
+	walk_left * 5
 	walk_up * 3
 	delay_16
 	delay_16
 }
 
 movement PlayersHouse_2F_MainInterior_Movement_CameraGoToRivalStairs {
+	walk_right * 5
 	walk_down * 3
-	walk_left * 3
 	delay_16
 	delay_16
 }
@@ -112,24 +110,14 @@ movement PlayersHouse_2F_MainInterior_Movement_PlayerMoveAway {
 movement PlayersHouse_2F_MainInterior_Movement_RivalMoveAway {
 	walk_up
 	delay_16
-	delay_16
 	walk_left
+	delay_16
 }
 
 movement PlayersHouse_2F_MainInterior_Movement_CameraMoveBack {
 	walk_right
 	delay_16
 	delay_16
-}
-
-text PlayersHouse_2F_MainInterior_Text_CantGoToAttics {
-	poryswitch(LANG) {
-		_:		format(	"{PLAYER}: I can't go to the attics now,"
-						"others are waiting for me below!")
-		INA:	format(	"{PLAYER}: Aku tidak bisa naik ke loteng"
-						"sekarang, yang lain sedang menungguku"
-						"dibawah!")
-	}
 }
 
 text PlayersHouse_2F_MainInterior_Text_OhHeyGoodMorning {
