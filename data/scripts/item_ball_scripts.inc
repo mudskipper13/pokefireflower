@@ -657,3 +657,11 @@ MagmaHideout_4F_EventScript_ItemMaxRevive::
 MagmaHideout_3F_3R_EventScript_ItemEscapeRope::
 	finditem ITEM_ESCAPE_ROPE
 	end
+
+Common_EventScript_FindItem::
+	callnative GetObjectEventTrainerRangeAndMovementRangesFromTemplate
+	goto_if_ge VAR_0x800B, 1, Common_EventScript_ContinueFindItem
+	setvar VAR_0x800B, 1
+Common_EventScript_ContinueFindItem:
+	finditem VAR_0x800A, VAR_0x800B
+	end

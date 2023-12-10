@@ -526,3 +526,11 @@ void InitRamScript_NoObjectEvent(u8 *script, u16 scriptSize)
         scriptSize = sizeof(gSaveBlock1Ptr->ramScript.data.script);
     InitRamScript(script, scriptSize, MAP_GROUP(UNDEFINED), MAP_NUM(UNDEFINED), NO_OBJECT);
 }
+
+void GetObjectEventTrainerRangeAndMovementRangesFromTemplate(void)
+{
+    const struct ObjectEventTemplate *objEventTemp = &gMapHeader.events->objectEvents[gSpecialVar_LastTalked - 1];
+    gSpecialVar_0x800A = objEventTemp->trainerRange_berryTreeId; //! item
+    //! up to 30 sadly, unlikely that i would be giving out 30+ items tho
+    gSpecialVar_0x800B = objEventTemp->movementRangeX + objEventTemp->movementRangeY; //! quantity
+}
