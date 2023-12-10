@@ -245,6 +245,7 @@
 #define MOVEMENT_ACTION_EMOTE_DOTS                      0x9E
 #define MOVEMENT_ACTION_EMOTE_X                         0x9F
 #define MOVEMENT_ACTION_EMOTE_DOUBLE_EXCL_MARK          0xA0
+#define MOVEMENT_ACTION_EMOTE_HAPPY                     0xA1
 
 #define MOVEMENT_ACTION_STEP_END 0xFE
 #define MOVEMENT_ACTION_NONE     0xFF

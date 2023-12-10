@@ -62,14 +62,11 @@ bool8 gTrainerApproachedPlayer;
 EWRAM_DATA u8 gApproachingTrainerId = 0;
 
 // const rom data
-static const u8 sEmoticons[][0x80] = {
-    INCBIN_U8("graphics/field_effects/pics/emotion_exclamation.4bpp"),
-    INCBIN_U8("graphics/field_effects/pics/emotion_question.4bpp"),
-    INCBIN_U8("graphics/field_effects/pics/emotion_heart.4bpp"),
-    INCBIN_U8("graphics/field_effects/pics/emotion_dots.4bpp"),
-    INCBIN_U8("graphics/field_effects/pics/emote_x.4bpp"),
-    INCBIN_U8("graphics/field_effects/pics/emotion_double_exclamation.4bpp"),
-};
+#ifdef SUPERLEAF
+static const u8 sEmoticons[] = INCBIN_U8("graphics/field_effects/pics/emotes_sl.4bpp");
+#else
+static const u8 sEmoticons[] = INCBIN_U8("graphics/field_effects/pics/emotes_ff.4bpp");
+#endif
 
 static u8 (*const sDirectionalApproachDistanceFuncs[])(struct ObjectEvent *trainerObj, s16 range, s16 x, s16 y) =
 {
@@ -135,41 +132,19 @@ static const struct OamData sOamData_Icons =
     .affineParam = 0,
 };
 
-static const union AnimCmd sSpriteAnim_IconExclamation[] =
-{
-    ANIMCMD_FRAME(0, 60),
-    ANIMCMD_END
-};
+#define EMOTE_FRAME(num)\
+{\
+    ANIMCMD_FRAME(num, 60),\
+    ANIMCMD_END\
+}
 
-static const union AnimCmd sSpriteAnim_IconQuestion[] =
-{
-    ANIMCMD_FRAME(1, 60),
-    ANIMCMD_END
-};
-
-static const union AnimCmd sSpriteAnim_IconHeart[] =
-{
-    ANIMCMD_FRAME(2, 60),
-    ANIMCMD_END
-};
-
-static const union AnimCmd sSpriteAnim_IconDots[] =
-{
-    ANIMCMD_FRAME(3, 60),
-    ANIMCMD_END
-};
-
-static const union AnimCmd sSpriteAnim_IconX[] =
-{
-    ANIMCMD_FRAME(4, 60),
-    ANIMCMD_END
-};
-
-static const union AnimCmd sSpriteAnim_IconDoubleExclamation[] =
-{
-    ANIMCMD_FRAME(5, 60),
-    ANIMCMD_END
-};
+static const union AnimCmd sSpriteAnim_IconExclamation[] = EMOTE_FRAME(0);
+static const union AnimCmd sSpriteAnim_IconQuestion[] = EMOTE_FRAME(1);
+static const union AnimCmd sSpriteAnim_IconHeart[] = EMOTE_FRAME(2);
+static const union AnimCmd sSpriteAnim_IconDots[] = EMOTE_FRAME(3);
+static const union AnimCmd sSpriteAnim_IconX[] = EMOTE_FRAME(4);
+static const union AnimCmd sSpriteAnim_IconDoubleExclamation[] = EMOTE_FRAME(5);
+static const union AnimCmd sSpriteAnim_Happy[] = EMOTE_FRAME(6);
 
 #define ICON_SIZE 128
 
@@ -181,16 +156,18 @@ static const struct SpriteFrameImage sSpriteImageTable_EmoteIcon[] =
     [ICON_DOTS]        = { (u8 *)sEmoticons + ICON_DOTS * ICON_SIZE, ICON_SIZE },
     [ICON_X]           = { (u8 *)sEmoticons + ICON_X * ICON_SIZE, ICON_SIZE },
     [ICON_DOUBLE_EXCL] = { (u8 *)sEmoticons + ICON_DOUBLE_EXCL * ICON_SIZE, ICON_SIZE },
+    [ICON_HAPPY]       = { (u8 *)sEmoticons + ICON_HAPPY * ICON_SIZE, ICON_SIZE },
 };
 
 static const union AnimCmd *const sSpriteAnimTable_Icons[] =
 {
-    sSpriteAnim_IconExclamation,
-    sSpriteAnim_IconQuestion,
-    sSpriteAnim_IconHeart,
-    sSpriteAnim_IconDots,
-    sSpriteAnim_IconX,
-    sSpriteAnim_IconDoubleExclamation,
+    [ICON_EXCLAMATION] = sSpriteAnim_IconExclamation,
+    [ICON_QUESTION]    = sSpriteAnim_IconQuestion,
+    [ICON_HEART]       = sSpriteAnim_IconHeart,
+    [ICON_DOTS]        = sSpriteAnim_IconDots,
+    [ICON_X]           = sSpriteAnim_IconX,
+    [ICON_DOUBLE_EXCL] = sSpriteAnim_IconDoubleExclamation,
+    [ICON_HAPPY]       = sSpriteAnim_Happy,
 };
 
 static const struct SpriteTemplate sSpriteTemplate_EmoteIcons =
@@ -726,7 +703,7 @@ static void inline SetIconSpriteData(struct Sprite *sprite)
     sprite->sYVelocity = -5;
     sprite->sFldEffId = FLDEFF_EMOTE_ICON;
 
-    if (gFieldEffectArguments[3] >= ARRAY_COUNT(sSpriteImageTable_EmoteIcon))
+    if (gFieldEffectArguments[3] >= ARRAY_COUNT(sSpriteAnimTable_Icons))
         StartSpriteAnim(sprite, ICON_EXCLAMATION);
     else
         StartSpriteAnim(sprite, gFieldEffectArguments[3]);

@@ -130,5 +130,6 @@
 #define ICON_DOTS        3
 #define ICON_X           4
 #define ICON_DOUBLE_EXCL 5
+#define ICON_HAPPY       6
 
 #endif // GUARD_FIELD_EFFECT_CONSTANTS_H

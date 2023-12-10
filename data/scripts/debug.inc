@@ -117,6 +117,18 @@ Debug_EventScript_Script_2::
 	playse SE_PIN
 	waitfieldeffect FLDEFF_EMOTE_ICON
 	waitse
+	applymovement OBJ_EVENT_ID_PLAYER, Common_Movement_DoubleExclMark
+	playse SE_PIN
+	waitfieldeffect FLDEFF_EMOTE_ICON
+	waitse
+	applymovement OBJ_EVENT_ID_PLAYER, Common_Movement_X
+	playse SE_PIN
+	waitfieldeffect FLDEFF_EMOTE_ICON
+	waitse
+	applymovement OBJ_EVENT_ID_PLAYER, Common_Movement_Happy
+	playse SE_PIN
+	waitfieldeffect FLDEFF_EMOTE_ICON
+	waitse
 	releaseall
 	end
 

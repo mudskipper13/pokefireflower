@@ -14,6 +14,18 @@ Common_Movement_Dots:
 	emote_dots
 	step_end
 
+Common_Movement_DoubleExclMark:
+	emote_double_exclamation_mark
+	step_end
+
+Common_Movement_X:
+	emote_x
+	step_end
+
+Common_Movement_Happy:
+	emote_happy
+	step_end
+
 Common_Movement_Delay48:
 	delay_16
 	delay_16
