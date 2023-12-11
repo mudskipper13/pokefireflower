@@ -1391,6 +1391,11 @@
 	.4byte \sidestatus
 	.endm
 
+	.macro trycopycat failInstr:req
+	callnative BS_TryCopycat
+	.4byte \failInstr
+	.endm
+
 	.macro setzeffect
 	callnative BS_SetZEffect
 	.endm
@@ -1539,6 +1544,11 @@
 
 	.macro trytrainerslidedynamaxmsg
 	callnative BS_TryTrainerSlideDynamaxMsg
+	.endm
+
+	.macro tryhealpulse failInstr:req
+	callnative BS_TryHealPulse
+	.4byte \failInstr
 	.endm
 
 @ various command changed to more readable macros
@@ -1732,11 +1742,6 @@
 	various \battler, VARIOUS_SET_LAST_USED_ABILITY
 	.endm
 
-	.macro tryhealpulse battler:req, failInstr:req
-	various \battler, VARIOUS_TRY_HEAL_PULSE
-	.4byte \failInstr
-	.endm
-
 	.macro tryquash failInstr:req
 	various BS_ATTACKER, VARIOUS_TRY_QUASH
 	.4byte \failInstr
@@ -1803,11 +1808,6 @@
 	.macro jumpifcantusesynchronoise jumpInstr:req
 	various BS_ATTACKER, VARIOUS_TRY_SYNCHRONOISE
 	.4byte \jumpInstr
-	.endm
-
-	.macro trycopycat failInstr:req
-	various BS_ATTACKER, VARIOUS_TRY_COPYCAT
-	.4byte \failInstr
 	.endm
 
 	.macro showabilitypopup battler:req
