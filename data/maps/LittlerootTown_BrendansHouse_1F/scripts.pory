@@ -5,18 +5,3 @@ mapscripts LittlerootTown_BrendansHouse_1F_MapScripts {}
 script PalletTown_PlayersHouse_1F_EventScript_Mom {
 	msgbox(PalletTown_PlayersHouse_1F_Text_HiHoney, MSGBOX_NPC)
 }
-
-text PalletTown_PlayersHouse_1F_Text_HiHoney {
-	poryswitch(LANG) {
-		_ {
-			format(	"MOM: Hi, honey.\p"
-					"Feel free to take some rests here"
-					"alongside your POKéMON friends, okay?")
-		}
-		INA {
-			format(	"IBU: Hai, sayang.\p"
-					"Silahkan istirahat disini bersama"
-					"teman-teman POKéMON-mu, oke?")
-		}
-	}
-}
