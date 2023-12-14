@@ -5,7 +5,10 @@ text Common_Names_Player {
 }
 
 text Common_Names_Mom {
-	"MOM"
+	poryswitch(LANG) {
+		_:		"MOM"
+		INA:	"IBU"
+	}
 }
 
 text Common_Names_Rival {
