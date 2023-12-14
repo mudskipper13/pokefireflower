@@ -3,5 +3,5 @@
 mapscripts LittlerootTown_BrendansHouse_1F_MapScripts {}
 
 script PalletTown_PlayersHouse_1F_EventScript_Mom {
-	msgbox(PalletTown_PlayersHouse_1F_Text_HiHoney, MSGBOX_NPC)
+	msgbox(PalletTown_PlayersHouse_1F_Text_HiHoney, MSGBOX_NPC, Common_Names_Mom)
 }

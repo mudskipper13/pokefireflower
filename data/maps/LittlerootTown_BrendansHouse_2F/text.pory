@@ -17,12 +17,12 @@ text PalletTown_PlayersRoom_Text_ItsAGameCube {
 text PalletTown_PlayersRoom_Text_OhNotebook {
 	poryswitch(LANG) {
 		_ {
-			format(	"{PLAYER}: Oh, my notebook.\p"
+			format(	"Oh, my notebook.\p"
 					"Maybe I should carry it with me"
 					"later.")
 		}
 		INA {
-			format(	"{PLAYER}: Oh, buku catatanku.\p"
+			format(	"Oh, buku catatanku.\p"
 					"Mungkin aku harus membawanya"
 					"denganku nanti.")
 		}
@@ -45,49 +45,45 @@ text PlayersHouse_2F_Text_ClockIsStopped {
 text Common_Text_LookCloserAtMap {
 	poryswitch(LANG) {
 		_ {
-			format(	"{PLAYER} took a closer look at the"
-					"KANTO region map.")
+			format(	"{PLAYER} took a closer look at the KANTO region map.")
 		}
 		INA {
-			format(	"{PLAYER} melihat lebih dekat ke map"
-					"daerah KANTO.")
+			format(	"{PLAYER} melihat lebih dekat ke map daerah KANTO.")
 		}
 	}
 }
 
 text PalletTown_PlayersRoom_Text_ShouldPlayerRest {
 	poryswitch(LANG) {
-		_:		format("{PLAYER}: Should we rest here?")
-		INA:	format("{PLAYER}: Apakah kita istirahat disini?")
+		_:		format("Should we rest here?")
+		INA:	format("Apakah kita istirahat disini?")
 	}
 }
 
 text PalletTown_PlayersRoom_Text_AlrightRestTime {
 	poryswitch(LANG) {
-		_:		format("{PLAYER}: Alright, time to rest.")
-		INA:	format("{PLAYER}: Baiklah, saatnya istirahat.")
+		_:		format("Alright, time to rest.")
+		INA:	format("Baiklah, saatnya istirahat.")
 	}
 }
 
 text PalletTown_PlayersRoom_Text_AhBetter {
 	poryswitch(LANG) {
-		_:		format("{PLAYER}: Ah, better!")
-		INA:	format("{PLAYER}: Ah, lebih baik!")
+		_:		format("Ah, better!")
+		INA:	format("Ah, lebih baik!")
 	}
 }
 
 text PalletTown_PlayersRoom_Text_HmMaybeNot {
 	poryswitch(LANG) {
-		_:		format("{PLAYER}: Hm… Maybe not.")
-		INA:	format("{PLAYER}: Hm… Mungkin tidak.")
+		_:		format("Hm… Maybe not.")
+		INA:	format("Hm… Mungkin tidak.")
 	}
 }
 
 text PalletTown_PlayersRoom_Text_CantRestOthersWaiting {
 	poryswitch(LANG) {
-		_:		format(	"{PLAYER}: I can't rest now,"
-						"others are waiting for me below!")
-		INA:	format(	"{PLAYER}: Aku gak bisa tidur sekarang,"
-						"yang lain sedang menungguku dibawah!")
+		_:		format(	"I can't rest now, others are waiting for me below!")
+		INA:	format(	"Aku gak bisa tidur sekarang, yang lain sedang menungguku dibawah!")
 	}
 }

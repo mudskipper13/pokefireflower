@@ -6,7 +6,7 @@ script PalletTown_PlayersRoom_EventScript_Bed {
 	waitmovement(0)
 	textcolor(NPC_TEXT_COLOR_PLAYER)
 	if (!var(VAR_PALLET_TOWN_STATE)) {
-		msgbox(PalletTown_PlayersRoom_Text_CantRestOthersWaiting, MSGBOX_AUTOCLOSE)
+		msgbox(PalletTown_PlayersRoom_Text_CantRestOthersWaiting, MSGBOX_AUTOCLOSE, Common_Names_Player)
 		if (var(VAR_RESULT) == FEMALE) {
 			applymovement(OBJ_EVENT_ID_PLAYER, PalletTown_PlayersRoom_Movement_WalkRight)
 		} else {
@@ -18,9 +18,9 @@ script PalletTown_PlayersRoom_EventScript_Bed {
 	}
 	msgbox(PalletTown_PlayersRoom_Text_ShouldPlayerRest, MSGBOX_YESNO)
 	if (var(VAR_RESULT)) {
-		msgbox(PalletTown_PlayersRoom_Text_AlrightRestTime, MSGBOX_AUTOCLOSE)
+		msgbox(PalletTown_PlayersRoom_Text_AlrightRestTime, MSGBOX_AUTOCLOSE, Common_Names_Player)
 		call(Common_EventScript_OutOfCenterPartyHeal)
-		msgbox(PalletTown_PlayersRoom_Text_AhBetter, MSGBOX_AUTOCLOSE)
+		msgbox(PalletTown_PlayersRoom_Text_AhBetter, MSGBOX_AUTOCLOSE, Common_Names_Player)
 		checkplayergender
 		if (var(VAR_RESULT) == FEMALE) {
 			applymovement(OBJ_EVENT_ID_PLAYER, PalletTown_PlayersRoom_Movement_WalkLeft)
@@ -29,7 +29,7 @@ script PalletTown_PlayersRoom_EventScript_Bed {
 		}
 		waitmovement(0)
 	} else {
-		msgbox(PalletTown_PlayersRoom_Text_HmMaybeNot, MSGBOX_AUTOCLOSE)
+		msgbox(PalletTown_PlayersRoom_Text_HmMaybeNot, MSGBOX_AUTOCLOSE, Common_Names_Player)
 		checkplayergender
 		if (var(VAR_RESULT) == FEMALE) {
 			applymovement(OBJ_EVENT_ID_PLAYER, PalletTown_PlayersRoom_Movement_WalkRight)
@@ -64,7 +64,9 @@ script PlayersHouse_2F_EventScript_GameCube {
 }
 
 script PlayersHouse_2F_EventScript_Notebook {
-	msgbox(PalletTown_PlayersRoom_Text_OhNotebook, MSGBOX_SIGN)
+	lock
+	msgbox(PalletTown_PlayersRoom_Text_OhNotebook, MSGBOX_DEFAULT, Common_Names_Player)
+	release
 }
 
 movement PalletTown_PlayersRoom_Movement_WalkLeft {

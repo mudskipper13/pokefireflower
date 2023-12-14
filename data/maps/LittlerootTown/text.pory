@@ -6,24 +6,24 @@
 text PalletTown_Text_CanModifyGames {
 	poryswitch(LANG) {
 		_:		format(
-				"FAB: Today's technology is kinda cool!\p"
+				"Today's technology is kinda cool!\p"
 
-				"FAB: You can now change certain games"
+				"You can now change certain games"
 				"to be whatever you want without"
 				"any worries!\p"
 
-				"FAB: …I honestly don't know what that"
+				"…I honestly don't know what that"
 				"means, but it sounds cool!")
 
 		INA:	format(
-				"FAB: Teknologi zaman sekarang lumayan"
+				"Teknologi zaman sekarang lumayan"
 				"keren!\p"
 
-				"FAB: Sekarang kamu bisa memodifikasi suatu"
+				"Sekarang kamu bisa memodifikasi suatu"
 				"gim menjadi apapun yang kamu mau tanpa"
 				"khawatir!\p"
 
-				"FAB: …Aku sungguh tak tahu apa arti dari"
+				"…Aku sungguh tak tahu apa arti dari"
 				"itu, tapi itu kedengarannya keren!")
 	}
 }
@@ -31,15 +31,15 @@ text PalletTown_Text_CanModifyGames {
 text PalletTown_Text_RaisingMonsToo {
 	poryswitch(LANG) {
 		_:		format(
-				"TINA: I'm raising POKéMON, too.\p"
+				"I'm raising POKéMON, too.\p"
 
-				"TINA: When they get strong, they can\n"
+				"When they get strong, they can\n"
 				"protect me.")
 
 		INA:	format(
-				"TINA: Aku juga merawat POKéMON.\p"
+				"Aku juga merawat POKéMON.\p"
 
-				"TINA: Saat mereka menjadi lebih kuat,"
+				"Saat mereka menjadi lebih kuat,"
 				"mereka bisa melindungi ku.")
 	}
 }
@@ -47,28 +47,28 @@ text PalletTown_Text_RaisingMonsToo {
 text PalletTown_Text_HiWelcome {
 	poryswitch(LANG) {
 		_:		format(
-				"MEL: Hi, welcome to our SHOP!\n"
+				"Hi, welcome to our SHOP!\n"
 				"How can I help you with?")
 		INA:	format(
-				"MEL: Hai, selamat datang ke TOKO kami!"
+				"Hai, selamat datang ke TOKO kami!"
 				"Apa yang bisa ku bantu?")
 	}
 }
 
 text PalletTown_Text_ThanksForVisiting {
 	poryswitch(LANG) {
-		_:		format("MEL: Thanks for visiting us!")
-		INA:	format("MEL: Terima kasih telah mengunjungi kami!")
+		_:		format("Thanks for visiting us!")
+		INA:	format("Terima kasih telah mengunjungi kami!")
 	}
 }
 
 text PalletTown_Text_HeyThereSorry {
 	poryswitch(LANG) {
 	_:		format(
-			"MEY: Hey there! Sorry, but we're out of "
+			"Hey there! Sorry, but we're out of "
 			"stocks now. Come again at later time!")
 	INA:	format(
-			"MEY: Halo! Maaf, tapi persediaan stok "
+			"Halo! Maaf, tapi persediaan stok "
 			"kami baru saja habis. Kembali lagi di "
 			"waktu lain!")
 	}
@@ -77,30 +77,30 @@ text PalletTown_Text_HeyThereSorry {
 text PalletTown_Text_WelcomeToShop {
 	poryswitch(LANG) {
 		_:		format(
-				"MEI: Welcome to “our” SHOP.\n"
+				"Welcome to “our” SHOP.\n"
 				"What do you want…")
 		INA:	format(
-				"MEI: Selamat datang ke TOKO “kami”.\n"
+				"Selamat datang ke TOKO “kami”.\n"
 				"Kamu mau apa…")
 	}
 }
 
 text PalletTown_Text_ThanksForPurchasing {
 	poryswitch(LANG) {
-		_:		format("MEI: Thanks for the purchase.")
-		INA:	format("MEI: Terima kasih atas pembeliannya.")
+		_:		format("Thanks for the purchase.")
+		INA:	format("Terima kasih atas pembeliannya.")
 	}
 }
 
 text PalletTown_Text_SorryButNoMoreStock {
 	poryswitch(LANG) {
 		_:		format(
-				"MEI: Sorry but you're out of luck, kid.\p"
-				"MEI: We have no more stocks, come back here"
+				"Sorry but you're out of luck, kid.\p"
+				"We have no more stocks, come back here"
 				"later.")
 		INA:	format(
-				"MEI: Maaf tapi kamu ketinggalan, dik.\p"
-				"MEI: Kita kehabisan stok, kembali kesini"
+				"Maaf tapi kamu ketinggalan, dik.\p"
+				"Kita kehabisan stok, kembali kesini"
 				"nanti.")
 	}
 }
@@ -108,12 +108,12 @@ text PalletTown_Text_SorryButNoMoreStock {
 text PalletTown_Text_MyGoodness {
 	poryswitch(LANG) {
 		_:		format(
-				"MRS. FANNY: Ah… Thank goodness I was"
+				"Ah… Thank goodness I was"
 				"just in the perfect time to shop here."
 				"Imagine coming here long enough that"
 				"everything has solds out…")
 		INA:	format(
-				"BU FANNY: Ah… Syukurlah saya datang"
+				"Ah… Syukurlah saya datang"
 				"berbelanja disini di waktu yang tepat."
 				"Bayangkan telat datang kesini sampai"
 				"-sampai semua barangnya sudah ludes habis…")
@@ -123,13 +123,13 @@ text PalletTown_Text_MyGoodness {
 text PalletTown_Text_IWonder {
 	poryswitch(LANG) {
 		_:		format(
-				"ERIC: Hm, I wonder… If I ever get that"
+				"Hm, I wonder… If I ever get that"
 				"damn SEADRA! This has been 20+ years!\p"
 
 				"All I got is just MAGIKARP, MAGIKARP,"
 				"and MAGIKARP! Argh!")
 		INA:	format(
-				"ERIC: Hm, kapan… Kapan aku akhirnya"
+				"Hm, kapan… Kapan aku akhirnya"
 				"mendapatkan SEADRA menyebalkan itu! Ini"
 				"sudah 20+ tahun!\p"
 

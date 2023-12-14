@@ -1,11 +1,11 @@
 text PlayersHouse_2F_MainInterior_Text_OhHeyGoodMorning {
 	poryswitch(LANG) {
 		_:		format(
-				"LIME: Oh hey,{PAUSE 16} good morning {PLAYER}!\p"
+				"Oh hey,{PAUSE 16} good morning {PLAYER}!\p"
 				"I thought you're still"
 				"sleeping,{PAUSE 16} heh.")
 		INA:	format(
-				"LIME: Oh hei,{PAUSE 16} selamat pagi {PLAYER}!\p"
+				"Oh hei,{PAUSE 16} selamat pagi {PLAYER}!\p"
 				"Gue kira lu masih tidur,{PAUSE 16} heh.")
 	}
 }
@@ -13,16 +13,16 @@ text PlayersHouse_2F_MainInterior_Text_OhHeyGoodMorning {
 text PlayersHouse_2F_MainInterior_Text_ByTheWay {
 	poryswitch(LANG) {
 		_:		format(
-				"LIME: By the way,{PAUSE 16} I've heard that GRAMP"
+				"By the way,{PAUSE 16} I've heard that GRAMP"
 				"MARCUS from STARION is coming over to us"
 				"today from MOM earlier.\p"
-				"LIME: I wonder when he's going to arrive,{PAUSE 16}"
+				"I wonder when he's going to arrive,{PAUSE 16}"
 				"I'm so excited to meet GRAMPs again!")
 		INA:	format(
-				"LIME: Ngomong-ngomong,{PAUSE 16} aku denger KAKEK"
+				"Ngomong-ngomong,{PAUSE 16} aku denger KAKEK"
 				"MARCUS dari STARION bakalan mengunjungin kita hari"
 				"ini dari IBU tadi.\p"
-				"LIME: Kira-kira kapan sampainya yah,{PAUSE 16}"
+				"Kira-kira kapan sampainya yah,{PAUSE 16}"
 				"gue semangat banget pengen ketemu KAKEK lagi!")
 	}
 }
@@ -30,12 +30,12 @@ text PlayersHouse_2F_MainInterior_Text_ByTheWay {
 text PlayersHouse_2F_MainInterior_Text_OhIsThatSo {
 	poryswitch(LANG) {
 		_:		format(
-				"{PLAYER}: Oh…{PAUSE 16} is that so?\p"
+				"Oh…{PAUSE 16} is that so?\p"
 				"I don't remember we have a grandpa,{PAUSE 16}"
 				"especially from a REGION I've never"
 				"heard of,{PAUSE 16} if I'm being honest with you.")
 		INA:	format(
-				"{PLAYER}: Hah…{PAUSE 16} iya emang?\p"
+				"Hah…{PAUSE 16} iya emang?\p"
 				"Aku ga inget kita punya kakek,{PAUSE 16}"
 				"apalagi dari DAERAH yang aku ga pernah denger,"
 				"{PAUSE 16} kalo aku jujur ama lu.")
@@ -45,13 +45,13 @@ text PlayersHouse_2F_MainInterior_Text_OhIsThatSo {
 text PlayersHouse_2F_MainInterior_Text_WhatYoureJoking {
 	poryswitch(LANG) {
 		_:		format(
-				"LIME: What?!{PAUSE 16} You're joking,{PAUSE 8} right?{PAUSE 16}\n"
+				"What?!{PAUSE 16} You're joking,{PAUSE 8} right?{PAUSE 16}\n"
 				"How can you NOT remember him?!{PAUSE 30}\p"
 				"He's the one that gave us cool stuff"
 				"when we're kids and field trips to"
 				"STARION!")
 		INA:	format(
-				"LIME: Lho?!{PAUSE 16} Lu becanda?{PAUSE 16}\n"
+				"Lho?!{PAUSE 16} Lu becanda?{PAUSE 16}\n"
 				"Gimana bisa NGGA inget kakek?!{PAUSE 30}\p"
 				"Kan KAKEK yang suka ngasih kita hadiah keren waktu kita"
 				"jalan-jalan ke STARION dulu masih kecil lho!")
@@ -61,11 +61,11 @@ text PlayersHouse_2F_MainInterior_Text_WhatYoureJoking {
 text PlayersHouse_2F_MainInterior_Text_WaitYouMean {
 	poryswitch(LANG) {
 		_:		format(
-				"{PLAYER}: Wait,{PAUSE 16} you mean that old man"
+				"Wait,{PAUSE 16} you mean that old man"
 				"who has that funny nose and mustache"
 				"who comes here with cool stuff?")
 		INA:	format(
-				"{PLAYER}: Tunggu,{PAUSE 16} maksudnya"
+				"Tunggu,{PAUSE 16} maksudnya"
 				"si kakek idung lucu berkumis yang suka"
 				"kesini bawa-bawa hadiah keren?")
 	}
@@ -73,23 +73,23 @@ text PlayersHouse_2F_MainInterior_Text_WaitYouMean {
 
 text PlayersHouse_2F_MainInterior_Text_Yeah {
 	poryswitch(LANG) {
-		_:		format(	"LIME: Y-yeah…")
-		INA:	format(	"LIME: Y-ya…")
+		_:		format(	"Y-yeah…")
+		INA:	format(	"Y-ya…")
 	}
 }
 
 text PlayersHouse_2F_MainInterior_Text_OhRight {
 	poryswitch(LANG) {
 		_:		format(
-				"{PLAYER}: Oh right,{PAUSE 16} I remember him now!{PAUSE 30}\n"
+				"Oh right,{PAUSE 16} I remember him now!{PAUSE 30}\n"
 				"Sorry about that,{PAUSE 16} heh.\p"
-				"{PLAYER}: Funnily enough,{PAUSE 16} I actually just somehow"
+				"Funnily enough,{PAUSE 16} I actually just somehow"
 				"dreamt of him last night,{PAUSE 16} saying that he's"
 				"going to PALLET TOWN to meet us.")
 		INA:	format(
-				"{PLAYER}: Oh,{PAUSE 16} aku inget sekarang!{PAUSE 30}\n"
+				"Oh,{PAUSE 16} aku inget sekarang!{PAUSE 30}\n"
 				"Maap,{PAUSE 16} heh.\p"
-				"{PLAYER}: Kebetulan,{PAUSE 16} aku sebenernya mimpi"
+				"Kebetulan,{PAUSE 16} aku sebenernya mimpi"
 				"ketemu kakek tadi malem,{PAUSE 16} bilang katanya"
 				"kakek bakalan dateng ke DESA PALLET buat nemuin kita.")
 	}
@@ -98,10 +98,10 @@ text PlayersHouse_2F_MainInterior_Text_OhRight {
 text PlayersHouse_2F_MainInterior_Text_OhReally {
 	poryswitch(LANG) {
 		_:		format(
-				"LIME: Oh really?{PAUSE 16}\n"
+				"Oh really?{PAUSE 16}\n"
 				"What a coincidence-")
 		INA:	format(
-				"LIME: Oh gitu?{PAUSE 16}\n"
+				"Oh gitu?{PAUSE 16}\n"
 				"Kebetulan banget-")
 	}
 }
@@ -109,11 +109,11 @@ text PlayersHouse_2F_MainInterior_Text_OhReally {
 text PlayersHouse_2F_MainInterior_Text_GuestsComing {
 	poryswitch(LANG) {
 		_:		format(
-				"MOM: {PLAYER}!{PAUSE 16} LIME!{PAUSE 16}\n"
+				"{PLAYER}!{PAUSE 16} LIME!{PAUSE 16}\n"
 				"Get down here right now,{PAUSE 16} we have a"
 				"guest waiting for you both!")
 		INA:	format(
-				"MOM: {PLAYER}!{PAUSE 16} LIME!{PAUSE 16}\n"
+				"{PLAYER}!{PAUSE 16} LIME!{PAUSE 16}\n"
 				"Turun kebawah sekarang,{PAUSE 16} kita punya"
 				"tamu nungguin kalian berdua!")
 	}
@@ -122,10 +122,10 @@ text PlayersHouse_2F_MainInterior_Text_GuestsComing {
 text PlayersHouse_2F_MainInterior_Text_AlrightMom {
 	poryswitch(LANG) {
 		_:		format(
-				"LIME: Alright, MOM!{PAUSE 16}\n"
+				"Alright, MOM!{PAUSE 16}\n"
 				"We're coming!")
 		INA:	format(
-				"LIME: Baik, IBU!{PAUSE 16}\n"
+				"Baik, IBU!{PAUSE 16}\n"
 				"Kami akan datang!")
 	}
 }
@@ -133,13 +133,13 @@ text PlayersHouse_2F_MainInterior_Text_AlrightMom {
 text PlayersHouse_2F_MainInterior_Text_LookAtThat {
 	poryswitch(LANG) {
 		_:		format(
-				"LIME: Would you look at that,{PAUSE 16} seems like"
+				"Would you look at that,{PAUSE 16} seems like"
 				"GRAMPS came!\p"
-				"LIME: See you downstairs,{PAUSE 16} don't keep"
+				"See you downstairs,{PAUSE 16} don't keep"
 				"me waiting! Bye!")
 		INA:	format(
-				"LIME: Wah,{PAUSE 16} kayaknya kakek udah dateng!\p"
-				"LIME: Ketemu lagi di bawah,{PAUSE 16} jangan"
+				"Wah,{PAUSE 16} kayaknya kakek udah dateng!\p"
+				"Ketemu lagi di bawah,{PAUSE 16} jangan"
 				"bikin gue nunggu! Dah!")
 	}
 }

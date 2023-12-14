@@ -1,12 +1,12 @@
 text PalletTown_PlayersHouse_1F_Text_HiHoney {
 	poryswitch(LANG) {
 		_ {
-			format(	"MOM: Hi, honey.\p"
+			format(	"Hi, honey.\p"
 					"Feel free to take some rests here"
 					"alongside your POKéMON friends, okay?")
 		}
 		INA {
-			format(	"IBU: Hai, sayang.\p"
+			format(	"Hai, sayang.\p"
 					"Silahkan istirahat disini bersama"
 					"teman-teman POKéMON-mu, oke?")
 		}

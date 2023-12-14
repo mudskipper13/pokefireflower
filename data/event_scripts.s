@@ -1079,3 +1079,4 @@ EventScript_VsSeekerChargingDone::
 	.include "data/text/frontier_brain.inc"
 	.include "data/text/save.inc"
 	.include "data/text/intro_speech.inc"
+	.include "data/text/names.inc"

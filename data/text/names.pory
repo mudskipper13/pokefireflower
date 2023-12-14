@@ -1,0 +1,42 @@
+//! global
+
+text Common_Names_Player {
+	"{PLAYER}"
+}
+
+text Common_Names_Mom {
+	"MOM"
+}
+
+text Common_Names_Rival {
+	"LIME" //! todo
+}
+
+//! pallet town exterior
+
+text Common_Names_Fab {
+	"FAB"
+}
+
+text Common_Names_Tina {
+	"TINA"
+}
+
+text Common_Names_MsFanny {
+	poryswitch(LANG) {
+		_:		"MS. FANNY"
+		INA:	"IBU FANNY"
+	}
+}
+
+text Common_Names_Mel {
+	"MEL"
+}
+
+text Common_Names_Mei {
+	"MEI"
+}
+
+text Common_Names_Eric {
+	"ERIC"
+}
