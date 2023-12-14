@@ -903,7 +903,7 @@ static void PrintApprenticeMessage(void)
     }
 
     StringExpandPlaceholders(gStringVar4, string);
-    AddTextPrinterDiffStyle(TRUE);
+    AddTextPrinterDiffStyleFromBuffer(TRUE);
     CreateTask(Task_WaitForPrintingMessage, 1);
 }
 

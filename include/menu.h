@@ -48,6 +48,7 @@ void InitTextBoxGfxAndPrinters(void);
 u16 RunTextPrintersAndIsPrinter0Active(void);
 void LoadMessageBoxAndBorderGfx(void);
 void DrawDialogueFrame(u8 windowId, bool8 copyToVram);
+void DrawNameplateFrame(u8 windowId, bool8 copyToVram);
 void ClearStdWindowAndFrame(u8 windowId, bool8 copyToVram);
 u16 AddTextPrinterParameterized2(u8 windowId, u8 fontId, const u8 *str, u8 speed, void (*callback)(struct TextPrinterTemplate *, u16), u8 fgColor, u8 bgColor, u8 shadowColor);
 void PrintPlayerNameOnWindow(u8, const u8 *, u16, u16);
@@ -99,7 +100,8 @@ void DrawStdWindowFrame(u8 windowId, bool8 CopyToVram);
 u8 AddStartMenuWindow(u8 numActions);
 u8 InitMenuNormal(u8 windowId, u8 fontId, u8 left, u8 top, u8 cursorHeight, u8 numChoices, u8 initialCursorPos);
 void LoadMessageBoxAndFrameGfx(u8 windowId, bool8 copyToVram);
-void AddTextPrinterDiffStyle(bool8 allowSkippingDelayWithButtonPress);
+void AddTextPrinterDiffStyle(u8 winId, const u8 *str, u8 fontId, u8 speed, bool8 allowSkippingDelayWithButtonPress);
+void AddTextPrinterDiffStyleFromBuffer(bool8 allowSkippingDelayWithButtonPress);
 void RemoveStartMenuWindow(void);
 void LoadSignpostWindowFrameGfx(void);
 void DisplayYesNoMenuWithDefault(u8 initialCursorPos);
@@ -126,5 +128,7 @@ void EraseYesNoWindow(void);
 void PrintMenuActionTextsAtPos(u8 windowId, u8 fontId, u8 left, u8 top, u8 lineHeight, u8 itemCount, const struct MenuAction *strs);
 void Menu_LoadStdPal(void);
 void DrawDialogFrameWithCustomTile(u8 windowId, bool8 copyToVram, u16 tileNum);
+void FillDialogFramePlate(void);
+int GetDialogFramePlateWidth(void);
 
 #endif // GUARD_MENU_H

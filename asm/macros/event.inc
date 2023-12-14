@@ -1792,6 +1792,12 @@
 	.byte \type
 	.endm
 
+	@ Sets the text of the name box in the next-shown message box.
+	.macro speakername text:req
+	.byte 0xe8
+	.4byte \text
+	.endm
+
 @ Supplementary
 
 	.macro goto_if_unset flag:req, dest:req
@@ -1942,7 +1948,10 @@
 	NO  = 0
 
 	@ Buffers the given text and calls the relevant standard message script (see gStdScripts).
-	.macro msgbox text:req, type=MSGBOX_DEFAULT
+	.macro msgbox text:req, type=MSGBOX_DEFAULT, name
+	.ifnb \name
+	speakername \name
+	.endif
 	loadword 0, \text
 	callstd \type
 	.endm

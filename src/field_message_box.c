@@ -2,6 +2,7 @@
 #include "menu.h"
 #include "string_util.h"
 #include "task.h"
+#include "event_data.h"
 #include "text.h"
 #include "match_call.h"
 #include "field_message_box.h"
@@ -9,6 +10,7 @@
 #include "script.h"
 
 static EWRAM_DATA u8 sFieldMessageBoxMode = 0;
+EWRAM_DATA const u8 *gSpeakerName = NULL;
 
 static void ExpandStringAndStartDrawFieldMessage(const u8 *, bool32);
 static void StartDrawFieldMessage(void);
@@ -39,6 +41,8 @@ static void Task_DrawFieldMessage(u8 taskId)
             break;
         case 1:
             DrawDialogueFrame(0, TRUE);
+            if (gSpeakerName != NULL && !FlagGet(FLAG_SUPPRESS_SPEAKER_NAME) && !IsMsgSignpost())
+                DrawNameplateFrame(1, FALSE);
             task->tState++;
             break;
         case 2:
@@ -122,14 +126,33 @@ bool8 ShowFieldMessageFromBuffer(void)
 
 static void ExpandStringAndStartDrawFieldMessage(const u8 *str, bool32 allowSkippingDelayWithButtonPress)
 {
+    if (gSpeakerName != NULL && !FlagGet(FLAG_SUPPRESS_SPEAKER_NAME) && !IsMsgSignpost())
+    {
+        int strLen = GetStringWidth(FONT_SMALL, gSpeakerName, -1);
+        if (strLen > 0)
+        {
+            strLen = GetDialogFramePlateWidth() / 2 - strLen / 2;
+            gNamePlateBuffer[0] = EXT_CTRL_CODE_BEGIN;
+            gNamePlateBuffer[1] = EXT_CTRL_CODE_CLEAR_TO;
+            gNamePlateBuffer[2] = strLen;
+            StringExpandPlaceholders(&gNamePlateBuffer[3], gSpeakerName);
+        }
+        else
+            StringExpandPlaceholders(&gNamePlateBuffer[0], gSpeakerName);
+
+        FillDialogFramePlate();
+        AddTextPrinterDiffStyle(1, gNamePlateBuffer, FONT_SMALL, TEXT_SKIP_DRAW, FALSE);
+        PutWindowTilemap(1);
+        CopyWindowToVram(1, COPYWIN_GFX);
+    }
     StringExpandPlaceholders(gStringVar4, str);
-    AddTextPrinterDiffStyle(allowSkippingDelayWithButtonPress);
+    AddTextPrinterDiffStyleFromBuffer(allowSkippingDelayWithButtonPress);
     CreateTask_DrawFieldMessage();
 }
 
 static void StartDrawFieldMessage(void)
 {
-    AddTextPrinterDiffStyle(TRUE);
+    AddTextPrinterDiffStyleFromBuffer(TRUE);
     CreateTask_DrawFieldMessage();
 }
 
@@ -138,6 +161,7 @@ void HideFieldMessageBox(void)
     DestroyTask_DrawFieldMessage();
     ClearDialogWindowAndFrame(0, TRUE);
     sFieldMessageBoxMode = FIELD_MESSAGE_BOX_HIDDEN;
+    gSpeakerName = NULL;
 }
 
 u8 GetFieldMessageBoxMode(void)
@@ -163,4 +187,9 @@ void StopFieldMessage(void)
 {
     DestroyTask_DrawFieldMessage();
     sFieldMessageBoxMode = FIELD_MESSAGE_BOX_HIDDEN;
+}
+
+void SetSpeakerName(const u8* name)
+{
+    gSpeakerName = name;
 }
