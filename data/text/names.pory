@@ -15,6 +15,13 @@ text Common_Names_Rival {
 	"LIME" //! todo
 }
 
+text Common_Names_Grampa {
+	poryswitch(LANG) {
+		_:		"GRAMPA"
+		INA:	"KAKEK"
+	}
+}
+
 //! pallet town exterior
 
 text Common_Names_Fab {

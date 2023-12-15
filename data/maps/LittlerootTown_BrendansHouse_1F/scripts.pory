@@ -1,7 +1,156 @@
-//! TODO: Cleanup
+//! const
+const LOCALID_MOM = 1
+const LOCALID_RIVAL = 2
+const LOCALID_ITEMBALL = 3
 
-mapscripts LittlerootTown_BrendansHouse_1F_MapScripts {}
+//! map scripts
 
-script PalletTown_PlayersHouse_1F_EventScript_Mom {
-	msgbox(PalletTown_PlayersHouse_1F_Text_HiHoney, MSGBOX_NPC, Common_Names_Mom)
+mapscripts LittlerootTown_BrendansHouse_1F_MapScripts {
+	MAP_SCRIPT_ON_TRANSITION: PlayersHouse_1F_MainInterior_OnTransition
+	MAP_SCRIPT_ON_LOAD: PlayersHouse_1F_MainInterior_OnLoad
+}
+
+script PlayersHouse_1F_MainInterior_OnLoad {
+	call(Common_EventScript_SetupRivalGfxId)
+}
+
+script PlayersHouse_1F_MainInterior_OnTransition {
+	setflag(FLAG_TEMP_1)
+	if (var(VAR_LITTLEROOT_INTRO_STATE) < 2) {
+		setobjectxyperm(LOCALID_MOM, 9, 6)
+		setobjectmovementtype(LOCALID_MOM, MOVEMENT_TYPE_FACE_LEFT)
+	} else {
+		setobjectxyperm(LOCALID_MOM, 14, 3)
+		setobjectmovementtype(LOCALID_MOM, MOVEMENT_TYPE_FACE_UP)
+	}
+}
+
+//! triggers
+
+script PlayersHouse_1F_MainInterior_EventScript_EarlyGameSequence {
+	lockall
+	special(SpawnCameraObject)
+	if (flag(FLAG_TEMP_1F)) { applymovement(OBJ_EVENT_ID_CAMERA, PlayersHouse_1F_MainInterior_Movement_CameraApproachTableNorth) }
+	else { applymovement(OBJ_EVENT_ID_CAMERA, PlayersHouse_1F_MainInterior_Movement_CameraApproachTableSouth) }
+	waitmovement(0)
+	applymovement(OBJ_EVENT_ID_PLAYER, Common_Movement_QuestionMark)
+	playse(SE_PIN)
+	waitfieldeffect(FLDEFF_EMOTE_ICON)
+	textcolor(NPC_TEXT_COLOR_PLAYER)
+	msgbox(format(	"Oh?{PAUSE 16} Where's GRAMPA?"), MSGBOX_DEFAULT, Common_Names_Player)
+	closemessage
+	if (flag(FLAG_TEMP_1F)) { applymovement(OBJ_EVENT_ID_PLAYER, PlayersHouse_1F_MainInterior_Movement_PlayerApproachTableNorth) }
+	else { applymovement(OBJ_EVENT_ID_PLAYER, PlayersHouse_1F_MainInterior_Movement_PlayerApproachTableSouth) }
+	applymovement(LOCALID_RIVAL, Common_Movement_WalkInPlaceFasterUp)
+	textcolor(NPC_TEXT_COLOR_RIVAL)
+	msgbox(format(	"He leaves just now,{PAUSE 8} {PLAYER}.{PAUSE 16}\n"
+					"You're missing out!"), MSGBOX_DEFAULT, Common_Names_Rival)
+	waitmovement(0)
+	applymovement(LOCALID_RIVAL, Common_Movement_WalkInPlaceFasterRight)
+	waitmovement(0)
+	applymovement(OBJ_EVENT_ID_PLAYER, Common_Movement_Dots)
+	playse(SE_PIN)
+	waitfieldeffect(FLDEFF_EMOTE_ICON)
+	applymovement(OBJ_EVENT_ID_PLAYER, Common_Movement_WalkInPlaceFasterRight)
+	textcolor(NPC_TEXT_COLOR_PLAYER)
+	msgbox(format("Aww, that's a shame…"), MSGBOX_DEFAULT, Common_Names_Player)
+	waitmovement(0)
+	applymovement(LOCALID_RIVAL, Common_Movement_WalkInPlaceFasterUp)
+	textcolor(NPC_TEXT_COLOR_RIVAL)
+	msgbox(format(	"Hey, don't worry!{PAUSE 16} He also did"
+					"leaves something for us, actually. You're"
+					"not late for this one!"), MSGBOX_DEFAULT, Common_Names_Rival)
+	waitmovement(0)
+	applymovement(OBJ_EVENT_ID_PLAYER, Common_Movement_WalkInPlaceFasterDown)
+	textcolor(NPC_TEXT_COLOR_PLAYER)
+	msgbox(format("Really? What is it?!"), MSGBOX_DEFAULT, Common_Names_Player)
+	waitmovement(0)
+	applymovement(LOCALID_RIVAL, Common_Movement_WalkInPlaceFasterUp)
+	textcolor(NPC_TEXT_COLOR_RIVAL)
+	msgbox(format(	"I don't know, that's why I ask you to open it! Here!"), MSGBOX_DEFAULT, Common_Names_Rival)
+	waitmovement(0)
+	applymovement(LOCALID_RIVAL, Common_Movement_WalkInPlaceFasterRight)
+	addobject(LOCALID_ITEMBALL)
+	clearflag(FLAG_TEMP_1)
+	playse(SE_BALL)
+	waitmovement(0)
+	applymovement(OBJ_EVENT_ID_PLAYER, Common_Movement_WalkInPlaceFasterRight)
+	textcolor(NPC_TEXT_COLOR_PLAYER)
+	msgbox(format("Alright, let's see what's inside…"), MSGBOX_DEFAULT, Common_Names_Player)
+	waitmovement(0)
+	closemessage
+	textcolor(NPC_TEXT_COLOR_DEFAULT)
+	msgbox(format(	"… … … … … … … … … …\n"
+					"… … … … … … … … … …"), MSGBOX_DEFAULT)
+	applymovement(LOCALID_MOM, Common_Movement_Delay32)
+	waitmovement(0)
+	closemessage
+	applymovement(OBJ_EVENT_ID_PLAYER, Common_Movement_ExclamationMark)
+	playse(SE_PIN)
+	waitfieldeffect(FLDEFF_EMOTE_ICON)
+	applymovement(OBJ_EVENT_ID_PLAYER, Common_Movement_WalkInPlaceFasterRight)
+	textcolor(NPC_TEXT_COLOR_PLAYER)
+	msgbox(format("Oh, a letter…{PAUSE 16} and 3 POKé BALLs?!"), MSGBOX_DEFAULT, Common_Names_Player)
+	waitmovement(0)
+	if (flag(FLAG_TEMP_1F)) { clearflag(FLAG_TEMP_1F) }
+	special(RemoveCameraObject)
+	releaseall
+}
+
+script PlayersHouse_1F_MainInterior_EventScript_EarlyGameSequenceNorth {
+	setflag(FLAG_TEMP_1F)
+	goto(PlayersHouse_1F_MainInterior_EventScript_EarlyGameSequence)
+}
+
+script PlayersHouse_1F_MainInterior_EventScript_EarlyGameSequenceSouth {
+	clearflag(FLAG_TEMP_1F)
+	goto(PlayersHouse_1F_MainInterior_EventScript_EarlyGameSequence)
+}
+
+script PlayersHouse_1F_MainInterior_EventScript_EarlyGamePrevention {
+	lockall
+	textcolor(NPC_TEXT_COLOR_PLAYER)
+	msgbox(format("Can't go out, everyone is waiting for me on the table right now!"), MSGBOX_DEFAULT, Common_Names_Player)
+	applymovement(OBJ_EVENT_ID_PLAYER, PlayersHouse_1F_MainInterior_Movement_PlayerMovesAway)
+	waitmovement(0)
+	releaseall
+}
+
+//! object events
+
+script PlayersHouse_1F_MainInterior_EventScript_Mom {
+	msgbox(PlayersHouse_1F_MainInterior_Text_HiHoney, MSGBOX_NPC, Common_Names_Mom)
+}
+
+//! movements
+
+movement PlayersHouse_1F_MainInterior_Movement_CameraApproachTableNorth {
+	walk_right * 3
+	walk_down * 2
+}
+
+movement PlayersHouse_1F_MainInterior_Movement_CameraApproachTableSouth {
+	walk_right * 3
+	walk_down
+}
+
+movement PlayersHouse_1F_MainInterior_Movement_PlayerApproachTableNorth {
+	walk_right * 2
+	walk_down
+	walk_right
+	walk_down
+	walk_in_place_right
+}
+
+movement PlayersHouse_1F_MainInterior_Movement_PlayerApproachTableSouth {
+	walk_right * 3
+	walk_down
+	walk_in_place_right
+}
+
+movement PlayersHouse_1F_MainInterior_Movement_PlayerMovesAway {
+	face_down
+	lock_facing_direction
+	walk_up
+	unlock_facing_direction
 }

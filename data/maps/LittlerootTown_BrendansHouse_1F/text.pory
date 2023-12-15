@@ -1,4 +1,4 @@
-text PalletTown_PlayersHouse_1F_Text_HiHoney {
+text PlayersHouse_1F_MainInterior_Text_HiHoney {
 	poryswitch(LANG) {
 		_ {
 			format(	"Hi, honey.\p"
