@@ -385,7 +385,7 @@ struct SpeciesInfo /*0x8C*/
             u32 isUltraBeast:1;
             u32 isParadoxForm:1;
             u32 isMegaEvolution:1;
-            u32 isPrimalRevesion:1;
+            u32 isPrimalReversion:1;
             u32 isUltraBurst:1;
             u32 isGigantamax:1;
             u32 isAlolanForm:1;
@@ -396,11 +396,11 @@ struct SpeciesInfo /*0x8C*/
             u32 allPerfectIVs:1;
             u32 padding4:18;
             // Move Data
- /* 0x80 */ const struct LevelUpMove *const levelUpLearnset;
- /* 0x84 */ const u16 *const teachableLearnset;
- /* 0x88 */ const struct Evolution *const evolutions;
- /* 0x84 */ const u16 *const formSpeciesIdTable;
- /* 0x84 */ const struct FormChange *const formChangeTable;
+ /* 0x80 */ const struct LevelUpMove *levelUpLearnset;
+ /* 0x84 */ const u16 *teachableLearnset;
+ /* 0x88 */ const struct Evolution *evolutions;
+ /* 0x84 */ const u16 *formSpeciesIdTable;
+ /* 0x84 */ const struct FormChange *formChangeTable;
 };
 
 struct BattleMove
@@ -596,7 +596,7 @@ void SetMonData(struct Pokemon *mon, s32 field, const void *dataArg);
 void SetBoxMonData(struct BoxPokemon *boxMon, s32 field, const void *dataArg);
 void CopyMon(void *dest, void *src, size_t size);
 u8 GiveMonToPlayer(struct Pokemon *mon);
-u8 SendMonToPC(struct Pokemon* mon);
+u8 CopyMonToPC(struct Pokemon *mon);
 u8 CalculatePlayerPartyCount(void);
 u8 CalculateEnemyPartyCount(void);
 u8 GetMonsStateToDoubles(void);
@@ -709,5 +709,6 @@ u8 CalculatePartyCount(struct Pokemon *party);
 u16 SanitizeSpeciesId(u16 species);
 bool32 IsSpeciesEnabled(u16 species);
 u16 GetCryIdBySpecies(u16 species);
+u16 GetSpeciesPreEvolution(u16 species);
 
 #endif // GUARD_POKEMON_H

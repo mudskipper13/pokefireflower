@@ -489,6 +489,7 @@ static const struct FormChange sShayminFormChangeTable[] = {
     {FORM_CHANGE_ITEM_USE,    SPECIES_SHAYMIN_SKY, ITEM_GRACIDEA, DAY},
     {FORM_CHANGE_WITHDRAW,    SPECIES_SHAYMIN_LAND},
     {FORM_CHANGE_TIME_OF_DAY, SPECIES_SHAYMIN_LAND, NIGHT},
+    {FORM_CHANGE_STATUS,      SPECIES_SHAYMIN_LAND, (STATUS1_FREEZE | STATUS1_FROSTBITE)},
     {FORM_CHANGE_TERMINATOR},
 };
 #endif //P_FAMILY_SHAYMIN
@@ -829,12 +830,15 @@ static const struct FormChange sNecrozmaDawnWingsFormChangeTable[] = {
     {FORM_CHANGE_BATTLE_ULTRA_BURST,    SPECIES_NECROZMA_ULTRA, ITEM_ULTRANECROZIUM_Z},
     {FORM_CHANGE_TERMINATOR},
 };
+#endif //P_FAMILY_NECROZMA
+
+#if P_FAMILY_MELTAN
 static const struct FormChange sMelmetalFormChangeTable[] =
 {
     {FORM_CHANGE_BATTLE_GIGANTAMAX, SPECIES_MELMETAL_GIGANTAMAX},
     {FORM_CHANGE_TERMINATOR},
 };
-#endif //P_FAMILY_NECROZMA
+#endif //P_FAMILY_MELTAN
 
 #if P_FAMILY_GROOKEY
 static const struct FormChange sRillaboomFormChangeTable[] =
