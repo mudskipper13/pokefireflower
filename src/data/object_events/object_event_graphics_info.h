@@ -864,7 +864,7 @@ const struct ObjectEventGraphicsInfo gObjectEventGraphicsInfo_Scientist1 = {
 
 const struct ObjectEventGraphicsInfo gObjectEventGraphicsInfo_Lass = {
     .tileTag = TAG_NONE,
-    .paletteTag = OBJ_EVENT_PAL_TAG_NPC_4,
+    .paletteTag = OBJ_EVENT_PAL_TAG_LASS,
     .size = 256,
     .width = 16,
     .height = 32,
@@ -875,7 +875,7 @@ const struct ObjectEventGraphicsInfo gObjectEventGraphicsInfo_Lass = {
     .tracks = TRACKS_FOOT,
     .oam = &gObjectEventBaseOam_16x32,
     .subspriteTables = sOamTables_16x32,
-    .anims = OBJ_EVENT_ANIM_STANDARD,
+    .anims = OBJ_EVENT_ANIM_ASYMMETRICAL,
     .images = sPicTable_Lass,
     .affineAnims = gDummySpriteAffineAnimTable,
 };

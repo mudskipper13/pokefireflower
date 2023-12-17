@@ -363,3 +363,5 @@ const u32 gObjectEventPic_RubySapphireMaySurfing[] = INCBIN_U32("graphics/object
 const u32 gObjectEventPic_RubySapphireMayFieldMove[] = INCBIN_U32("graphics/object_events/pics/people/ruby_sapphire_may/field_move.4bpp");
 const u32 gObjectEventPic_RubySapphireMayFishing[] = INCBIN_U32("graphics/object_events/pics/people/ruby_sapphire_may/fishing.4bpp");
 const u32 gObjectEventPic_RubySapphireMayWatering[] = INCBIN_U32("graphics/object_events/pics/people/ruby_sapphire_may/watering.4bpp");
+
+const u16 gObjectEventPal_Lass[] = INCBIN_U16("graphics/object_events/pics/people/lass.gbapal");
