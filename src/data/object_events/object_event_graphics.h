@@ -365,3 +365,4 @@ const u32 gObjectEventPic_RubySapphireMayFishing[] = INCBIN_U32("graphics/object
 const u32 gObjectEventPic_RubySapphireMayWatering[] = INCBIN_U32("graphics/object_events/pics/people/ruby_sapphire_may/watering.4bpp");
 
 const u16 gObjectEventPal_Lass[] = INCBIN_U16("graphics/object_events/pics/people/lass.gbapal");
+const u16 gObjectEventPal_Youngster[] = INCBIN_U16("graphics/object_events/pics/people/youngster.gbapal");

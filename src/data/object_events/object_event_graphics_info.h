@@ -648,7 +648,7 @@ const struct ObjectEventGraphicsInfo gObjectEventGraphicsInfo_Woman5 = {
 
 const struct ObjectEventGraphicsInfo gObjectEventGraphicsInfo_Youngster = {
     .tileTag = TAG_NONE,
-    .paletteTag = OBJ_EVENT_PAL_TAG_NPC_1,
+    .paletteTag = OBJ_EVENT_PAL_TAG_YOUNGSTER,
     .size = 256,
     .width = 16,
     .height = 32,
@@ -659,7 +659,7 @@ const struct ObjectEventGraphicsInfo gObjectEventGraphicsInfo_Youngster = {
     .tracks = TRACKS_FOOT,
     .oam = &gObjectEventBaseOam_16x32,
     .subspriteTables = sOamTables_16x32,
-    .anims = OBJ_EVENT_ANIM_QUINTY_PLUMP,
+    .anims = OBJ_EVENT_ANIM_ASYMMETRICAL,
     .images = sPicTable_Youngster,
     .affineAnims = gDummySpriteAffineAnimTable,
 };
