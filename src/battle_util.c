@@ -343,7 +343,7 @@ void HandleAction_UseMove(void)
     if (gBattleStruct->dynamax.usingMaxMove[gBattlerAttacker])
     {
         gCurrentMove = gChosenMove = GetMaxMove(gBattlerAttacker, gCurrentMove);
-        gBattleStruct->dynamax.activeSplit = gBattleStruct->dynamax.splits[gBattlerAttacker];
+        gBattleStruct->dynamax.activeCategory = gBattleStruct->dynamax.categories[gBattlerAttacker];
     }
 
     moveTarget = GetBattlerMoveTargetType(gBattlerAttacker, gCurrentMove);
@@ -519,6 +519,11 @@ void HandleAction_UseMove(void)
             gBattleCommunication[MULTISTRING_CHOOSER] = B_MSG_INCAPABLE_OF_POWER;
             gBattlescriptCurrInstr = BattleScript_MoveUsedLoafingAround;
         }
+    }
+    // Edge case: moves targeting the ally fail after a successful Ally Switch.
+    else if (moveTarget == MOVE_TARGET_ALLY && gProtectStructs[BATTLE_PARTNER(gBattlerAttacker)].usedAllySwitch)
+    {
+        gBattlescriptCurrInstr = BattleScript_FailedFromAtkCanceler;
     }
     else
     {
@@ -883,12 +888,12 @@ void HandleAction_ActionFinished(void)
                 // have been executed before. The only recalculation needed is for moves/switch. Mega evolution is handled in src/battle_main.c/TryChangeOrder
                 if((gActionsByTurnOrder[i] == B_ACTION_USE_MOVE && gActionsByTurnOrder[j] == B_ACTION_USE_MOVE))
                 {
-                    if (GetWhichBattlerFaster(battler1, battler2, FALSE))
+                    if (GetWhichBattlerFaster(battler1, battler2, FALSE) == -1)
                         SwapTurnOrder(i, j);
                 }
                 else if ((gActionsByTurnOrder[i] == B_ACTION_SWITCH && gActionsByTurnOrder[j] == B_ACTION_SWITCH))
                 {
-                    if (GetWhichBattlerFaster(battler1, battler2, TRUE)) // If the actions chosen are switching, we recalc order but ignoring the moves
+                    if (GetWhichBattlerFaster(battler1, battler2, TRUE) == -1) // If the actions chosen are switching, we recalc order but ignoring the moves
                         SwapTurnOrder(i, j);
                 }
             }
@@ -1980,7 +1985,7 @@ u8 DoFieldEndTurnEffects(void)
                 {
                     if (!gProtectStructs[i].quash
                             && !gProtectStructs[j].quash
-                            && GetWhichBattlerFaster(gBattlerByTurnOrder[i], gBattlerByTurnOrder[j], FALSE))
+                            && GetWhichBattlerFaster(gBattlerByTurnOrder[i], gBattlerByTurnOrder[j], FALSE) == -1)
                         SwapTurnOrder(i, j);
                 }
             }
@@ -3768,16 +3773,16 @@ u8 AtkCanceller_UnableToUseMove(u32 moveType)
             {
                 //attacker has a queued z move
                 gBattleStruct->zmove.active = TRUE;
-                gBattleStruct->zmove.activeSplit = gBattleStruct->zmove.splits[gBattlerAttacker];
+                gBattleStruct->zmove.activeCategory = gBattleStruct->zmove.categories[gBattlerAttacker];
                 RecordItemEffectBattle(gBattlerAttacker, HOLD_EFFECT_Z_CRYSTAL);
                 gBattleStruct->zmove.used[gBattlerAttacker] = TRUE;
                 if ((gBattleTypeFlags & BATTLE_TYPE_DOUBLE) && IsPartnerMonFromSameTrainer(gBattlerAttacker))
                     gBattleStruct->zmove.used[BATTLE_PARTNER(gBattlerAttacker)] = TRUE; //if 1v1 double, set partner used flag as well
 
                 gBattleScripting.battler = gBattlerAttacker;
-                if (gBattleStruct->zmove.activeSplit == SPLIT_STATUS)
+                if (gBattleStruct->zmove.activeCategory == BATTLE_CATEGORY_STATUS)
                 {
-                    gBattleStruct->zmove.effect = gBattleMoves[gBattleStruct->zmove.baseMoves[gBattlerAttacker]].zMoveEffect;
+                    gBattleStruct->zmove.effect = gBattleMoves[gBattleStruct->zmove.baseMoves[gBattlerAttacker]].zMove.effect;
                     BattleScriptPushCursor();
                     gBattlescriptCurrInstr = BattleScript_ZMoveActivateStatus;
                 }
@@ -4474,6 +4479,7 @@ u32 AbilityBattleEffects(u32 caseID, u32 battler, u32 ability, u32 special, u32 
             if (!gSpecialStatuses[battler].switchInAbilityDone)
             {
                 gSpecialStatuses[battler].switchInAbilityDone = TRUE;
+                gBattlerAttacker = battler;
                 BattleScriptPushCursorAndCallback(BattleScript_FriskActivates); // Try activate
                 effect++;
             }
@@ -5043,7 +5049,9 @@ u32 AbilityBattleEffects(u32 caseID, u32 battler, u32 ability, u32 special, u32 
                 gBattlescriptCurrInstr = BattleScript_DazzlingProtected;
                 effect = 1;
             }
-            else if (BlocksPrankster(move, gBattlerAttacker, gBattlerTarget, TRUE) && !(IS_MOVE_STATUS(move) && targetAbility == ABILITY_MAGIC_BOUNCE))
+            else if (GetChosenMovePriority(gBattlerAttacker) > 0
+                     && BlocksPrankster(move, gBattlerAttacker, gBattlerTarget, TRUE)
+                     && !(IS_MOVE_STATUS(move) && (targetAbility == ABILITY_MAGIC_BOUNCE || gProtectStructs[gBattlerTarget].bounceMove)))
             {
                 if (!(gBattleTypeFlags & BATTLE_TYPE_DOUBLE) || !(moveTarget & (MOVE_TARGET_BOTH | MOVE_TARGET_FOES_AND_ALLY)))
                     CancelMultiTurnMoves(gBattlerAttacker); // Don't cancel moves that can hit two targets bc one target might not be protected
@@ -5060,15 +5068,6 @@ u32 AbilityBattleEffects(u32 caseID, u32 battler, u32 ability, u32 special, u32 
                 gBattlescriptCurrInstr = BattleScript_GoodAsGoldActivates;
                 effect = 1;
             }
-            else if (gLastUsedAbility == ABILITY_ICE_FACE && IS_MOVE_PHYSICAL(move) && gBattleMons[gBattlerTarget].species == SPECIES_EISCUE_ICE_FACE)
-            {
-                gBattleMons[gBattlerTarget].species = SPECIES_EISCUE_NOICE_FACE;
-                if (gBattleMons[gBattlerAttacker].status2 & STATUS2_MULTIPLETURNS)
-                    gHitMarker |= HITMARKER_NO_PPDEDUCT;
-                gBattleScripting.battler = gBattlerTarget; // For STRINGID_PKMNTRANSFORMED
-                gBattlescriptCurrInstr = BattleScript_IceFaceNullsDamage;
-                effect = 1;
-            }
             break;
         }
     case ABILITYEFFECT_ABSORBING: // 3
@@ -5079,7 +5078,7 @@ u32 AbilityBattleEffects(u32 caseID, u32 battler, u32 ability, u32 special, u32 
             switch (gLastUsedAbility)
             {
             case ABILITY_VOLT_ABSORB:
-                if (moveType == TYPE_ELECTRIC)
+                if (moveType == TYPE_ELECTRIC && gBattleMoves[move].target != MOVE_TARGET_ALL_BATTLERS)
                     effect = 1;
                 break;
             case ABILITY_WATER_ABSORB:
@@ -5088,11 +5087,11 @@ u32 AbilityBattleEffects(u32 caseID, u32 battler, u32 ability, u32 special, u32 
                     effect = 1;
                 break;
             case ABILITY_MOTOR_DRIVE:
-                if (moveType == TYPE_ELECTRIC)
+                if (moveType == TYPE_ELECTRIC && gBattleMoves[move].target != MOVE_TARGET_ALL_BATTLERS)
                     effect = 2, statId = STAT_SPEED;
                 break;
             case ABILITY_LIGHTNING_ROD:
-                if (moveType == TYPE_ELECTRIC)
+                if (moveType == TYPE_ELECTRIC && gBattleMoves[move].target != MOVE_TARGET_ALL_BATTLERS)
                     effect = 2, statId = STAT_SPATK;
                 break;
             case ABILITY_STORM_DRAIN:
@@ -6669,13 +6668,13 @@ static u8 TrySetEnigmaBerry(u32 battler)
     return 0;
 }
 
-static u8 DamagedStatBoostBerryEffect(u32 battler, u8 statId, u8 split)
+static u8 DamagedStatBoostBerryEffect(u32 battler, u8 statId, u8 category)
 {
     if (IsBattlerAlive(battler)
      && CompareStat(battler, statId, MAX_STAT_STAGE, CMP_LESS_THAN)
      && (gBattleScripting.overrideBerryRequirements
          || (!DoesSubstituteBlockMove(gBattlerAttacker, battler, gCurrentMove)
-             && GetBattleMoveSplit(gCurrentMove) == split
+             && GetBattleMoveCategory(gCurrentMove) == category
              && TARGET_TURN_DAMAGED))
         )
     {
@@ -6950,11 +6949,11 @@ static u8 ItemEffectMoveEnd(u32 battler, u16 holdEffect)
         break;
     case HOLD_EFFECT_KEE_BERRY:  // consume and boost defense if used physical move
         if (B_BERRIES_INSTANT >= GEN_4)
-            effect = DamagedStatBoostBerryEffect(battler, STAT_DEF, SPLIT_PHYSICAL);
+            effect = DamagedStatBoostBerryEffect(battler, STAT_DEF, BATTLE_CATEGORY_PHYSICAL);
         break;
     case HOLD_EFFECT_MARANGA_BERRY:  // consume and boost sp. defense if used special move
         if (B_BERRIES_INSTANT >= GEN_4)
-            effect = DamagedStatBoostBerryEffect(battler, STAT_SPDEF, SPLIT_SPECIAL);
+            effect = DamagedStatBoostBerryEffect(battler, STAT_SPDEF, BATTLE_CATEGORY_SPECIAL);
         break;
     case HOLD_EFFECT_RANDOM_STAT_UP:
         if (B_BERRIES_INSTANT >= GEN_4)
@@ -7777,6 +7776,7 @@ u8 ItemBattleEffects(u8 caseID, u32 battler, bool32 moveTurn)
             if (IsBattlerAlive(gBattlerAttacker)
                 && !(TestSheerForceFlag(gBattlerAttacker, gCurrentMove))
                 && GetBattlerAbility(gBattlerAttacker) != ABILITY_MAGIC_GUARD
+                && !gSpecialStatuses[gBattlerAttacker].magicianStolen
                 && gSpecialStatuses[gBattlerAttacker].damagedMons)
             {
                 gBattleMoveDamage = GetNonDynamaxMaxHP(gBattlerAttacker) / 10;
@@ -7933,10 +7933,10 @@ u8 ItemBattleEffects(u8 caseID, u32 battler, bool32 moveTurn)
                 }
                 break;
             case HOLD_EFFECT_KEE_BERRY:  // consume and boost defense if used physical move
-                effect = DamagedStatBoostBerryEffect(battler, STAT_DEF, SPLIT_PHYSICAL);
+                effect = DamagedStatBoostBerryEffect(battler, STAT_DEF, BATTLE_CATEGORY_PHYSICAL);
                 break;
             case HOLD_EFFECT_MARANGA_BERRY:  // consume and boost sp. defense if used special move
-                effect = DamagedStatBoostBerryEffect(battler, STAT_SPDEF, SPLIT_SPECIAL);
+                effect = DamagedStatBoostBerryEffect(battler, STAT_SPDEF, BATTLE_CATEGORY_SPECIAL);
                 break;
             case HOLD_EFFECT_STICKY_BARB:
                 if (TARGET_TURN_DAMAGED
@@ -10070,7 +10070,7 @@ static inline uq4_12_t CalcTypeEffectivenessMultiplierInternal(u32 move, u32 mov
     if (recordAbilities && (illusionSpecies = GetIllusionMonSpecies(battlerDef)))
         TryNoticeIllusionInTypeEffectiveness(move, moveType, battlerAtk, battlerDef, modifier, illusionSpecies);
 
-    if (gBattleMoves[move].split == SPLIT_STATUS && move != MOVE_THUNDER_WAVE)
+    if (gBattleMoves[move].category == BATTLE_CATEGORY_STATUS && move != MOVE_THUNDER_WAVE)
     {
         modifier = UQ_4_12(1.0);
         if (B_GLARE_GHOST < GEN_4 && move == MOVE_GLARE && IS_BATTLER_OF_TYPE(battlerDef, TYPE_GHOST))
@@ -10702,23 +10702,23 @@ bool32 ShouldGetStatBadgeBoost(u16 badgeFlag, u32 battler)
     return FALSE;
 }
 
-u8 GetBattleMoveSplit(u32 moveId)
+u8 GetBattleMoveCategory(u32 moveId)
 {
     if (gBattleStruct != NULL && gBattleStruct->zmove.active && !IS_MOVE_STATUS(moveId))
-        return gBattleStruct->zmove.activeSplit;
+        return gBattleStruct->zmove.activeCategory;
     if (gBattleStruct != NULL && IsMaxMove(moveId)) // TODO: Might be buggy depending on when this is called.
-        return gBattleStruct->dynamax.activeSplit;
+        return gBattleStruct->dynamax.activeCategory;
     if (gBattleStruct != NULL && gBattleStruct->swapDamageCategory) // Photon Geyser, Shell Side Arm, Light That Burns the Sky
-        return SPLIT_PHYSICAL;
+        return BATTLE_CATEGORY_PHYSICAL;
     if (B_PHYSICAL_SPECIAL_SPLIT >= GEN_4)
-        return gBattleMoves[moveId].split;
+        return gBattleMoves[moveId].category;
 
     if (IS_MOVE_STATUS(moveId))
-        return SPLIT_STATUS;
+        return BATTLE_CATEGORY_STATUS;
     else if (gBattleMoves[moveId].type < TYPE_MYSTERY)
-        return SPLIT_PHYSICAL;
+        return BATTLE_CATEGORY_PHYSICAL;
     else
-        return SPLIT_SPECIAL;
+        return BATTLE_CATEGORY_SPECIAL;
 }
 
 static bool32 TryRemoveScreens(u32 battler)
@@ -10760,7 +10760,7 @@ static bool32 IsUnnerveAbilityOnOpposingSide(u32 battler)
 }
 
 // Photon geyser & light that burns the sky
-u8 GetSplitBasedOnStats(u32 battler)
+u8 GetCategoryBasedOnStats(u32 battler)
 {
     u32 attack = gBattleMons[battler].attack;
     u32 spAttack = gBattleMons[battler].spAttack;
@@ -10772,9 +10772,9 @@ u8 GetSplitBasedOnStats(u32 battler)
     spAttack = spAttack / gStatStageRatios[gBattleMons[battler].statStages[STAT_SPATK]][1];
 
     if (spAttack >= attack)
-        return SPLIT_SPECIAL;
+        return BATTLE_CATEGORY_SPECIAL;
     else
-        return SPLIT_PHYSICAL;
+        return BATTLE_CATEGORY_PHYSICAL;
 }
 
 static u32 GetFlingPowerFromItemId(u32 itemId)

@@ -129,7 +129,7 @@
  *        PARAMETRIZE { raiseAttack = FALSE; }
  *        PARAMETRIZE { raiseAttack = TRUE; }
  *        GIVEN {
- *            ASSUME(gBattleMoves[MOVE_TACKLE].split == SPLIT_PHYSICAL);
+ *            ASSUME(gBattleMoves[MOVE_TACKLE].category == BATTLE_CATEGORY_PHYSICAL);
  *            PLAYER(SPECIES_WOBBUFFET);
  *            OPPONENT(SPECIES_WOBBUFFET);
  *        } WHEN {
@@ -176,7 +176,7 @@
  * Pokémon we can observe the damage of a physical attack with and
  * without the burn. To document that this test assumes the attack is
  * physical we can use:
- *     ASSUME(gBattleMoves[MOVE_WHATEVER].split == SPLIT_PHYSICAL);
+ *     ASSUME(gBattleMoves[MOVE_WHATEVER].category == BATTLE_CATEGORY_PHYSICAL);
  *
  * ASSUMPTIONS
  * Should be placed immediately after any #includes and contain any
@@ -1063,7 +1063,7 @@ void ValidateFinally(u32 sourceLine);
     { \
         s32 _a = (a), _m = (m), _b = (b); \
         s32 _am = Q_4_12_TO_INT(_a * _m); \
-        s32 _t = Q_4_12_TO_INT(abs(_m) + Q_4_12_ROUND); \
+        s32 _t = max(Q_4_12_TO_INT(abs(_m) + Q_4_12_ROUND), 1); \
         if (abs(_am-_b) > _t) \
             Test_ExitWithResult(TEST_RESULT_FAIL, "%s:%d: EXPECT_MUL_EQ(%d, %q, %d) failed: %d not in [%d..%d]", gTestRunnerState.test->filename, __LINE__, _a, _m, _b, _am, _b-_t, _b+_t); \
     } while (0)
