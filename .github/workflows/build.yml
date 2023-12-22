@@ -38,10 +38,10 @@ jobs:
       - name: FireFlower
         env:
           GAME_VERS: FIREFLOWER
-        run: make -j${nproc} -O all
+        run: make ndebug -j${nproc} -O all
 
       - name: SuperLeaf Indonesian
         env:
           GAME_VERS: SUPERLEAF
           GAME_LANG: INA
-        run: make -j${nproc} -O all
+        run: make ndebug -j${nproc} -O all

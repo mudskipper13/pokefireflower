@@ -359,7 +359,7 @@ endif
 ALL_BUILDS := fireflower fireflower_id superleaf superleaf_id
 MODERN_BUILDS := $(ALL_BUILDS:%=%_modern)
 
-ifeq ($(DINFO),1)
+ifneq (ndebug,$(MAKECMDGOALS))
 override CFLAGS += -g
 endif
 
@@ -517,8 +517,6 @@ superleaf_id:  ; @$(MAKE) GAME_VERS=SUPERLEAF GAME_LANG=INA
 
 ifeq ($(GITHUB_REPOSITORY_OWNER),rh-hideout)
 TEST_SKIP_IS_FAIL := \x01
-else
-TEST_SKIP_IS_FAIL := \x00
 endif
 
 check: $(TESTELF)
@@ -528,6 +526,10 @@ check: $(TESTELF)
 
 libagbsyscall:
 	@$(MAKE) -C libagbsyscall TOOLCHAIN=$(TOOLCHAIN) MODERN=$(MODERN)
+
+ifeq (ndebug,$(MAKECMDGOALS))
+CPPFLAGS += -DNDEBUG
+endif
 
 ###################
 ### Symbol file ###
