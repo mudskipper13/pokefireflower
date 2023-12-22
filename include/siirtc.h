@@ -31,6 +31,18 @@ enum
     MONTH_COUNT = MONTH_DEC
 };
 
+enum
+{
+    DAY_SUN = 0,
+    DAY_MON,
+    DAY_TUE,
+    DAY_WED,
+    DAY_THU,
+    DAY_FRI,
+    DAY_SAT,
+    DAY_COUNT,
+};
+
 struct SiiRtcInfo
 {
     u8 year;

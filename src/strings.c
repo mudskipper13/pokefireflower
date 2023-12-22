@@ -2,6 +2,7 @@
 #include "strings.h"
 #include "battle_pyramid_bag.h"
 #include "item_menu.h"
+#include "siirtc.h"
 
 ALIGNED(4)
 const u8 gText_ExpandedPlaceholder_Empty[] = _("");
@@ -1847,23 +1848,14 @@ const u8 gText_BasePointsResetToZero[] = _("{STR_VAR_1}'s base points\nwere all 
 
 //! these technically are duplicates with easy chat- :masuda:
 
-const u8 gText_Sunday[] =    _("SUN.");
-const u8 gText_Monday[] =    _("MON.");
-const u8 gText_Tuesday[] =   _("TUE.");
-const u8 gText_Wednesday[] = _("WED.");
-const u8 gText_Thursday[] =  _("THU.");
-const u8 gText_Friday[] =    _("FRI.");
-const u8 gText_Saturday[] =  _("SAT.");
-
-//! don't ask why saturday is above-
-const u8 *const gDayNamesStringsTable[] = {
-    gText_Sunday,
-    gText_Monday,
-    gText_Tuesday,
-    gText_Wednesday,
-    gText_Thursday,
-    gText_Friday,
-    gText_Saturday,
+const u8 *const gDayNamesStringsTable[DAY_COUNT] = {
+    [DAY_SUN] = COMPOUND_STRING("SUN."),
+    [DAY_MON] = COMPOUND_STRING("MON."),
+    [DAY_TUE] = COMPOUND_STRING("TUE."),
+    [DAY_WED] = COMPOUND_STRING("WED."),
+    [DAY_THU] = COMPOUND_STRING("THU."),
+    [DAY_FRI] = COMPOUND_STRING("FRI."),
+    [DAY_SAT] = COMPOUND_STRING("SAT."),
 };
 
 const u8 gText_CurrentTimeOn[] = _("{STR_VAR_1} {STR_VAR_2}:{STR_VAR_3}");
