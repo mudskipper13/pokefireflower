@@ -267,6 +267,7 @@ void RtcCalcTimeDifference(struct SiiRtcInfo *rtc, struct Time *result, struct T
     result->minutes = ConvertBcdToBinary(rtc->minute) - t->minutes;
     result->hours = ConvertBcdToBinary(rtc->hour) - t->hours;
     result->days = days - t->days;
+    result->dayOfWeek = ConvertBcdToBinary(rtc->dayOfWeek) - t->dayOfWeek;
 
     if (result->seconds < 0)
     {
@@ -284,6 +285,11 @@ void RtcCalcTimeDifference(struct SiiRtcInfo *rtc, struct Time *result, struct T
     {
         result->hours += HOURS_PER_DAY;
         --result->days;
+    }
+
+    if (result->dayOfWeek < 0)
+    {
+        result->dayOfWeek += DAYS_PER_WEEK;
     }
 }
 
@@ -334,6 +340,7 @@ void CalcTimeDifference(struct Time *result, struct Time *t1, struct Time *t2)
     result->minutes = t2->minutes - t1->minutes;
     result->hours = t2->hours - t1->hours;
     result->days = t2->days - t1->days;
+    result->dayOfWeek = t2->dayOfWeek - t1->dayOfWeek;
 
     if (result->seconds < 0)
     {
@@ -351,6 +358,11 @@ void CalcTimeDifference(struct Time *result, struct Time *t1, struct Time *t2)
     {
         result->hours += HOURS_PER_DAY;
         --result->days;
+    }
+
+    if (result->dayOfWeek < 0)
+    {
+        result->dayOfWeek += DAYS_PER_WEEK;
     }
 }
 
@@ -379,4 +391,111 @@ void RtcCalcLocalTimeFast(void)
         RtcRestoreInterrupts();
     }
     RtcCalcTimeDifference(&sRtc, &gLocalTime, &gSaveBlock2Ptr->localTimeOffset);
+}
+
+u32 GetTotalMinutes(struct Time *time)
+{
+    return (time->days * (HOURS_PER_DAY * MINUTES_PER_HOUR)) +
+           (time->hours * MINUTES_PER_HOUR) +
+           (time->minutes);
+}
+
+u32 GetTotalSeconds(struct Time *time)
+{
+    return (time->days * (HOURS_PER_DAY * MINUTES_PER_HOUR * SECONDS_PER_MINUTE)) +
+           (time->hours * (MINUTES_PER_HOUR * SECONDS_PER_MINUTE)) +
+           (time->minutes * MINUTES_PER_HOUR) +
+           (time->seconds);
+}
+
+void RtcAdvanceLocalTime(s32 hours, s32 minutes)
+{
+    // Calculate local time
+    RtcGetInfo(&sRtc);
+    RtcCalcTimeDifference(&sRtc, &gLocalTime, &gSaveBlock2Ptr->localTimeOffset);
+
+    // Advance by the requested amounts
+    gLocalTime.hours += hours;
+    gLocalTime.minutes += minutes;
+
+    // Make sure local time is within expected results
+    while (gLocalTime.minutes >= MINUTES_PER_HOUR)
+    {
+        gLocalTime.minutes -= MINUTES_PER_HOUR;
+        ++gLocalTime.hours;
+    }
+
+    while (gLocalTime.hours >= HOURS_PER_DAY)
+    {
+        gLocalTime.hours -= HOURS_PER_DAY;
+        ++gLocalTime.days;
+        ++gLocalTime.dayOfWeek;
+    }
+
+    while (gLocalTime.dayOfWeek >= DAYS_PER_WEEK)
+    {
+        gLocalTime.dayOfWeek -= DAYS_PER_WEEK;
+    }
+
+    // Set the offset back to the save block
+    RtcCalcTimeDifference(&sRtc, &gSaveBlock2Ptr->localTimeOffset, &gLocalTime);
+}
+
+void AdvanceTimeToNextMorning(void)
+{
+    s32 hours;
+
+    // Calculate local time
+    RtcGetInfo(&sRtc);
+    RtcCalcTimeDifference(&sRtc, &gLocalTime, &gSaveBlock2Ptr->localTimeOffset);
+
+    if (gLocalTime.hours < 10)
+        hours = 10 - gLocalTime.hours;
+    else
+        hours = 34 - gLocalTime.hours;
+
+    gLocalTime.hours += hours;
+    gLocalTime.minutes = 0;
+
+    while (gLocalTime.hours >= HOURS_PER_DAY)
+    {
+        gLocalTime.hours -= HOURS_PER_DAY;
+        ++gLocalTime.days;
+        ++gLocalTime.dayOfWeek;
+    }
+
+    while (gLocalTime.dayOfWeek >= DAYS_PER_WEEK)
+    {
+        gLocalTime.dayOfWeek -= DAYS_PER_WEEK;
+    }
+
+    // Set the offset back to the save block
+    RtcCalcTimeDifference(&sRtc, &gSaveBlock2Ptr->localTimeOffset, &gLocalTime);
+}
+
+void AdvanceTimeToNextMondayMorning(void)
+{
+    s32 hours;
+
+    // Calculate local time
+    RtcGetInfo(&sRtc);
+    RtcCalcTimeDifference(&sRtc, &gLocalTime, &gSaveBlock2Ptr->localTimeOffset);
+
+    if (gLocalTime.hours < 10)
+        hours = 10 - gLocalTime.hours;
+    else
+        hours = 34 - gLocalTime.hours;
+
+    gLocalTime.hours += hours;
+    gLocalTime.minutes = 0;
+
+    while (gLocalTime.hours >= HOURS_PER_DAY)
+    {
+        gLocalTime.hours -= HOURS_PER_DAY;
+        ++gLocalTime.days;
+    }
+    gLocalTime.dayOfWeek = 1;
+
+    // Set the offset back to the save block
+    RtcCalcTimeDifference(&sRtc, &gSaveBlock2Ptr->localTimeOffset, &gLocalTime);
 }

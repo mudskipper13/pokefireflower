@@ -490,11 +490,7 @@ static void ShowCurrentTimeWindow(void)
     {
         if (gLocalTime.hours < 12)
         {
-            if (gLocalTime.hours == 0)
-                convHours = 12;
-            else
-                convHours = gLocalTime.hours;
-
+            convHours = (gLocalTime.hours == 0) ? 12 : gLocalTime.hours;
             suffix = gText_AM;
         }
         else if (gLocalTime.hours == 12)
@@ -512,7 +508,7 @@ static void ShowCurrentTimeWindow(void)
     else
         convHours = gLocalTime.hours;
 
-    StringCopy(gStringVar1, gDayNamesStringsTable[(gLocalTime.days % 7)]);
+    StringCopy(gStringVar1, gDayNamesStringsTable[(gLocalTime.dayOfWeek)]);
     ConvertIntToDecimalStringN(gStringVar2, convHours, STR_CONV_MODE_LEADING_ZEROS, 2);
     ConvertIntToDecimalStringN(gStringVar3, gLocalTime.minutes, STR_CONV_MODE_LEADING_ZEROS, 2);
     //! print result
@@ -540,11 +536,7 @@ static void UpdateCurrentTime(void)
     {
         if (gLocalTime.hours < 12)
         {
-            if (gLocalTime.hours == 0)
-                convHours = 12;
-            else
-                convHours = gLocalTime.hours;
-
+            convHours = (gLocalTime.hours == 0) ? 12 : gLocalTime.hours;
             suffix = gText_AM;
         }
         else if (gLocalTime.hours == 12)
@@ -562,7 +554,7 @@ static void UpdateCurrentTime(void)
     else
         convHours = gLocalTime.hours;
 
-    StringCopy(gStringVar1, gDayNamesStringsTable[(gLocalTime.days % 7)]);
+    StringCopy(gStringVar1, gDayNamesStringsTable[(gLocalTime.dayOfWeek)]);
     ConvertIntToDecimalStringN(gStringVar2, convHours, STR_CONV_MODE_LEADING_ZEROS, 2);
     ConvertIntToDecimalStringN(gStringVar3, gLocalTime.minutes, STR_CONV_MODE_LEADING_ZEROS, 2);
 

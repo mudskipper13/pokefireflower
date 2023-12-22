@@ -119,5 +119,10 @@ void CalcTimeDifference(struct Time *result, struct Time *t1, struct Time *t2);
 u32 RtcGetMinuteCount(void);
 u32 RtcGetLocalDayCount(void);
 void RtcCalcLocalTimeFast(void);
+u32 GetTotalMinutes(struct Time *time);
+u32 GetTotalSeconds(struct Time *time);
+void RtcAdvanceLocalTime(s32 hours, s32 minutes);
+void AdvanceTimeToNextMorning(void);
+void AdvanceTimeToNextMondayMorning(void);
 
 #endif // GUARD_RTC_UTIL_H

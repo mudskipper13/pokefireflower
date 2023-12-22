@@ -689,8 +689,8 @@ bool8 ScrCmd_delay(struct ScriptContext *ctx)
 
 bool8 ScrCmd_initclock(struct ScriptContext *ctx)
 {
-    u8 hour = VarGet(ScriptReadHalfword(ctx));
-    u8 minute = VarGet(ScriptReadHalfword(ctx));
+    s16 hour = VarGet(ScriptReadHalfword(ctx));
+    s16 minute = VarGet(ScriptReadHalfword(ctx));
     if (hour > 24 || minute > 60) //! failsafe
         return TRUE;
 
