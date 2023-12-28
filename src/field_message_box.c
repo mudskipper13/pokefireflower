@@ -8,6 +8,7 @@
 #include "field_message_box.h"
 #include "text_window.h"
 #include "script.h"
+#include "event_scripts.h"
 
 static EWRAM_DATA u8 sFieldMessageBoxMode = 0;
 EWRAM_DATA const u8 *gSpeakerName = NULL;
@@ -129,6 +130,10 @@ static void ExpandStringAndStartDrawFieldMessage(const u8 *str, bool32 allowSkip
     if (gSpeakerName != NULL && !FlagGet(FLAG_SUPPRESS_SPEAKER_NAME) && !IsMsgSignpost())
     {
         int strLen = GetStringWidth(FONT_SMALL, gSpeakerName, -1);
+
+        if (gSpeakerName == Common_Names_Player)
+            strLen = GetStringWidth(FONT_SMALL, gSaveBlock2Ptr->playerName, -1);
+
         if (strLen > 0)
         {
             strLen = GetDialogFramePlateWidth() / 2 - strLen / 2;

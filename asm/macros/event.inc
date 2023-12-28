@@ -1954,6 +1954,9 @@
 	.endif
 	loadword 0, \text
 	callstd \type
+	.ifnb \name
+	speakername NULL
+	.endif
 	.endm
 
 	@ Gives 'amount' of the specified 'item' to the player and prints a message with fanfare.
