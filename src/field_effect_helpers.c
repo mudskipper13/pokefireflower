@@ -14,8 +14,7 @@
 #include "constants/field_effects.h"
 #include "constants/songs.h"
 #include "constants/rgb.h"
-
-#define OBJ_EVENT_PAL_TAG_NONE 0x11FF // duplicate of define in event_object_movement.c
+#include "constants/event_objects.h"
 
 static void UpdateObjectReflectionSprite(struct Sprite *);
 static void LoadObjectReflectionPalette(struct ObjectEvent *objectEvent, struct Sprite *sprite);
@@ -76,8 +75,6 @@ static s16 GetReflectionVerticalOffset(struct ObjectEvent *objectEvent)
     return GetObjectEventGraphicsInfo(objectEvent->graphicsId)->height - 2;
 }
 
-#define OBJ_EVENT_PAL_TAG_BRIDGE_REFLECTION 0x1102
-
 static void LoadObjectReflectionPalette(struct ObjectEvent *objectEvent, struct Sprite *reflectionSprite)
 {
     u8 bridgeType;
@@ -108,29 +105,29 @@ static void LoadObjectReflectionPalette(struct ObjectEvent *objectEvent, struct 
 void LoadSpecialReflectionPalette(struct Sprite *sprite)
 {
     u32 R, G, B, i;
-	u16 color;
-	u16* pal;
-	struct SpritePalette reflectionPalette;
-	
-	CpuCopy16(&gPlttBufferUnfaded[OBJ_PLTT_ID(sprite->oam.paletteNum)], gReflectionPaletteBuffer, PLTT_SIZE_4BPP);
-	pal = gReflectionPaletteBuffer;
-	for (i = 0; i < 16; ++i)
-	{
-		color = pal[i];
-		R = GET_R(color) + 8;
-		G = GET_G(color) + 8;
-		B = GET_B(color) + 16;
-		if (R > 31) R = 31;
-		if (G > 31) G = 31;
-		if (B > 31) B = 31;
-		pal[i] = RGB(R, G, B);
-	}
-	reflectionPalette.data = gReflectionPaletteBuffer;
-	reflectionPalette.tag = GetSpritePaletteTagByPaletteNum(sprite->oam.paletteNum) + 0x1000;
-	LoadSpritePaletteDayNight(&reflectionPalette);
-	sprite->oam.paletteNum = IndexOfSpritePaletteTag(reflectionPalette.tag);
-	UpdatePaletteGammaType(sprite->oam.paletteNum, GAMMA_ALT);
-	UpdateSpritePaletteWithWeather(sprite->oam.paletteNum);
+    u16 color;
+    u16* pal;
+    struct SpritePalette reflectionPalette;
+
+    CpuCopy16(&gPlttBufferUnfaded[OBJ_PLTT_ID(sprite->oam.paletteNum)], gReflectionPaletteBuffer, PLTT_SIZE_4BPP);
+    pal = gReflectionPaletteBuffer;
+    for (i = 0; i < 16; ++i)
+    {
+        color = pal[i];
+        R = GET_R(color) + 8;
+        G = GET_G(color) + 8;
+        B = GET_B(color) + 16;
+        if (R > 31) R = 31;
+        if (G > 31) G = 31;
+        if (B > 31) B = 31;
+        pal[i] = RGB(R, G, B);
+    }
+    reflectionPalette.data = gReflectionPaletteBuffer;
+    reflectionPalette.tag = GetSpritePaletteTagByPaletteNum(sprite->oam.paletteNum) + 0x1000;
+    LoadSpritePaletteDayNight(&reflectionPalette);
+    sprite->oam.paletteNum = IndexOfSpritePaletteTag(reflectionPalette.tag);
+    UpdatePaletteGammaType(sprite->oam.paletteNum, GAMMA_ALT);
+    UpdateSpritePaletteWithWeather(sprite->oam.paletteNum);
 }
 
 static void UpdateObjectReflectionSprite(struct Sprite *reflectionSprite)
@@ -1720,7 +1717,7 @@ static void LoadFieldEffectPalette_(u8 fieldEffect, bool8 updateGammaType)
     const struct SpriteTemplate *spriteTemplate;
 
     spriteTemplate = gFieldEffectObjectTemplatePointers[fieldEffect];
-    if (spriteTemplate->paletteTag != 0xffff)
+    if (spriteTemplate->paletteTag != TAG_NONE)
     {
         LoadObjectEventPalette(spriteTemplate->paletteTag);
         if (updateGammaType)
