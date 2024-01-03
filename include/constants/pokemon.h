@@ -146,6 +146,8 @@
 #define MIN_LEVEL 1
 #define MAX_LEVEL 100
 
+#define MAX_DYNAMAX_LEVEL 10
+
 #define OT_ID_PLAYER_ID       0
 #define OT_ID_PRESET          1
 #define OT_ID_RANDOM_NO_SHINY 2
@@ -229,9 +231,6 @@
 #define BATTLE_CATEGORY_PHYSICAL    0
 #define BATTLE_CATEGORY_SPECIAL     1
 #define BATTLE_CATEGORY_STATUS      2
-
-// Just for readability
-#define ALWAYS_CRIT         3
 
 // Growth rates
 #define GROWTH_MEDIUM_FAST  0

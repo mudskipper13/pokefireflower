@@ -439,6 +439,35 @@ gBattleScriptsForMoveEffects::
 	.4byte BattleScript_EffectGlaiveRush              @ EFFECT_GLAIVE_RUSH
 	.4byte BattleScript_EffectBrickBreak              @ EFFECT_RAGING_BULL
 	.4byte BattleScript_EffectHit                     @ EFFECT_RAGE_FIST
+	.4byte BattleScript_EffectDoodle                  @ EFFECT_DOODLE
+
+BattleScript_EffectDoodle:
+	attackcanceler
+	attackstring
+	ppreduce
+	attackanimation
+	waitanimation
+	setbyte gBattleCommunication, 0
+BattleScript_EffectDoodle_CopyAbility:
+	trycopyability BS_ATTACKER, BattleScript_ButItFailed
+.if B_ABILITY_POP_UP == TRUE
+	setbyte sFIXED_ABILITY_POPUP, TRUE
+	showabilitypopup BS_ATTACKER
+	pause 60
+	sethword sABILITY_OVERWRITE, 0
+	updateabilitypopup BS_ATTACKER
+	pause 20
+	destroyabilitypopup
+	pause 40
+.endif
+	printstring STRINGID_PKMNCOPIEDFOE
+	waitmessage B_WAIT_TIME_LONG
+	switchinabilities BS_ATTACKER
+	jumpifbyte CMP_NOT_EQUAL, gBattleCommunication, 0x0, BattleScript_MoveEnd
+	addbyte gBattleCommunication, 1
+	jumpifnoally BS_TARGET, BattleScript_MoveEnd
+	setallytonextattacker BattleScript_EffectDoodle_CopyAbility
+	goto BattleScript_MoveEnd
 
 BattleScript_EffectGlaiveRush::
 	call BattleScript_EffectHit_Ret
@@ -5915,7 +5944,7 @@ BattleScript_EffectRolePlay::
 	attackstring
 	ppreduce
 	accuracycheck BattleScript_ButItFailed, NO_ACC_CALC_CHECK_LOCK_ON
-	trycopyability BattleScript_ButItFailed
+	trycopyability BS_ATTACKER, BattleScript_ButItFailed
 	attackanimation
 	waitanimation
 .if B_ABILITY_POP_UP == TRUE
@@ -8824,6 +8853,16 @@ BattleScript_ZeroToHeroActivates::
 	waitmessage B_WAIT_TIME_LONG
 	end3
 
+BattleScript_HospitalityActivates::
+	pause B_WAIT_TIME_SHORT
+	call BattleScript_AbilityPopUp
+	printstring STRINGID_HOSPITALITYRESTORATION
+	waitmessage B_WAIT_TIME_LONG
+	orword gHitMarker, HITMARKER_IGNORE_SUBSTITUTE
+	healthbarupdate BS_TARGET
+	datahpupdate BS_TARGET
+	end3
+
 BattleScript_AttackWeakenedByStrongWinds::
 	pause B_WAIT_TIME_SHORT
 	printstring STRINGID_ATTACKWEAKENEDBSTRONGWINDS
@@ -9220,6 +9259,7 @@ BattleScript_BattlerAbilityStatRaiseOnSwitchIn::
 	waitanimation
 	printstring STRINGID_BATTLERABILITYRAISEDSTAT
 	waitmessage B_WAIT_TIME_LONG
+	copybyte gBattlerAttacker, sSAVED_BATTLER
 	end3
 
 BattleScript_ScriptingAbilityStatRaise::

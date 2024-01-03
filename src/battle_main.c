@@ -214,7 +214,7 @@ EWRAM_DATA u8 gBattlerStatusSummaryTaskId[MAX_BATTLERS_COUNT] = {0};
 EWRAM_DATA u8 gBattlerInMenuId = 0;
 EWRAM_DATA bool8 gDoingBattleAnim = FALSE;
 EWRAM_DATA u32 gTransformedPersonalities[MAX_BATTLERS_COUNT] = {0};
-EWRAM_DATA u32 gTransformedOtIds[MAX_BATTLERS_COUNT] = {0};
+EWRAM_DATA bool8 gTransformedShininess[MAX_BATTLERS_COUNT] = {0};
 EWRAM_DATA u8 gPlayerDpadHoldFrames = 0;
 EWRAM_DATA struct BattleSpriteData *gBattleSpritesDataPtr = NULL;
 EWRAM_DATA struct MonSpritesGfx *gMonSpritesGfxPtr = NULL;
@@ -1713,9 +1713,16 @@ static void CB2_HandleStartMultiBattle(void)
     case 8:
         if (IsLinkTaskFinished())
         {
+            #if HQ_RANDOM == TRUE
+            struct BattleVideo *ptr = &gBattleStruct->multiBuffer.battleVideo;
+            ptr->battleTypeFlags = gBattleTypeFlags;
+            ptr->rngSeed = gRecordedBattleRngSeed;
+            #else
             u32 *ptr = gBattleStruct->multiBuffer.battleVideo;
             ptr[0] = gBattleTypeFlags;
             ptr[1] = gRecordedBattleRngSeed; // UB: overwrites berry data
+            #endif
+
             SendBlock(BitmaskAllOtherLinkPlayers(), ptr, sizeof(gBattleStruct->multiBuffer.battleVideo));
             gBattleCommunication[MULTIUSE_STATE]++;
         }
@@ -2011,6 +2018,21 @@ u8 CreateNPCTrainerPartyFromTrainer(struct Pokemon *party, const struct Trainer 
             {
                 SetMonData(&party[i], MON_DATA_NICKNAME, partyData[i].nickname);
             }
+            if (partyData[i].isShiny)
+            {
+                u32 data = TRUE;
+                SetMonData(&party[i], MON_DATA_IS_SHINY, &data);
+            }
+            if (partyData[i].dynamaxLevel > 0)
+            {
+                u32 data = partyData[i].dynamaxLevel;
+                SetMonData(&party[i], MON_DATA_DYNAMAX_LEVEL, &data);
+            }
+            if (partyData[i].gigantamaxFactor)
+            {
+                u32 data = partyData[i].gigantamaxFactor;
+                SetMonData(&party[i], MON_DATA_GIGANTAMAX_FACTOR, &data);
+            }
             CalculateMonStats(&party[i]);
 
         #if B_TRAINER_CLASS_POKE_BALLS >= GEN_7
@@ -2053,7 +2075,7 @@ void VBlankCB_Battle(void)
 {
     // Change gRngSeed every vblank unless the battle could be recorded.
     if (!(gBattleTypeFlags & (BATTLE_TYPE_LINK | BATTLE_TYPE_FRONTIER | BATTLE_TYPE_RECORDED)))
-        Random();
+        AdvanceRandom();
 
     SetGpuReg(REG_OFFSET_BG0HOFS, gBattle_BG0_X);
     SetGpuReg(REG_OFFSET_BG0VOFS, gBattle_BG0_Y);

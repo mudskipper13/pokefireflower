@@ -98,7 +98,7 @@ static void PrintContestantMonName(u8);
 static void PrintContestantMonNameWithColor(u8, u8);
 static u8 CreateJudgeSprite(void);
 static u8 CreateJudgeSpeechBubbleSprite(void);
-static u8 CreateContestantSprite(u16, u32, u32, u32);
+static u8 CreateContestantSprite(u16, bool8, u32, u32);
 static void PrintContestMoveDescription(u16);
 static u16 SanitizeSpecies(u16);
 static void ContestClearGeneralTextWindow(void);
@@ -358,7 +358,7 @@ EWRAM_DATA bool8 gCurContestWinnerIsForArtist = 0;
 EWRAM_DATA u8 gCurContestWinnerSaveIdx = 0;
 
 // IWRAM common vars.
-u32 gContestRngValue;
+rng_value_t gContestRngValue;
 
 extern const u8 gText_LinkStandby4[];
 extern const u8 gText_BDot[];
@@ -1709,7 +1709,7 @@ static void Task_AppealSetup(u8 taskId)
     if (++gTasks[taskId].data[0] > 19)
     {
         eContest.turnNumber = 0;
-        eContest.unusedRng = gRngValue;
+        eContest.unusedRng = 0;
         if ((gLinkContestFlags & LINK_CONTEST_FLAG_IS_LINK) && IsPlayerLinkLeader())
         {
             s32 i;
@@ -1781,7 +1781,7 @@ static void Task_DoAppeals(u8 taskId)
         SetMoveAnimAttackerData(eContest.currentContestant);
         spriteId = CreateContestantSprite(
             gContestMons[eContest.currentContestant].species,
-            gContestMons[eContest.currentContestant].otId,
+            gContestMons[eContest.currentContestant].isShiny,
             gContestMons[eContest.currentContestant].personality,
             eContest.currentContestant);
         gSprites[spriteId].x2 = 120;
@@ -2811,6 +2811,7 @@ void CreateContestMonFromParty(u8 partyIndex)
     gContestMons[gContestPlayerMonIndex].moves[3] = GetMonData(&gPlayerParty[partyIndex], MON_DATA_MOVE4);
     gContestMons[gContestPlayerMonIndex].personality = GetMonData(&gPlayerParty[partyIndex], MON_DATA_PERSONALITY);
     gContestMons[gContestPlayerMonIndex].otId = GetMonData(&gPlayerParty[partyIndex], MON_DATA_OT_ID);
+    gContestMons[gContestPlayerMonIndex].isShiny = GetMonData(&gPlayerParty[partyIndex], MON_DATA_IS_SHINY);
 
     heldItem = GetMonData(&gPlayerParty[partyIndex], MON_DATA_HELD_ITEM);
     cool   = gContestMons[gContestPlayerMonIndex].cool;
@@ -3114,14 +3115,14 @@ static u8 CreateJudgeSpeechBubbleSprite(void)
     return spriteId;
 }
 
-static u8 CreateContestantSprite(u16 species, u32 otId, u32 personality, u32 index)
+static u8 CreateContestantSprite(u16 species, bool8 isShiny, u32 personality, u32 index)
 {
     u8 spriteId;
     species = SanitizeSpecies(species);
 
     HandleLoadSpecialPokePic(FALSE, gMonSpritesGfxPtr->sprites.ptr[B_POSITION_PLAYER_LEFT], species, personality);
 
-    LoadCompressedPalette(GetMonSpritePalFromSpeciesAndPersonality(species, otId, personality), OBJ_PLTT_ID(2), PLTT_SIZE_4BPP);
+    LoadCompressedPalette(GetMonSpritePalFromSpeciesAndPersonality(species, isShiny, personality), OBJ_PLTT_ID(2), PLTT_SIZE_4BPP);
     SetMultiuseSpriteTemplateToPokemon(species, B_POSITION_PLAYER_LEFT);
 
     spriteId = CreateSprite(&gMultiuseSpriteTemplate, 0x70, GetBattlerSpriteFinal_Y(2, species, FALSE), 30);
@@ -5354,6 +5355,7 @@ static void SetMoveAnimAttackerData(u8 contestant)
     gContestResources->moveAnim->species = SanitizeSpecies(gContestMons[contestant].species);
     gContestResources->moveAnim->personality = gContestMons[contestant].personality;
     gContestResources->moveAnim->otId = gContestMons[contestant].otId;
+    gContestResources->moveAnim->isShiny = gContestMons[contestant].isShiny;
 }
 
 static void CreateInvisibleBattleTargetSprite(void)
@@ -5565,6 +5567,7 @@ bool8 SaveContestWinner(u8 rank)
     {
         // Set the most recent winner so the artist can show the player their painting
         gCurContestWinner.personality = gContestMons[i].personality;
+        gCurContestWinner.isShiny = gContestMons[i].isShiny;
         gCurContestWinner.trainerId = gContestMons[i].otId;
         gCurContestWinner.species = gContestMons[i].species;
         StringCopy(gCurContestWinner.monName, gContestMons[i].nickname);
@@ -6109,4 +6112,3 @@ void StripPlayerAndMonNamesForLinkContest(struct ContestPokemon *mon, s32 langua
         name[PLAYER_NAME_LENGTH] = EOS;
     }
 }
-

@@ -25,6 +25,7 @@
 #define VERSION_FIREFLOWER 13 //! these skips 13 and 14, so i'll take it.
 #define VERSION_SUPERLEAF 14
 #define VERSION_GAMECUBE 15
+#define NUM_VERSIONS 15
 
 #define LANGUAGE_JAPANESE  1
 #define LANGUAGE_ENGLISH   2
@@ -40,6 +41,7 @@
 #else
 #define GAME_VERSION (VERSION_FIREFLOWER)
 #endif
+
 
 #if INA
 #define GAME_LANGUAGE (LANGUAGE_INDONESIA)
