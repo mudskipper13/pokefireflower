@@ -21,4 +21,9 @@
 #define FADE_FROM_WHITE  2
 #define FADE_TO_WHITE    3
 
+// Gamma types
+#define GAMMA_NONE   0
+#define GAMMA_NORMAL 1
+#define GAMMA_ALT    2
+
 #endif // GUARD_CONSTANTS_FIELD_WEATHER_H
