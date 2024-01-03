@@ -504,8 +504,23 @@ struct BattleMove
     u32 encoreBanned:1;
     u32 parentalBondBanned:1;
     u32 skyBattleBanned:1;
+    u32 sketchBanned:1;
 
     u16 argument;
+};
+
+struct Ability
+{
+    u8 name[ABILITY_NAME_LENGTH + 1];
+    const u8 *description;
+    s8 aiRating;
+    u8 cantBeCopied:1; // cannot be copied by Role Play or Doodle
+    u8 cantBeSwapped:1; // cannot be swapped with Skill Swap or Wandering Spirit
+    u8 cantBeTraced:1; // cannot be copied by Trace - same as cantBeCopied except for Wonder Guard
+    u8 cantBeSuppressed:1; // cannot be negated by Gastro Acid or Neutralizing Gas
+    u8 cantBeOverwritten:1; // cannot be overwritten by Entrainment, Worry Seed or Simple Beam (but can be by Mummy) - same as cantBeSuppressed except for Truant
+    u8 breakable:1; // can be bypassed by Mold Breaker and clones
+    u8 failsOnImposter:1; // doesn't work on an Imposter mon; when can we actually use this?
 };
 
 #define SPINDA_SPOT_WIDTH 16
@@ -576,6 +591,7 @@ extern const u16 gUnionRoomFacilityClasses[];
 extern const struct SpriteTemplate gBattlerSpriteTemplates[];
 extern const s8 gNatureStatTable[][5];
 extern const u32 sExpCandyExperienceTable[];
+extern const struct Ability gAbilities[];
 
 void ZeroBoxMonData(struct BoxPokemon *boxMon);
 void ZeroMonData(struct Pokemon *mon);
