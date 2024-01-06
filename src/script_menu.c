@@ -218,7 +218,6 @@ static void FreeListMenuItems(struct ListMenuItem *items, u32 count)
     Free(items);
 }
 
-// Unused
 static u16 UNUSED GetLengthWithExpandedPlayerName(const u8 *str)
 {
     u16 length = 0;
@@ -388,7 +387,7 @@ static void DrawMultichoiceMenuDynamic(u8 left, u8 top, u8 argc, struct ListMenu
     gTasks[taskId].data[2] = windowId;
     gTasks[taskId].data[5] = argc;
     gTasks[taskId].data[7] = maxBeforeScroll;
-    StoreWordInTwoHalfwords((u16 *)(&gTasks[taskId].data[3]), (u32) items);
+    StoreWordInTwoHalfwords((u16 *) &gTasks[taskId].data[3], (u32) items);
     list = (void *) gTasks[gTasks[taskId].data[0]].data;
     ListMenuChangeSelectionFull(list, TRUE, FALSE, initialRow, TRUE);
 
@@ -525,7 +524,7 @@ static void Task_HandleScrollingMultichoiceInput(u8 taskId)
             RemoveScrollIndicatorArrowPair(gTasks[taskId].data[6]);
         }
 
-        LoadWordFromTwoHalfwords((u16 *)(&gTasks[taskId].data[3]), (u32* )(&items));
+        LoadWordFromTwoHalfwords((u16 *) &gTasks[taskId].data[3], (u32 *)(&items));
         FreeListMenuItems(items, gTasks[taskId].data[5]);
         TRY_FREE_AND_SET_NULL(sDynamicMenuEventScratchPad);
         DestroyListMenuTask(gTasks[taskId].data[0], NULL, NULL);

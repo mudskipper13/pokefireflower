@@ -3055,6 +3055,9 @@ extern const u8 gText_ExpShareOff[];
 
 extern const u8 gText_BasePointsResetToZero[];
 
+extern const u8 gText_Fertilize[];
+extern const u8 gText_PlantBerry[];
+
 //! Current Time Window
 
 extern const u8 *const gDayNamesStringsTable[];

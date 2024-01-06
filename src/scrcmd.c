@@ -74,9 +74,9 @@ extern const u8 *gStdScripts[];
 extern const u8 *gStdScripts_End[];
 
 static void CloseBrailleWindow(void);
+static void DynamicMultichoiceSortList(struct ListMenuItem *items, u32 count);
 static bool8 ScriptContext_NextCommandEndsScript(struct ScriptContext *ctx);
 static u8 ScriptContext_GetInput(struct ScriptContext *ctx);
-static void DynamicMultichoiceSortList(struct ListMenuItem *items, u32 count);
 
 // This is defined in here so the optimizer can't see its value when compiling
 // script.c.
@@ -1497,8 +1497,8 @@ static void DynamicMultichoiceSortList(struct ListMenuItem *items, u32 count)
 bool8 ScrCmd_dynmultichoice(struct ScriptContext *ctx)
 {
     u32 i;
-    u32 left = ScriptReadByte(ctx);
-    u32 top = ScriptReadByte(ctx);
+    u32 left = VarGet(ScriptReadHalfword(ctx));
+    u32 top = VarGet(ScriptReadHalfword(ctx));
     bool32 ignoreBPress = ScriptReadByte(ctx);
     u32 maxBeforeScroll = ScriptReadByte(ctx);
     bool32 shouldSort = ScriptReadByte(ctx);
@@ -1566,7 +1566,6 @@ bool8 ScrCmd_dynmultipush(struct ScriptContext *ctx)
     item.name = nameBuffer;
     item.id = id;
     MultichoiceDynamic_PushElement(item);
-
     return FALSE;
 }
 
