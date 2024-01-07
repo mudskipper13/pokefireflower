@@ -1838,13 +1838,20 @@ u32 LinkPlayerGetTrainerPicId(u32 multiplayerId)
 
     u8 gender = gLinkPlayers[multiplayerId].gender;
     u8 version = gLinkPlayers[multiplayerId].version & 0xFF;
+    u8 hasOutfit = gLinkPlayers[multiplayerId].hasOutfit;
+    u8 outfitId = gLinkPlayers[multiplayerId].currOutfitId;
 
     if (version == VERSION_FIRE_RED || version == VERSION_LEAF_GREEN)
         trainerPicId = gender + TRAINER_BACK_PIC_RED;
     else if (version == VERSION_RUBY || version == VERSION_SAPPHIRE)
         trainerPicId = gender + TRAINER_BACK_PIC_RS_BRENDAN;
     else
-        trainerPicId = gender + TRAINER_BACK_PIC_BRENDAN;
+    {
+        if (hasOutfit && outfitId < OUTFIT_COUNT)
+            trainerPicId = gOutfits[outfitId].trainerPics[gender][1];
+        else
+            trainerPicId = gender + TRAINER_BACK_PIC_BRENDAN;
+    }
 
     return trainerPicId;
 }

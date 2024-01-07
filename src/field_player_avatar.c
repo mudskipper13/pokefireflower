@@ -20,6 +20,7 @@
 #include "strings.h"
 #include "task.h"
 #include "tv.h"
+#include "link.h"
 #include "wild_encounter.h"
 #include "constants/abilities.h"
 #include "constants/event_objects.h"
@@ -1198,6 +1199,14 @@ u16 GetRSAvatarGraphicsIdByGender(u8 gender)
 u16 GetPlayerAvatarGraphicsIdByStateId(u8 state)
 {
     return GetPlayerAvatarGraphicsIdByStateIdAndGender(state, gSaveBlock2Ptr->playerGender);
+}
+
+u8 GetLinkPlayerAvatarGraphicsIdByStateIdLinkIdAndGender(u8 state, u8 linkId, u8 gender, bool8 hasOutfit)
+{
+    if (hasOutfit)
+        return gOutfits[gLinkPlayers[linkId].currOutfitId].avatarGfxIds[gender][state];
+    else
+        return gOutfits[0].avatarGfxIds[gender][state];
 }
 
 bool8 PartyHasMonWithSurf(void)
