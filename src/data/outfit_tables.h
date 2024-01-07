@@ -2,6 +2,23 @@
 #include "constants/event_objects.h"
 #include "constants/trainers.h"
 
+#if defined(__APPLE__) || defined(__CYGWIN__) || defined(__INTELLISENSE__)
+struct Outfit
+{
+    u8 isHidden:1; //! Will not shows up in the menu if locked.
+    u32 prices[GENDER_COUNT]; //! heh
+    const u8 *name;
+    const u8 *desc;
+    const u16 *mugshotPals[GENDER_COUNT]; //! mugshot battle transition palette
+    u16 trainerPics[GENDER_COUNT][2];
+    u16 avatarGfxIds[GENDER_COUNT][4];
+    u16 animGfxIds[GENDER_COUNT][4];
+    //! region map & frontier pass
+    const void *iconsRM[GENDER_COUNT][2]; //! region map
+    const void *iconsFP[GENDER_COUNT][2]; //! frontier pass
+};
+#endif
+
 static const u16 sRegionMapPlayerIcon_BrendanGfx[] = INCBIN_U16("graphics/pokenav/region_map/brendan_icon.4bpp");
 static const u16 sRegionMapPlayerIcon_BrendanPal[] = INCBIN_U16("graphics/pokenav/region_map/brendan_icon.gbapal");
 
