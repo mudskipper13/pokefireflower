@@ -24,6 +24,7 @@
 #include "text.h"
 #include "util.h"
 #include "window.h"
+#include "outfit_menu.h"
 #include "constants/battle_anim.h"
 #include "constants/songs.h"
 #include "constants/trainers.h"
@@ -431,11 +432,13 @@ static void LinkOpponentHandleDrawTrainerPic(u32 battler)
             {
                 //! neverRead was set to 0 by vanilla, we use it to our
                 //! advantage so that our game won't freak out as much
-                //! we also won't load the outfit if the opposing player
-                //! has an outfit our game don't
-                u8 outfit = gLinkPlayers[GetBattlerMultiplayerId(battler)].currOutfitId, gender = gLinkPlayers[GetBattlerMultiplayerId(battler)].gender;
-                if (gLinkPlayers[GetBattlerMultiplayerId(battler)].hasOutfit && outfit < OUTFIT_COUNT)
-                    trainerPicId = gOutfits[outfit].trainerPics[gender][0];
+                //! we also defaults to 0 if the player has an outfit
+                //! our game don't
+                u8 outfit = gLinkPlayers[GetBattlerMultiplayerId(battler)].currOutfitId;
+                u8 gender = gLinkPlayers[GetBattlerMultiplayerId(battler)].gender;
+
+                if (outfit < OUTFIT_COUNT)
+                    trainerPicId = GetPlayerTrainerPicIdByOutfitGenderType(outfit, gender, 0);
                 else
                     trainerPicId = PlayerGenderToFrontTrainerPicId(gLinkPlayers[GetBattlerMultiplayerId(battler)].gender);
             }
@@ -466,9 +469,15 @@ static void LinkOpponentHandleDrawTrainerPic(u32 battler)
         }
         else
         {
-            u8 outfit = gLinkPlayers[GetMultiplayerId() ^ BIT_SIDE].currOutfitId, gender = gLinkPlayers[GetMultiplayerId() ^ BIT_SIDE].gender;
-            if (gLinkPlayers[GetMultiplayerId() ^ BIT_SIDE].hasOutfit && outfit < OUTFIT_COUNT)
-                trainerPicId = gOutfits[outfit].trainerPics[gender][0];
+            //! neverRead was set to 0 by vanilla, we use it to our
+            //! advantage so that our game won't freak out as much
+            //! we also defaults to 0 if the player has an outfit
+            //! our game don't
+            u8 outfit = gLinkPlayers[GetMultiplayerId() ^ BIT_SIDE].currOutfitId;
+            u8 gender = gLinkPlayers[GetMultiplayerId() ^ BIT_SIDE].gender;
+
+            if (outfit < OUTFIT_COUNT)
+                trainerPicId = GetPlayerTrainerPicIdByOutfitGenderType(outfit, gender, 0);
             else
                 trainerPicId = PlayerGenderToFrontTrainerPicId(gender);
         }

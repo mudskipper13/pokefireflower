@@ -134,7 +134,7 @@ extern const u8 *const gMaxMoveNames[];
 
 struct Outfit
 {
-    u8 isHidden:1; //! Will not shows up in the menu if unlocked.
+    u8 isHidden:1; //! Will not shows up in the menu if locked.
     u32 prices[GENDER_COUNT]; //! heh
     const u8 *name;
     const u8 *desc;
@@ -148,5 +148,8 @@ struct Outfit
 };
 
 extern const struct Outfit gOutfits[OUTFIT_COUNT];
+
+#define GFX 0
+#define PAL 1
 
 #endif // GUARD_DATA_H

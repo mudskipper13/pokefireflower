@@ -3204,7 +3204,6 @@ static u8 LinkPlayerGetCollision(u8 selfObjEventId, u8 direction, s16 x, s16 y)
     return MapGridGetCollisionAt(x, y);
 }
 
-extern const struct Outfit gOutfits[OUTFIT_COUNT];
 static void CreateLinkPlayerSprite(u8 linkPlayerId, u8 gameVersion)
 {
     struct LinkPlayerObjectEvent *linkPlayerObjEvent = &gLinkPlayerObjectEvents[linkPlayerId];
@@ -3226,16 +3225,8 @@ static void CreateLinkPlayerSprite(u8 linkPlayerId, u8 gameVersion)
             break;
         case VERSION_EMERALD:
         {
-            u32 i = FALSE;
-            if (gLinkPlayers[linkPlayerId].hasOutfit && gLinkPlayers[linkPlayerId].currOutfitId < OUTFIT_COUNT)
-                i = TRUE;
-
-            objEvent->spriteId = CreateObjectGraphicsSprite(
-                GetLinkPlayerAvatarGraphicsIdByStateIdLinkIdAndGender(PLAYER_AVATAR_STATE_NORMAL, linkPlayerId, linkGender(objEvent), i),
-                SpriteCB_LinkPlayer,
-                0,
-                0,
-                0);
+            u16 gfxId = GetLinkPlayerAvatarGraphicsIdByStateIdLinkIdAndGender(PLAYER_AVATAR_STATE_NORMAL, linkPlayerId, linkGender(objEvent));
+            objEvent->spriteId = CreateObjectGraphicsSprite(gfxId, SpriteCB_LinkPlayer, 0, 0, 0);
         }
             break;
         }

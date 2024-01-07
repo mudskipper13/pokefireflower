@@ -18,6 +18,7 @@
 #include "sprite.h"
 #include "task.h"
 #include "data.h"
+#include "field_player_avatar.h"
 #include "constants/event_object_movement.h"
 #include "constants/event_objects.h"
 #include "constants/rgb.h"
@@ -792,7 +793,7 @@ static void CreateCableCarSprites(void)
     u8 i;
 
     //! Always use normal state
-    u16 playerGraphicsId = gOutfits[gSaveBlock2Ptr->currOutfitId].avatarGfxIds[gSaveBlock2Ptr->playerGender][PLAYER_AVATAR_STATE_NORMAL];
+    u16 playerGraphicsId = GetPlayerAvatarGraphicsIdByStateIdAndGender(PLAYER_AVATAR_STATE_NORMAL, gSaveBlock2Ptr->playerGender);
     u16 rval = Random();
     u16 hikerGraphicsIds[4] = {
         OBJ_EVENT_GFX_HIKER,

@@ -22,6 +22,7 @@
 #include "region_map.h"
 #include "data.h"
 #include "heal_location.h"
+#include "outfit_menu.h"
 #include "constants/region_map_sections.h"
 #include "constants/field_specials.h"
 #include "constants/heal_locations.h"
@@ -1444,8 +1445,8 @@ static void UNUSED ClearUnkCursorSpriteData(void)
 void CreateRegionMapPlayerIcon(u16 tileTag, u16 paletteTag)
 {
     u8 spriteId;
-    struct SpriteSheet sheet = {gOutfits[gSaveBlock2Ptr->currOutfitId].iconsRM[gSaveBlock2Ptr->playerGender][0], 0x80, tileTag};
-    struct SpritePalette palette = {gOutfits[gSaveBlock2Ptr->currOutfitId].iconsRM[gSaveBlock2Ptr->playerGender][1], paletteTag};
+    struct SpriteSheet sheet = {GetPlayerHeadGfxOrPal(GFX, FALSE), 0x80, tileTag};
+    struct SpritePalette palette = {GetPlayerHeadGfxOrPal(PAL, FALSE), paletteTag};
     struct SpriteTemplate template = {tileTag, paletteTag, &sRegionMapPlayerIconOam, sRegionMapPlayerIconAnimTable, NULL, gDummySpriteAffineAnimTable, SpriteCallbackDummy};
 
     if (IsEventIslandMapSecId(gMapHeader.regionMapSectionId))

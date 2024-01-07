@@ -32,6 +32,7 @@
 #include "fldeff_misc.h"
 #include "trainer_pokemon_sprites.h"
 #include "data.h"
+#include "outfit_menu.h"
 #include "confetti_util.h"
 #include "constants/rgb.h"
 
@@ -698,11 +699,12 @@ static void Task_Hof_WaitToDisplayPlayer(u8 taskId)
 
 static void Task_Hof_DisplayPlayer(u8 taskId)
 {
+    u16 picId = GetPlayerTrainerPicIdByOutfitGenderType(gSaveBlock2Ptr->currOutfitId, gSaveBlock2Ptr->playerGender, 0);
     SetGpuReg(REG_OFFSET_DISPCNT, DISPCNT_OBJ_ON | DISPCNT_OBJ_1D_MAP);
     ShowBg(0);
     ShowBg(1);
     ShowBg(3);
-    gTasks[taskId].tPlayerSpriteID = CreateTrainerPicSprite(gOutfits[gSaveBlock2Ptr->currOutfitId].trainerPics[gSaveBlock2Ptr->playerGender][0], TRUE, 120, 72, 6, TAG_NONE);
+    gTasks[taskId].tPlayerSpriteID = CreateTrainerPicSprite(picId, TRUE, 120, 72, 6, TAG_NONE);
     AddWindow(&sHof_WindowTemplate);
     LoadWindowGfx(1, gSaveBlock2Ptr->optionsWindowFrameType, 0x21D, BG_PLTT_ID(13));
     LoadPalette(GetTextWindowPalette(1), BG_PLTT_ID(14), PLTT_SIZE_4BPP);

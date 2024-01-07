@@ -30,6 +30,7 @@
 #include "text.h"
 #include "util.h"
 #include "window.h"
+#include "outfit_menu.h"
 #include "constants/battle_anim.h"
 #include "constants/battle_partner.h"
 #include "constants/hold_effects.h"
@@ -1835,10 +1836,8 @@ static void PlayerHandleSwitchInAnim(u32 battler)
 u32 LinkPlayerGetTrainerPicId(u32 multiplayerId)
 {
     u32 trainerPicId;
-
     u8 gender = gLinkPlayers[multiplayerId].gender;
     u8 version = gLinkPlayers[multiplayerId].version & 0xFF;
-    u8 hasOutfit = gLinkPlayers[multiplayerId].hasOutfit;
     u8 outfitId = gLinkPlayers[multiplayerId].currOutfitId;
 
     if (version == VERSION_FIRE_RED || version == VERSION_LEAF_GREEN)
@@ -1847,8 +1846,8 @@ u32 LinkPlayerGetTrainerPicId(u32 multiplayerId)
         trainerPicId = gender + TRAINER_BACK_PIC_RS_BRENDAN;
     else
     {
-        if (hasOutfit && outfitId < OUTFIT_COUNT)
-            trainerPicId = gOutfits[outfitId].trainerPics[gender][1];
+        if (outfitId < OUTFIT_COUNT)
+            trainerPicId = GetPlayerTrainerPicIdByOutfitGenderType(outfitId, gender, 1);
         else
             trainerPicId = gender + TRAINER_BACK_PIC_BRENDAN;
     }
@@ -1863,7 +1862,7 @@ static u32 PlayerGetTrainerBackPicId(void)
     if (gBattleTypeFlags & BATTLE_TYPE_LINK)
         trainerPicId = LinkPlayerGetTrainerPicId(GetMultiplayerId());
     else
-        trainerPicId = gOutfits[gSaveBlock2Ptr->currOutfitId].trainerPics[gSaveBlock2Ptr->playerGender][1];
+        trainerPicId = GetPlayerTrainerPicIdByOutfitGenderType(gSaveBlock2Ptr->currOutfitId, gSaveBlock2Ptr->playerGender, 1);
 
     return trainerPicId;
 }
@@ -1905,7 +1904,7 @@ static void PlayerHandleDrawTrainerPic(u32 battler)
     // Use front pic table for any tag battles unless your partner is Steven or a custom partner.
     if (gBattleTypeFlags & BATTLE_TYPE_INGAME_PARTNER && gPartnerTrainerId < TRAINER_PARTNER(PARTNER_NONE))
     {
-        trainerPicId = gOutfits[gSaveBlock2Ptr->currOutfitId].trainerPics[gSaveBlock2Ptr->playerGender][0];
+        trainerPicId = GetPlayerTrainerPicIdByOutfitGenderType(gSaveBlock2Ptr->currOutfitId, gSaveBlock2Ptr->playerGender, 0);
         isFrontPic = TRUE;
     }
     else // Use back pic in all the other usual circumstances.
@@ -2242,7 +2241,8 @@ static void PlayerHandleOneReturnValue_Duplicate(u32 battler)
 
 static void PlayerHandleIntroTrainerBallThrow(u32 battler)
 {
-    const u32 *trainerPal = gTrainerBacksprites[gOutfits[gSaveBlock2Ptr->currOutfitId].trainerPics[gSaveBlock2Ptr->playerGender][1]].palette.data;
+    u32 picId = GetPlayerTrainerPicIdByOutfitGenderType(gSaveBlock2Ptr->currOutfitId, gSaveBlock2Ptr->playerGender, 1);
+    const u32 *trainerPal = gTrainerBacksprites[picId].palette.data;
     BtlController_HandleIntroTrainerBallThrow(battler, 0xD6F8, trainerPal, 31, Intro_TryShinyAnimShowHealthbox);
 }
 

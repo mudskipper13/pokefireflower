@@ -38,6 +38,7 @@
 #include "title_screen.h"
 #include "window.h"
 #include "mystery_gift_menu.h"
+#include "outfit_menu.h"
 
 /*
  * Main menu state machine
@@ -1902,12 +1903,12 @@ static void AddBirchSpeechObjects(u8 taskId)
     gSprites[lotadSpriteId].oam.priority = 0;
     gSprites[lotadSpriteId].invisible = TRUE;
     gTasks[taskId].tLotadSpriteId = lotadSpriteId;
-    brendanSpriteId = CreateTrainerSprite(gOutfits[gSaveBlock2Ptr->currOutfitId].trainerPics[MALE][0], 120, 60, 0, &gDecompressionBuffer[0]);
+    brendanSpriteId = CreateTrainerSprite(GetPlayerTrainerPicIdByOutfitGenderType(0, MALE, 0), 120, 60, 0, &gDecompressionBuffer[0]);
     gSprites[brendanSpriteId].callback = SpriteCB_Null;
     gSprites[brendanSpriteId].invisible = TRUE;
     gSprites[brendanSpriteId].oam.priority = 0;
     gTasks[taskId].tBrendanSpriteId = brendanSpriteId;
-    maySpriteId = CreateTrainerSprite(gOutfits[gSaveBlock2Ptr->currOutfitId].trainerPics[MALE][0], 120, 60, 0, &gDecompressionBuffer[TRAINER_PIC_SIZE]);
+    maySpriteId = CreateTrainerSprite(GetPlayerTrainerPicIdByOutfitGenderType(0, FEMALE, 0), 120, 60, 0, &gDecompressionBuffer[TRAINER_PIC_SIZE]);
     gSprites[maySpriteId].callback = SpriteCB_Null;
     gSprites[maySpriteId].invisible = TRUE;
     gSprites[maySpriteId].oam.priority = 0;

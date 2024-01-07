@@ -1181,9 +1181,27 @@ u16 GetRivalAvatarGraphicsIdByStateIdAndGender(u8 state, u8 gender)
     return sRivalAvatarGfxIds[state][gender];
 }
 
+static u16 GetPlayerAvatarGraphicsIdByOutfitStateIdGenderAndIsAnim(u8 outfit, u8 state, u8 gender, bool32 isAnim)
+{
+    if (isAnim)
+        return gOutfits[outfit].animGfxIds[gender][state];
+    else
+        return gOutfits[outfit].avatarGfxIds[gender][state];
+}
+
+u16 GetPlayerAvatarGraphicsIdByOutfitStateIdAndGender(u8 outfit, u8 state, u8 gender)
+{
+    return GetPlayerAvatarGraphicsIdByOutfitStateIdGenderAndIsAnim(outfit, state, gender, FALSE);
+}
+
+u16 GetPlayerAnimGraphicsIdByOutfitStateIdAndGender(u8 outfit, u8 state, u8 gender)
+{
+    return GetPlayerAvatarGraphicsIdByOutfitStateIdGenderAndIsAnim(outfit, state, gender, TRUE);
+}
+
 u16 GetPlayerAvatarGraphicsIdByStateIdAndGender(u8 state, u8 gender)
 {
-    return gOutfits[gSaveBlock2Ptr->currOutfitId].avatarGfxIds[gender][state];
+    return GetPlayerAvatarGraphicsIdByOutfitStateIdAndGender(gSaveBlock2Ptr->currOutfitId, state, gender);
 }
 
 u16 GetFRLGAvatarGraphicsIdByGender(u8 gender)
@@ -1201,12 +1219,9 @@ u16 GetPlayerAvatarGraphicsIdByStateId(u8 state)
     return GetPlayerAvatarGraphicsIdByStateIdAndGender(state, gSaveBlock2Ptr->playerGender);
 }
 
-u8 GetLinkPlayerAvatarGraphicsIdByStateIdLinkIdAndGender(u8 state, u8 linkId, u8 gender, bool8 hasOutfit)
+u8 GetLinkPlayerAvatarGraphicsIdByStateIdLinkIdAndGender(u8 state, u8 linkId, u8 gender)
 {
-    if (hasOutfit)
-        return gOutfits[gLinkPlayers[linkId].currOutfitId].avatarGfxIds[gender][state];
-    else
-        return gOutfits[0].avatarGfxIds[gender][state];
+    return gOutfits[gLinkPlayers[linkId].currOutfitId].avatarGfxIds[gender][state];
 }
 
 bool8 PartyHasMonWithSurf(void)
@@ -1333,7 +1348,7 @@ void SetPlayerInvisibility(bool8 invisible)
 
 static void SetPlayerAvatarAnimation(u32 playerAnimId, u32 animNum)
 {
-    u16 gfxId = gOutfits[gSaveBlock2Ptr->currOutfitId].animGfxIds[gSaveBlock2Ptr->playerGender][animNum];
+    u16 gfxId = GetPlayerAnimGraphicsIdByOutfitStateIdAndGender(gSaveBlock2Ptr->currOutfitId, animNum, gSaveBlock2Ptr->playerGender);
     ObjectEventSetGraphicsId(&gObjectEvents[gPlayerAvatar.objectEventId], gfxId);
     StartSpriteAnim(&gSprites[gPlayerAvatar.spriteId], animNum);
 }

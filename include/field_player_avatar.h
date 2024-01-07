@@ -38,6 +38,8 @@ void StopPlayerAvatar(void);
 void SetSpinStartFacingDir(u8);
 void GetXYCoordsOneStepInFrontOfPlayer(s16 *xPtr, s16 *yPtr);
 u16 GetRivalAvatarGraphicsIdByStateIdAndGender(u8 state, u8 gender);
+u16 GetPlayerAvatarGraphicsIdByOutfitStateIdAndGender(u8 outfit, u8 state, u8 gender);
+u16 GetPlayerAnimGraphicsIdByOutfitStateIdAndGender(u8 outfit, u8 state, u8 gender);
 u16 GetPlayerAvatarGraphicsIdByStateIdAndGender(u8 state, u8 gender);
 void SetPlayerAvatarFieldMove(void);
 u16 GetPlayerAvatarGraphicsIdByCurrentState(void);
@@ -65,6 +67,6 @@ void SetPlayerInvisibility(bool8 invisible);
 u8 player_get_pos_including_state_based_drift(s16 *x, s16 *y);
 void StartFishing(u8 rod);
 void SetPlayerAvatarVsSeeker(void);
-u8 GetLinkPlayerAvatarGraphicsIdByStateIdLinkIdAndGender(u8 state, u8 linkId, u8 gender, bool8 hasOutfit);
+u8 GetLinkPlayerAvatarGraphicsIdByStateIdLinkIdAndGender(u8 state, u8 linkId, u8 gender);
 
 #endif // GUARD_FIELD_PLAYER_AVATAR_H

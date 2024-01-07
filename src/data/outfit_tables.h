@@ -82,6 +82,7 @@ const struct Outfit gOutfits[OUTFIT_COUNT] =
         //! TODO: implement
         .prices = { 0, 0 }, //! DESC: prices for purchasing them.
 
+        //! agbcc doesnt like COMPOUND_STRING on my end
         //! DESC: outfit's name
         .name = COMPOUND_STRING("USUAL GREEN"),
 
