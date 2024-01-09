@@ -388,6 +388,7 @@
 #define OBJ_EVENT_PAL_TAG_PROF_OAK                0x1124
 #define OBJ_EVENT_PAL_TAG_LASS                    0x1125
 #define OBJ_EVENT_PAL_TAG_YOUNGSTER               0x1126
+#define OBJ_EVENT_PAL_TAG_GIRL                    0x1127
 
 #define OBJ_EVENT_PAL_TAG_NONE                    0x11FF
 
