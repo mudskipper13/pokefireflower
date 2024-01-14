@@ -279,3 +279,13 @@ Debug_FlagsAndVarNotSetBattleConfigMessage_Text:
 	.string "usable flag and a usable var in:\l"
 	.string "'include/config/battle.h'!$"
 
+EventScript_PreventEnterTrigger::
+	msgbox Text_PreventEnterTrigger, MSGBOX_DEFAULT
+	closemessage
+	return
+
+Text_PreventEnterTrigger:
+	.string "You cannot enter this area until it\n"
+	.string "is stated as finished on the game\l"
+	.string "release.\p"
+	.string "Apologize for the inconvinient.$"
