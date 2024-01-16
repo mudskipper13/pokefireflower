@@ -580,6 +580,7 @@ gStdScripts_End::
 	.include "data/maps/LittlerootTown_BrendansHouse_1F/text.inc"
 	.include "data/maps/LittlerootTown_BrendansHouse_2F/text.inc"
 	.include "data/maps/LittlerootTown_MaysHouse_1F/text.inc"
+	.include "data/maps/LittlerootTown_MaysHouse_2F/text.inc"
 
 	.include "data/scripts/std_msgbox.inc"
 	.include "data/scripts/trainer_battle.inc"
@@ -868,15 +869,6 @@ gText_SandstormIsVicious::
 gText_SelectWithoutRegisteredItem::
 	.string "An item in the BAG can be\n"
 	.string "registered to SELECT for easy use.$"
-
-gText_PokemonTrainerSchoolEmail::
-	.string "There's an e-mail from POKéMON TRAINER\n"
-	.string "SCHOOL.\p"
-	.string "… … … … … …\p"
-	.string "A POKéMON may learn up to four moves.\p"
-	.string "A TRAINER's expertise is tested on the\n"
-	.string "move sets chosen for POKéMON.\p"
-	.string "… … … … … …$"
 
 gText_PlayerHouseBootPC::
 	.string "{PLAYER} booted up the PC.$"

@@ -15,7 +15,12 @@
   "connections": [
     {
       "map": "MAP_LITTLEROOT_TOWN_BRENDANS_HOUSE_2F",
-      "offset": -3,
+      "offset": -4,
+      "direction": "down"
+    },
+    {
+      "map": "MAP_LITTLEROOT_TOWN_MAYS_HOUSE_2F",
+      "offset": 7,
       "direction": "down"
     }
   ],
@@ -43,15 +48,8 @@
       "dest_warp_id": "1"
     },
     {
-      "x": 4,
+      "x": 3,
       "y": 5,
-      "elevation": 0,
-      "dest_map": "MAP_LITTLEROOT_TOWN_BRENDANS_HOUSE_2F",
-      "dest_warp_id": "0"
-    },
-    {
-      "x": 9,
-      "y": 2,
       "elevation": 0,
       "dest_map": "MAP_LITTLEROOT_TOWN_BRENDANS_HOUSE_2F",
       "dest_warp_id": "0"
@@ -60,7 +58,7 @@
       "x": 8,
       "y": 5,
       "elevation": 0,
-      "dest_map": "MAP_LITTLEROOT_TOWN_BRENDANS_HOUSE_2F",
+      "dest_map": "MAP_LITTLEROOT_TOWN_MAYS_HOUSE_2F",
       "dest_warp_id": "0"
     },
     {

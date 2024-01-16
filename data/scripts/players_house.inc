@@ -54,7 +54,7 @@ LittlerootTown_BrendansHouse_2F_EventScript_WallClock::
 LittlerootTown_MaysHouse_2F_EventScript_WallClock::
 	lockall
 	setvar VAR_0x8004, FEMALE
-	goto PlayersHouse_2F_EventScript_WallClock
+	goto PlayersHouse_2F_EventScript_CheckWallClock
 	end
 
 PlayersHouse_2F_EventScript_WallClock::

@@ -1,0 +1,68 @@
+text LittlerootTown_MaysHouse_2F_Text_EMailAlreadyRead {
+	poryswitch(LANG) {
+		_:	format("Itu e-mail kiriman NAVY.")
+
+		INA:	format(	"That's an e-mail sent by NAVY.")
+	}
+}
+
+// Might want this with the mail UI, but not limiting it with 
+// easy chat lmao
+text LittlerootTown_MaysHouse_2F_Text_PokemonTrainerSchoolEmail {
+	poryswitch(LANG) {
+		_:  format(	"Ada suatu e-mail dari…{PAUSE 20} NAVY?!\p"
+					"… … … … … …\p"
+					"Heya, LIME. Ini NAVY OAK.\p"
+					"Apa kabar? Semoga semua yang di"
+					"sana baik-baik saja. Apa lagi"
+					"{PLAYER}, heh.\p"
+					"Aku mengirim e-mail ini untuk"
+					"mengkabarimu dan yang lain kalau"
+					"aku akan pulang dari STARION"
+					"bulan ini untuk menghabiskan waktu"
+					"libur musim panas di KANTO.\p"
+					"Bisa di bilang aku agak rindu, apalagi"
+					"dengan kamu dan {PLAYER}.\p"
+					"Aku pun akan datang bersama seseorang"
+					"spesial, jadi tenang soal suvenir ya.\p"
+					"Dan ya, begitu saja. Sampai ketemu"
+					"lagi nanti.\p"
+					"- Salam hangat, NAVY OAK.\p"
+					"… … … … … …$")
+
+		INA:	format(	"There's an e-mail from…{PAUSE 20} NAVY?!\p"
+						"… … … … … …\p"
+						"Heya, LIME. This is NAVY OAK.\p"
+						"How's going? Hope everyone there is"
+						"alright. Especially {PLAYER}, heh.\p"
+						"But anyway, I sent you this e-mail"
+						"for letting you know that I will come"
+						"home from STARION this month for"
+						"enjoying the summer break in KANTO\p"
+						"You could say I'm a bit missed,"
+						"especially with you and {PLAYER}.\p"
+						"I also came alongside a special"
+						"person, so no worries on the souvenier"
+						"alright.\p"
+						"And yeah, that's it. See you again"
+						"soon.\p"
+						"- Warm regards, NAVY OAK.\p"
+						"… … … … … …$")
+	}
+}
+
+text LittlerootTown_MaysHouse_2F_Text_PichuDoll {
+	poryswitch(LANG) {
+		_:  format(	"It's LIME's favorite childhood doll"
+					"from GRAMPA MARCUS!\p"
+					"Still looks good as new even after"
+					"many years later, LIME must've taken"
+					"care of it very seriously.")
+
+		INA:	format(	"Itu boneka masa kecil favorit LIME"
+						"pemberian dari KAKEK MARCUS!\p"
+						"Masih terlihat bagus seperti baru"
+						"setelah lama bertahun-tahun kemudian,"
+						"LIME pasti sangat serius menjaganya.")
+	}
+}
