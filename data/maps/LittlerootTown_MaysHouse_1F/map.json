@@ -22,6 +22,11 @@
       "map": "MAP_LITTLEROOT_TOWN_MAYS_HOUSE_2F",
       "offset": 7,
       "direction": "down"
+    },
+    {
+      "map": "MAP_LITTLEROOT_TOWN_PROFESSOR_BIRCHS_LAB",
+      "offset": 0,
+      "direction": "up"
     }
   ],
   "object_events": [
@@ -65,7 +70,7 @@
       "x": 6,
       "y": 1,
       "elevation": 0,
-      "dest_map": "MAP_LITTLEROOT_TOWN_BRENDANS_HOUSE_2F",
+      "dest_map": "MAP_LITTLEROOT_TOWN_PROFESSOR_BIRCHS_LAB",
       "dest_warp_id": "0"
     }
   ],
