@@ -52,7 +52,7 @@ EventScript_BufferBerriesPocket::
 	return
 
 EventScript_ObtainedItem::
-	compare VAR_0x8001, 1
+	compare VAR_0x8001, TRUE
 	goto_if_eq EventScript_ObtainedItemMessage
 	buffernumberstring STR_VAR_1, VAR_0x8001
 	message gText_ObtainedTheItems
@@ -140,14 +140,21 @@ EventScript_PutBattlePyramidItemInBag::
 
 EventScript_FoundTMHM::
 	bufferitemnameplural STR_VAR_1, VAR_0x8004, VAR_0x8005
+	compare VAR_0x8005, 2
+	goto_if_lt EventScript_FoundTMHMMessage
+	buffernumberstring STR_VAR_3, VAR_0x8005
+	message gText_PlayerFoundTMHMs
+	goto EventScript_BufferTMHMsPocket
+	return
+EventScript_FoundTMHMMessage::
 	message gText_PlayerFoundOneTMHM
 	return
 
 EventScript_FoundItem::
-	goto_if_eq VAR_0x8005, 1, EventScript_FoundItemMessage
-	buffernumberstring STR_VAR_1, VAR_0x8005
+	goto_if_eq VAR_0x8001, TRUE, EventScript_FoundItemMessage
+	buffernumberstring STR_VAR_1, VAR_0x8001
 	message gText_PlayerFoundItems
-	goto EventScript_ContinueFoundItems
+	return
 EventScript_FoundItemMessage:
 	message gText_PlayerFoundOneItem
 EventScript_ContinueFoundItems:
