@@ -3,18 +3,22 @@
 
 //! macro modes
 
-#define OUTFIT_MENU_CHECK_UNLOCKED 0
-#define OUTFIT_MENU_CHECK_LOCKED   1
-#define OUTFIT_MENU_CHECK_USED     2
+// ScrCmd_getoutfitstatus
+#define OUTFIT_CHECK_FLAG 0
+#define OUTFIT_CHECK_USED 1
+// ScrCmd_toggleoutfit
+#define OUTFIT_TOGGLE_UNLOCK 0
+#define OUTFIT_TOGGLE_LOCK 1
+// BufferOutfitStrings
+#define OUTFIT_BUFFER_NAME  0
+#define OUTFIT_BUFFER_DESC  1
 
-#define OUTFIT_MENU_BUFFER_NAME    0
-#define OUTFIT_MENU_BUFFER_DESC    1
-
-//! outfits lists
+//! outfits
 #define OUTFIT_USUAL_GREEN 0
 #define OUTFIT_UNUSUAL_RED 1
 #define OUTFIT_COUNT 2
 
+// inclusive
 #define OUTFIT_BEGIN OUTFIT_USUAL_GREEN
 #define OUTFIT_END   OUTFIT_UNUSUAL_RED
 

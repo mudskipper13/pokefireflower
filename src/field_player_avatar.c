@@ -1348,7 +1348,7 @@ void SetPlayerInvisibility(bool8 invisible)
 
 static void SetPlayerAvatarAnimation(u32 playerAnimId, u32 animNum)
 {
-    u16 gfxId = GetPlayerAnimGraphicsIdByOutfitStateIdAndGender(gSaveBlock2Ptr->currOutfitId, animNum, gSaveBlock2Ptr->playerGender);
+    u16 gfxId = GetPlayerAnimGraphicsIdByOutfitStateIdAndGender(gSaveBlock2Ptr->currOutfitId, playerAnimId, gSaveBlock2Ptr->playerGender);
     ObjectEventSetGraphicsId(&gObjectEvents[gPlayerAvatar.objectEventId], gfxId);
     StartSpriteAnim(&gSprites[gPlayerAvatar.spriteId], animNum);
 }

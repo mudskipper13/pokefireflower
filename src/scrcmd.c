@@ -2555,31 +2555,48 @@ bool8 ScrCmd_warpwhitefade(struct ScriptContext *ctx)
     return TRUE;
 }
 
-bool8 ScrCmd_unlockoutfit(struct ScriptContext *ctx)
+bool8 ScrCmd_toggleoutfit(struct ScriptContext *ctx)
 {
-    u8 outfitId = VarGet(ScriptReadByte(ctx));
+    u16 outfitId = VarGet(ScriptReadHalfword(ctx));
+    u8 type = ScriptReadByte(ctx);
 
-    UnlockOutfit(outfitId);
+    switch(type)
+    {
+    default:
+    case OUTFIT_TOGGLE_UNLOCK:
+        UnlockOutfit(outfitId);
+        break;
+    case OUTFIT_TOGGLE_LOCK:
+        LockOutfit(outfitId);
+        break;
+    }
     return TRUE;
 }
 
 bool8 ScrCmd_getoutfitstatus(struct ScriptContext *ctx)
 {
-    u8 outfitId = VarGet(ScriptReadByte(ctx));
+    u16 outfitId = VarGet(ScriptReadHalfword(ctx));
     u8 data = ScriptReadByte(ctx);
 
-    gSpecialVar_Result = GetOutfitData(outfitId, data);
+    switch(data)
+    {
+        default:
+        case OUTFIT_CHECK_FLAG:
+            ctx->comparisonResult = GetOutfitStatus(outfitId);
+            break;
+        case OUTFIT_CHECK_USED:
+            ctx->comparisonResult = IsPlayerWearingOutfit(outfitId);
+            break;
+    }
     return TRUE;
 }
 
 bool8 ScrCmd_bufferoutfitstr(struct ScriptContext *ctx)
 {
-    u8 stringVarIndex = ScriptReadByte(ctx);
+    u8 strVarIdx = ScriptReadByte(ctx);
     u16 outfit = VarGet(ScriptReadHalfword(ctx));
     u8 type = ScriptReadByte(ctx);
-    const u8 *str = NULL;
 
-    str = (type == OUTFIT_MENU_BUFFER_DESC) ? gOutfits[outfit].desc : gOutfits[outfit].name;
-    StringCopy(sScriptStringVars[stringVarIndex], str);
-    return FALSE;
+    BufferOutfitStrings(sScriptStringVars[strVarIdx], outfit, type);
+    return TRUE;
 }

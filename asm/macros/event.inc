@@ -1770,15 +1770,15 @@
 	.endm
 
 	@! Unlocks a locked outfit
-	.macro unlockoutfit outfitId:req
+	.macro toggleoutfit outfitId:req, type:req
 	.byte 0xe5
 	.2byte \outfitId
+	.byte \type
 	.endm
 
 	@! Gets the current status of the specified outfit where:
-	@! OUTFIT_MENU_CHECK_UNLOCKED is for checking if it's unlocked
-	@! OUTFIT_MENU_CHECK_LOCKED is for checking if it's still locked
-	@! OUTFIT_MENU_CHECK_USED is for checking if it's currently used
+	@! OUTFIT_CHECK_FLAG is for checking if it's either unlocked/locked
+	@! OUTFIT_CHECK_USED is for checking if it's currently used
 	.macro getoutfitstatus outfitId:req, data:req
 	.byte 0xe6
 	.2byte \outfitId
@@ -2094,28 +2094,54 @@
 	trainerbattle_no_intro \trainer2, NULL
 	.endm
 
-	@! neat shortcuts for getoutfitstatus
+	@! neat shortcuts for outfits
 
-	.macro isoutfitunlocked outfitId:req
-	getoutfitstatus \outfitId, OUTFIT_MENU_CHECK_UNLOCKED
-	.endm
-
-	.macro isoutfitlocked outfitId:req
-	getoutfitstatus \outfitId, OUTFIT_MENU_CHECK_LOCKED
+	.macro checkoutfitflag outfitId:req
+	getoutfitstatus \outfitId, OUTFIT_CHECK_FLAG
 	.endm
 
 	.macro iswearingoutfit outfitId:req
-	getoutfitstatus \outfitId, OUTFIT_MENU_CHECK_USED
+	getoutfitstatus \outfitId, OUTFIT_CHECK_USED
 	.endm
 
-	@! neat shortcuts for bufferoutfitstr
-
 	.macro bufferoutfitname stringVarId:req, outfitId:req
-	bufferoutfitstr \stringVarId, \outfitId, OUTFIT_MENU_BUFFER_NAME
+	bufferoutfitstr \stringVarId, \outfitId, OUTFIT_BUFFER_NAME
 	.endm
 
 	.macro bufferoutfitdesc stringVarId:req, outfitId:req
-	bufferoutfitstr \stringVarId, \outfitId, OUTFIT_MENU_BUFFER_DESC
+	bufferoutfitstr \stringVarId, \outfitId, OUTFIT_BUFFER_DESC
+	.endm
+
+	.macro unlockoutfit outfitId:req
+	toggleoutfit \outfitId, OUTFIT_TOGGLE_UNLOCK
+	.endm
+
+	.macro lockoutfit outfitId:req
+	toggleoutfit \outfitId, OUTFIT_TOGGLE_LOCK
+	.endm
+
+	@! Jumps to \dest if the specified outfit is unlocked
+	.macro call_if_outfitunlocked outfit:req, dest:req
+	checkoutfitflag \outfit
+	call_if FALSE, \dest
+	.endm
+
+	@! Jumps to \dest if the specified outfit is locked
+	.macro call_if_outfitlocked outfit:req, dest:req
+	checkoutfitflag \outfit
+	call_if TRUE, \dest
+	.endm
+
+	@! Jumps to \dest if the specified outfit is currently wear
+	.macro call_if_wearoutfit outfit:req, dest:req
+	iswearingoutfit \outfit
+	call_if TRUE, \dest
+	.endm
+
+	@! Jumps to \dest if the specified outfit is not currently wear
+	.macro call_if_notwearoutfit outfit:req, dest:req
+	iswearingoutfit \outfit
+	call_if FALSE, \dest
 	.endm
 
 	@ Sets VAR_RESULT to TRUE if stat can be hyper trained, or to
