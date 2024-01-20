@@ -500,8 +500,8 @@ static inline void SetupOutfitMenu_Sprites_DrawLockSprite(void)
 
 static void SetupOutfitMenu_Sprites(void)
 {
-    SetupOutfitMenu_Sprites_DrawOverworldSprite(FALSE, gSaveBlock2Ptr->outfits[sOutfitMenu->idx]);
-    SetupOutfitMenu_Sprites_DrawTrainerSprite(FALSE, gSaveBlock2Ptr->outfits[sOutfitMenu->idx]);
+    SetupOutfitMenu_Sprites_DrawOverworldSprite(FALSE, GetOutfitStatus(sOutfitMenu->idx));
+    SetupOutfitMenu_Sprites_DrawTrainerSprite(FALSE, GetOutfitStatus(sOutfitMenu->idx));
     SetupOutfitMenu_Sprites_DrawLockSprite();
     CreateOutfitSwitchArrowPair();
 }
@@ -513,7 +513,7 @@ static inline void UpdateOutfitInfo(void)
     FillWindow(WIN_NAME, PIXEL_FILL(0));
     FillWindow(WIN_DESC, PIXEL_FILL(0));
 
-    if (gSaveBlock2Ptr->outfits[sOutfitMenu->idx] == FALSE)
+    if (GetOutfitStatus(sOutfitMenu->idx) == FALSE)
     {
         PrintTexts(WIN_NAME, FONT_NORMAL, 0, 0, 0, 0, COLORID_NORMAL, sText_OutfitLocked);
         PrintTexts(WIN_DESC, FONT_NORMAL, 0, 0, 0, 0, COLORID_NORMAL, sText_OutfitLocked);
@@ -526,8 +526,8 @@ static inline void UpdateOutfitInfo(void)
         gSprites[sOutfitMenu->spriteIds[GFX_LOCK]].invisible = TRUE;
     }
 
-    SetupOutfitMenu_Sprites_DrawOverworldSprite(TRUE, gSaveBlock2Ptr->outfits[sOutfitMenu->idx]);
-    SetupOutfitMenu_Sprites_DrawTrainerSprite(TRUE, gSaveBlock2Ptr->outfits[sOutfitMenu->idx]);
+    SetupOutfitMenu_Sprites_DrawOverworldSprite(TRUE, GetOutfitStatus(sOutfitMenu->idx));
+    SetupOutfitMenu_Sprites_DrawTrainerSprite(TRUE, GetOutfitStatus(sOutfitMenu->idx));
 }
 
 static void Task_WaitFadeInOutfitMenu(u8 taskId)
@@ -604,7 +604,7 @@ static void Task_OutfitMenuHandleInput(u8 taskId)
     {
         if (gPlayerAvatar.flags & PLAYER_AVATAR_FLAG_ON_FOOT)
         {
-            if (gSaveBlock2Ptr->outfits[sOutfitMenu->idx])
+            if (GetOutfitStatus(sOutfitMenu->idx))
             {
                 PlaySE(SE_SUCCESS);
                 gSaveBlock2Ptr->currOutfitId = sOutfitMenu->idx;
@@ -618,7 +618,7 @@ static void Task_OutfitMenuHandleInput(u8 taskId)
         else
         {
             PlaySE(SE_BOO);
-            if (gSaveBlock2Ptr->outfits[sOutfitMenu->idx])
+            if (GetOutfitStatus(sOutfitMenu->idx))
                 gTasks[taskId].func = Task_PrintCantChangeOutfit;
             else
                 gTasks[taskId].func = Task_PrintOutfitLocked; //! might be confusing?
