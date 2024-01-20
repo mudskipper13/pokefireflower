@@ -126,7 +126,7 @@ const struct ObjectEventGraphicsInfo gObjectEventGraphicsInfo_NinjaBoy = {
 
 const struct ObjectEventGraphicsInfo gObjectEventGraphicsInfo_Twin = {
     .tileTag = TAG_NONE,
-    .paletteTag = OBJ_EVENT_PAL_TAG_NPC_2,
+    .paletteTag = OBJ_EVENT_PAL_TAG_LASS,
     .size = 256,
     .width = 16,
     .height = 32,
