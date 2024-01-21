@@ -137,7 +137,7 @@ const struct ObjectEventGraphicsInfo gObjectEventGraphicsInfo_Twin = {
     .tracks = TRACKS_FOOT,
     .oam = &gObjectEventBaseOam_16x32,
     .subspriteTables = sOamTables_16x32,
-    .anims = OBJ_EVENT_ANIM_QUINTY_PLUMP,
+    .anims = OBJ_EVENT_ANIM_ASYMMETRICAL,
     .images = sPicTable_Twin,
     .affineAnims = gDummySpriteAffineAnimTable,
 };
@@ -4659,5 +4659,23 @@ const struct ObjectEventGraphicsInfo gObjectEventGraphicsInfo_ProfMarcus = {
     .subspriteTables = sOamTables_16x32,
     .anims = OBJ_EVENT_ANIM_STANDARD,
     .images = sPicTable_ProfMarcus,
+    .affineAnims = gDummySpriteAffineAnimTable,
+};
+
+const struct ObjectEventGraphicsInfo gObjectEventGraphicsInfo_Twin2 = {
+    .tileTag = TAG_NONE,
+    .paletteTag = OBJ_EVENT_PAL_TAG_LASS,
+    .size = 256,
+    .width = 16,
+    .height = 32,
+    .textColor = NPC_TEXT_COLOR_FEMALE,
+    .shadowSize = SHADOW_SIZE_M,
+    .inanimate = FALSE,
+    .disableReflectionPaletteLoad = FALSE,
+    .tracks = TRACKS_FOOT,
+    .oam = &gObjectEventBaseOam_16x32,
+    .subspriteTables = sOamTables_16x32,
+    .anims = OBJ_EVENT_ANIM_ASYMMETRICAL,
+    .images = sPicTable_Twin2,
     .affineAnims = gDummySpriteAffineAnimTable,
 };

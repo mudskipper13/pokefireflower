@@ -262,6 +262,8 @@
 #define OBJ_EVENT_GFX_RS_MAY_UNDERWATER          253
 #define OBJ_EVENT_GFX_RS_MAY_DECORATING          254
 
+#define OBJ_EVENT_GFX_TWIN_2                     255
+
 // NOTE: By default, the max value for NUM_OBJ_EVENT_GFX is 239.
 //
 // Object event graphics ids are 1 byte in size (max value of 255), and the dynamic
