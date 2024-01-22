@@ -111,38 +111,68 @@ static void Task_CloseOutfitMenu(u8 taskId);
 
 static const u8 sText_Controls[] =
 _(
+#ifdef INA
+    "{DPAD_LEFTRIGHT}PILIH {A_BUTTON}KONFIRMASI {START_BUTTON}{B_BUTTON}TUTUP"
+#else
     "{DPAD_LEFTRIGHT}PICK {A_BUTTON}CONFIRM {START_BUTTON}{B_BUTTON}CLOSE"
+#endif
 );
 
 static const u8 sText_OutfitLocked[] = _("???");
 static const u8 sText_OutfitLockedMsg[] =
 _(
+#ifdef INA
+    "Kamu belum mempunyai PAKAIAN ini.\p"
+    "Dapatkan PAKAIAN ini terlebih dahulu\n"
+    "untuk bisa menggunakannya."
+#else
     "You don't have this OUTFIT yet.\n"
     "Unlock it to be able to use it."
+#endif
 );
 
 static const u8 sText_OutfitError[] =
 _(
+#ifdef INA
+    "Kamu tidak bisa mengganti pakaian-mu {STR_VAR_1}"
+#else
     "You can't change your outfit {STR_VAR_1}"
+#endif
 );
 
 static const u8 sText_OutfitError_Cycling[] =
 _(
+#ifdef INA
+    "saat\nmenaiki sepeda! Kamu akan jatuh!"
+#else
     "while\ncycling! You might get tripped over!"
+#endif
 );
 
 static const u8 sText_OutfitError_Surfing[] =
 _(
+#ifdef INA
+    "saat\n berenang! Kamu akan kebasahan!"
+#else
     "while\nsurfing! You might get wet!"
+#endif
 );
 
 static const u8 sText_OutfitError_Diving[] =
 _(
+#ifdef INA
+    "saat\n menyelam! Punya akal sehat!"
+#else
     "while\ndiving! Have common sense!" //! :masuda:
+#endif
 );
 
 static const u8 sText_OutfitError_Default[] = _(
+#ifdef INA
+    "sekarang!"
+#else
     "now!"
+#endif
 );
 
 static const u16 sTiles[] = INCBIN_U16("graphics/outfit_menu/tiles.4bpp");

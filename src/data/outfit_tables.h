@@ -90,6 +90,20 @@ static const u16 sMugshotPal_May[] = INCBIN_U16("graphics/battle_transitions/may
     [MALE] = { sFrontierPassPlayerIcons_ ## id ## _Gfx, sFrontierPassPlayerIcons_ ## m ## _Pal }, \
     [FEMALE] = { sFrontierPassPlayerIcons_ ## id ## _Gfx + 1 * 0x80, sFrontierPassPlayerIcons_ ## f ## _Pal },
 
+#ifdef INA
+#define USUAL_GREEN_NAME "HIJAU BIASA"
+#define USUAL_GREEN_DESC "PAKAIAN biasa, tapi dasar."
+
+#define UNUSUAL_RED_NAME "MERAH TAKBIASA"
+#define UNUSUAL_RED_DESC "PAKAIAN yang agak tidak biasa,\ntapi tetap dasar."
+#else
+#define USUAL_GREEN_NAME "USUAL GREEN"
+#define USUAL_GREEN_DESC "The usual, but basic OUTFIT."
+
+#define UNUSUAL_RED_NAME "UNUSUAL RED"
+#define UNUSUAL_RED_DESC "Rather unusual, but still basic OUTFIT."
+#endif
+
 const struct Outfit gOutfits[OUTFIT_COUNT] =
 {
     [OUTFIT_USUAL_GREEN] = {
@@ -101,10 +115,10 @@ const struct Outfit gOutfits[OUTFIT_COUNT] =
 
         //! agbcc doesnt like COMPOUND_STRING on my end
         //! DESC: outfit's name
-        .name = COMPOUND_STRING("USUAL GREEN"),
+        .name = COMPOUND_STRING(USUAL_GREEN_NAME),
 
         //! DESC: outfit's description
-        .desc = COMPOUND_STRING("The usual, but basic OUTFIT."),
+        .desc = COMPOUND_STRING(USUAL_GREEN_DESC),
 
         //! DESC: palettes for the bg of the mugshot battle transition
         .mugshotPals = { sMugshotPal_Brendan, sMugshotPal_May },
@@ -132,8 +146,8 @@ const struct Outfit gOutfits[OUTFIT_COUNT] =
     [OUTFIT_UNUSUAL_RED] = {
         .isHidden = FALSE,
         .prices = { 200, 500 },
-        .name = COMPOUND_STRING("UNUSUAL RED"),
-        .desc = COMPOUND_STRING("Rather unusual, but still basic OUTFIT."),
+        .name = COMPOUND_STRING(UNUSUAL_RED_NAME),
+        .desc = COMPOUND_STRING(UNUSUAL_RED_DESC),
         .mugshotPals = { sMugshotPal_Brendan, sMugshotPal_May },
         .trainerPics = TRAINER_ID(RS_BRENDAN, RS_MAY),
         .avatarGfxIds = AVATAR_GFX_ID(RS_BRENDAN, RS_MAY),
