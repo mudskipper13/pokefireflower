@@ -1,5 +1,4 @@
 const LOCALID_RIVAL = 1
-const STAIRS_TRIGGER = 1
 
 mapscripts LittlerootTown_MaysHouse_1F_MapScripts {
 	MAP_SCRIPT_ON_LOAD: PlayersHouse_2F_MainInterior_MapScript_OnLoad

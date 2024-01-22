@@ -652,7 +652,7 @@
     {
       "id": "LAYOUT_LITTLEROOT_TOWN_BRENDANS_HOUSE_2F",
       "name": "LittlerootTown_BrendansHouse_2F_Layout",
-      "width": 11,
+      "width": 10,
       "height": 7,
       "border_width": 2,
       "border_height": 2,
@@ -689,7 +689,7 @@
       "id": "LAYOUT_LITTLEROOT_TOWN_PROFESSOR_BIRCHS_LAB",
       "name": "LittlerootTown_ProfessorBirchsLab_Layout",
       "width": 12,
-      "height": 8,
+      "height": 7,
       "border_width": 2,
       "border_height": 2,
       "primary_tileset": "gTileset_Building",
