@@ -269,7 +269,7 @@ $(OBJEVENTGFXDIR)/people/little_boy.4bpp: %.4bpp: %.png
 	$(GFX) $< $@ -mwidth 2 -mheight 2
 
 $(OBJEVENTGFXDIR)/people/twin.4bpp: %.4bpp: %.png
-	$(GFX) $< $@ -mwidth 2 -mheight 4
+	$(GFX) $< $@ -mwidth 2 -mheight 2
 
 $(OBJEVENTGFXDIR)/people/little_girl.4bpp: %.4bpp: %.png
 	$(GFX) $< $@ -mwidth 2 -mheight 2
@@ -442,7 +442,7 @@ $(OBJEVENTGFXDIR)/people/prof_marcus.4bpp: %.4bpp: %.png
 	$(GFX) $< $@ -mwidth 2 -mheight 4
 
 $(OBJEVENTGFXDIR)/people/twin_2.4bpp: %.4bpp: %.png
-	$(GFX) $< $@ -mwidth 2 -mheight 4
+	$(GFX) $< $@ -mwidth 2 -mheight 2
 
 
 $(OBJEVENTGFXDIR)/pokemon/azumarill.4bpp: %.4bpp: %.png
