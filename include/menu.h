@@ -130,5 +130,7 @@ void Menu_LoadStdPal(void);
 void DrawDialogFrameWithCustomTile(u8 windowId, bool8 copyToVram, u16 tileNum);
 void FillDialogFramePlate(void);
 int GetDialogFramePlateWidth(void);
+bool32 IsSpecialTextColor(u32 color);
+u32 GetSpecialTextColor(u32 color);
 
 #endif // GUARD_MENU_H

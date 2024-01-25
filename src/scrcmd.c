@@ -1279,7 +1279,6 @@ bool8 ScrCmd_release(struct ScriptContext *ctx)
 bool8 ScrCmd_textcolor(struct ScriptContext *ctx)
 {
     u8 textColor = ScriptReadByte(ctx);
-    u8 gender = gSaveBlock2Ptr->playerGender;
     if (textColor == NPC_TEXT_COLOR_PREVIOUS)
     {
         gSpecialVar_TextColor = gSpecialVar_PrevTextColor;
@@ -1287,18 +1286,10 @@ bool8 ScrCmd_textcolor(struct ScriptContext *ctx)
     else
     {
         gSpecialVar_PrevTextColor = gSpecialVar_TextColor;
-        switch(textColor)
-        {
-        case NPC_TEXT_COLOR_PLAYER:
-            gSpecialVar_TextColor = gender ? NPC_TEXT_COLOR_FEMALE : NPC_TEXT_COLOR_MALE;
-            break;
-        case NPC_TEXT_COLOR_RIVAL:
-            gSpecialVar_TextColor = gender ? NPC_TEXT_COLOR_MALE : NPC_TEXT_COLOR_FEMALE;
-            break;
-        default:
+        if (IsSpecialTextColor(gSpecialVar_TextColor))
+            gSpecialVar_TextColor = GetSpecialTextColor(textColor);
+        else
             gSpecialVar_TextColor = textColor;
-            break;
-        }
     }
 
     return FALSE;

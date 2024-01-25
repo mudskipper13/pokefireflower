@@ -209,13 +209,41 @@ void AddTextPrinterForMessage(bool8 allowSkippingDelayWithButtonPress)
     AddTextPrinterParameterized2(0, FONT_NORMAL, gStringVar4, GetPlayerTextSpeedDelay(), NULL, TEXT_COLOR_DARK_GRAY, TEXT_COLOR_WHITE, TEXT_COLOR_LIGHT_GRAY);
 }
 
+inline bool32 IsSpecialTextColor(u32 color)
+{
+    DebugPrintf("color = %d", color);
+    return (color > PLTT_SIZE_4BPP); // 16
+}
+
+inline u32 GetSpecialTextColor(u32 color)
+{
+    switch (color)
+    {
+        case NPC_TEXT_COLOR_PLAYER:
+            return gSaveBlock2Ptr->playerGender ? NPC_TEXT_COLOR_FEMALE : NPC_TEXT_COLOR_MALE;
+            break;
+        case NPC_TEXT_COLOR_RIVAL:
+            return gSaveBlock2Ptr->playerGender ? NPC_TEXT_COLOR_MALE : NPC_TEXT_COLOR_FEMALE;
+            break;
+        case NPC_TEXT_COLOR_DEFAULT:
+            return NPC_TEXT_COLOR_NEUTRAL;
+            break;
+        default:
+            return color; // return what's already there
+            break;
+    }
+}
+
 void AddTextPrinterDiffStyle(u8 winId, const u8 *str, u8 fontId, u8 speed, bool8 allowSkippingDelayWithButtonPress)
 {
     gTextFlags.canABSpeedUpPrint = allowSkippingDelayWithButtonPress;
     if (gSpecialVar_TextColor != NPC_TEXT_COLOR_DEFAULT)
     {
-        // A text color has been specified, use that
-        gSpecialVar_TextColor = gSpecialVar_TextColor;
+        // likely sets from somewhere, e.g. textcolor
+        if (IsSpecialTextColor(gSpecialVar_TextColor))
+            gSpecialVar_TextColor = GetSpecialTextColor(gSpecialVar_TextColor);
+        else
+            gSpecialVar_TextColor = gSpecialVar_TextColor;
     }
     else if (gSelectedObjectEvent == 0)
     {

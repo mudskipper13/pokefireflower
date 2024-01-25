@@ -620,5 +620,14 @@ extern const u8 EventScript_VsSeekerChargingDone[];
 
 //! namebox
 extern const u8 Common_Names_Player[];
+extern const u8 Common_Names_Mom[];
+extern const u8 Common_Names_Rival[];
+extern const u8 Common_Names_Grampa[];
+extern const u8 Common_Names_Fab[];
+extern const u8 Common_Names_Tina[];
+extern const u8 Common_Names_MsFanny[];
+extern const u8 Common_Names_Mel[];
+extern const u8 Common_Names_Mei[];
+extern const u8 Common_Names_Eric[];
 
 #endif // GUARD_EVENT_SCRIPTS_H
