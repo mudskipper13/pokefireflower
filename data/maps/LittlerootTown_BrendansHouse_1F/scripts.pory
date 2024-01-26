@@ -2,6 +2,9 @@
 const LOCALID_MOM = 1
 const LOCALID_RIVAL = 2
 const LOCALID_ITEMBALL = 3
+const LOCALID_NAVY = 4
+const FLAG_IS_NORTH_TRIGGER = FLAG_TEMP_1F
+const FLAG_HIDE_ITEMBALL = FLAG_TEMP_1
 
 //! map scripts
 
@@ -15,101 +18,111 @@ script PlayersHouse_1F_MainInterior_OnLoad {
 }
 
 script PlayersHouse_1F_MainInterior_OnTransition {
-	setflag(FLAG_TEMP_1)
-	if (var(VAR_LITTLEROOT_INTRO_STATE) < 2) {
-		setobjectxyperm(LOCALID_MOM, 9, 6)
-		setobjectmovementtype(LOCALID_MOM, MOVEMENT_TYPE_FACE_LEFT)
-	} else {
-		setobjectxyperm(LOCALID_MOM, 14, 3)
-		setobjectmovementtype(LOCALID_MOM, MOVEMENT_TYPE_FACE_UP)
-	}
+	setflag(FLAG_HIDE_ITEMBALL)
 }
 
 //! triggers
 
 script PlayersHouse_1F_MainInterior_EventScript_EarlyGameSequence {
 	lockall
-	special(SpawnCameraObject)
-	if (flag(FLAG_TEMP_1F)) { applymovement(OBJ_EVENT_ID_CAMERA, PlayersHouse_1F_MainInterior_Movement_CameraApproachTableNorth) }
-	else { applymovement(OBJ_EVENT_ID_CAMERA, PlayersHouse_1F_MainInterior_Movement_CameraApproachTableSouth) }
-	waitmovement(0)
-	applymovement(OBJ_EVENT_ID_PLAYER, Common_Movement_QuestionMark)
+	applymovement(LOCALID_RIVAL, Common_Movement_ExclamationMark)
 	playse(SE_PIN)
 	waitfieldeffect(FLDEFF_EMOTE_ICON)
-	textcolor(NPC_TEXT_COLOR_PLAYER)
-	msgbox(format(	"Oh?{PAUSE 16} Where's GRAMPA?"), MSGBOX_DEFAULT, Common_Names_Player)
+	msgbox(format(	"Oh hey, {PLAYER}!"
+					"You came just in time!"), MSGBOX_DEFAULT, Common_Names_Rival)
 	closemessage
-	if (flag(FLAG_TEMP_1F)) { applymovement(OBJ_EVENT_ID_PLAYER, PlayersHouse_1F_MainInterior_Movement_PlayerApproachTableNorth) }
+	applymovement(LOCALID_NAVY, Common_Movement_WalkInPlaceRight)
+	if (flag(FLAG_IS_NORTH_TRIGGER)) { applymovement(OBJ_EVENT_ID_PLAYER, PlayersHouse_1F_MainInterior_Movement_PlayerApproachTableNorth) }
 	else { applymovement(OBJ_EVENT_ID_PLAYER, PlayersHouse_1F_MainInterior_Movement_PlayerApproachTableSouth) }
-	applymovement(LOCALID_RIVAL, Common_Movement_WalkInPlaceFasterUp)
-	textcolor(NPC_TEXT_COLOR_RIVAL)
-	msgbox(format(	"He leaves just now,{PAUSE 8} {PLAYER}.{PAUSE 16}\n"
-					"You're missing out!"), MSGBOX_DEFAULT, Common_Names_Rival)
+	msgbox(format(	"Heya, {PLAYER}. It has been a long time, isn't it?"
+					"We've been waiting for you here, y'know."), MSGBOX_DEFAULT, Common_Names_Navy)
+	closemessage
 	waitmovement(0)
-	applymovement(LOCALID_RIVAL, Common_Movement_WalkInPlaceFasterRight)
+	applymovement(LOCALID_RIVAL, Common_Movement_WalkInPlaceLeft)
+	msgbox(format(	"Oh NAVY, we missed you so much!\p"
+					"I was so excited when I read the e-mail you sent last night!"), MSGBOX_DEFAULT, Common_Names_Rival)
+	closemessage
 	waitmovement(0)
-	applymovement(OBJ_EVENT_ID_PLAYER, Common_Movement_Dots)
-	playse(SE_PIN)
-	waitfieldeffect(FLDEFF_EMOTE_ICON)
-	applymovement(OBJ_EVENT_ID_PLAYER, Common_Movement_WalkInPlaceFasterRight)
-	textcolor(NPC_TEXT_COLOR_PLAYER)
-	msgbox(format("Aww, that's a shame…"), MSGBOX_DEFAULT, Common_Names_Player)
+	applymovement(LOCALID_NAVY, Common_Movement_WalkInPlaceRight)
+	msgbox(format(	"Tch, you guys think I don't miss everyone here either?!\p"
+					"And of course, I'm excited to meet you guys again too!\p"
+					"Either way though, I got something for you guys.\p"
+					"Its from my school's teacher, PROF. MARCUS."), MSGBOX_DEFAULT, Common_Names_Navy)
 	waitmovement(0)
-	applymovement(LOCALID_RIVAL, Common_Movement_WalkInPlaceFasterUp)
-	textcolor(NPC_TEXT_COLOR_RIVAL)
-	msgbox(format(	"Hey, don't worry!{PAUSE 16} He also did"
-					"leaves something for us, actually. You're"
-					"not late for this one!"), MSGBOX_DEFAULT, Common_Names_Rival)
+	applymovement(LOCALID_RIVAL, Common_Movement_WalkInPlaceLeft)
+	msgbox(format(	"Oh, that's GRAMPS right?\n"
+					"I remember you said that you carry something from GRAMPS."), MSGBOX_DEFAULT, Common_Names_Rival)
 	waitmovement(0)
-	applymovement(OBJ_EVENT_ID_PLAYER, Common_Movement_WalkInPlaceFasterDown)
-	textcolor(NPC_TEXT_COLOR_PLAYER)
-	msgbox(format("Really? What is it?!"), MSGBOX_DEFAULT, Common_Names_Player)
+	applymovement(LOCALID_NAVY, Common_Movement_WalkInPlaceRight)
+	msgbox(format(	"Yeah, it's a funny coincidence that he's my biology teacher."
+					"I like him even more from his classes, he's a really fun guy than I thought.\p"
+					"But anyway, here is the package."), MSGBOX_DEFAULT, Common_Names_Navy)
+	closemessage
 	waitmovement(0)
-	applymovement(LOCALID_RIVAL, Common_Movement_WalkInPlaceFasterUp)
-	textcolor(NPC_TEXT_COLOR_RIVAL)
-	msgbox(format(	"I don't know, that's why I ask you to open it! Here!"), MSGBOX_DEFAULT, Common_Names_Rival)
+	applymovement(LOCALID_NAVY, Common_Movement_FaceUp)
 	waitmovement(0)
-	applymovement(LOCALID_RIVAL, Common_Movement_WalkInPlaceFasterRight)
 	addobject(LOCALID_ITEMBALL)
-	clearflag(FLAG_TEMP_1)
-	playse(SE_BALL)
+	clearflag(FLAG_HIDE_ITEMBALL)
+	applymovement(LOCALID_NAVY, Common_Movement_FaceRight)
 	waitmovement(0)
-	applymovement(OBJ_EVENT_ID_PLAYER, Common_Movement_WalkInPlaceFasterRight)
-	textcolor(NPC_TEXT_COLOR_PLAYER)
-	msgbox(format("Alright, let's see what's inside…"), MSGBOX_DEFAULT, Common_Names_Player)
-	waitmovement(0)
+	applymovement(LOCALID_NAVY, Common_Movement_WalkInPlaceRight)
+	msgbox(format(	"My PROF-{PAUSE 10} I mean,{PAUSE 16} your GRAMPS,{PAUSE 10} "
+					"says that he wants you be the one who opens this, {PLAYER}.\p"
+					"I don't know what's inside it but it must be something exciting for sure! "
+					"Go on, open it and see what's in there!"), MSGBOX_DEFAULT, Common_Names_Navy)
 	closemessage
-	textcolor(NPC_TEXT_COLOR_DEFAULT)
-	msgbox(format(	"… … … … … … … … … …\n"
-					"… … … … … … … … … …"), MSGBOX_DEFAULT)
-	applymovement(LOCALID_MOM, Common_Movement_Delay32)
 	waitmovement(0)
+	applymovement(LOCALID_RIVAL, Common_Movement_WalkInPlaceLeft)
+	msgbox(format(	"Looks exciting from the looks of it to me as well! No time to waste, c'mon {PLAYER}!"), MSGBOX_DEFAULT, Common_Names_Rival)
 	closemessage
-	applymovement(OBJ_EVENT_ID_PLAYER, Common_Movement_ExclamationMark)
-	playse(SE_PIN)
-	waitfieldeffect(FLDEFF_EMOTE_ICON)
-	applymovement(OBJ_EVENT_ID_PLAYER, Common_Movement_WalkInPlaceFasterRight)
-	textcolor(NPC_TEXT_COLOR_PLAYER)
-	msgbox(format("Oh, a letter…{PAUSE 16} and 3 POKé BALLs?!"), MSGBOX_DEFAULT, Common_Names_Player)
 	waitmovement(0)
-	if (flag(FLAG_TEMP_1F)) { clearflag(FLAG_TEMP_1F) }
-	special(RemoveCameraObject)
+	playse(SE_RG_BALL_CLICK)
+	msgbox(format(	"{PLAYER} opened the package from “PROF. MARCUS”.\p"
+					"There is a letter and{PAUSE 10}…{PAUSE 10} 3 POKé BALLs?!\lLet's read the letter first."))
+	closemessage
+	fadescreenswapbuffers(FADE_TO_BLACK)
+	msgbox(format(	"Dear {PLAYER}, as well as others in the family,\p"
+					"I unfortunately cannot meet you all in person "
+					"due to my very strict schedule as of writing.\p"
+					"So, I lend the packages here to NAVY while he "
+					"reunites with you all.\p"
+					"Here, I've place 3 POKé BALLs containing 1 POKéMON each, "
+					"that is BULBASAUR, CHARMANDER, and SQUIRTLE. "
+					"I also have place 3 smaller packages for each of them "
+					"for basic needs such as POKé BALLs and POTIONs.\p"
+					"Please pick only 1 out of the 3 for each of you "
+					"including NAVY, alright?\p"
+					"I figure, it's been a while I gave everyone there "
+					"gifts like this so I did this while I plan coming "
+					"to KANTO. I hope all of you can take "
+					"care of them properly and gave them loves they deserve.\p"
+					"Oh also, please gave this flower to your MOM as well.\p"
+					"It's a flower your MOM was gifted from your DAD. "
+					"It's really rare to find until I did research on "
+					"them personally and search for them properly."
+					"It's easy to take care of, so no worries on that.\p"
+					"That aside, I hope you like these gifts! I hope we'll meet again "
+					"soon in the future, I have lots of time here in KANTO to happily meet all of you.\l"
+					"See you soon!\p"
+					"Warm regards, MARCUS STARKSON (Your biology maniac GRAMPA)"))
+	closemessage
+	fadescreenswapbuffers(FADE_FROM_BLACK)
 	releaseall
+	end
 }
 
 script PlayersHouse_1F_MainInterior_EventScript_EarlyGameSequenceNorth {
-	setflag(FLAG_TEMP_1F)
+	setflag(FLAG_IS_NORTH_TRIGGER)
 	goto(PlayersHouse_1F_MainInterior_EventScript_EarlyGameSequence)
 }
 
 script PlayersHouse_1F_MainInterior_EventScript_EarlyGameSequenceSouth {
-	clearflag(FLAG_TEMP_1F)
+	clearflag(FLAG_IS_NORTH_TRIGGER)
 	goto(PlayersHouse_1F_MainInterior_EventScript_EarlyGameSequence)
 }
 
 script PlayersHouse_1F_MainInterior_EventScript_EarlyGamePrevention {
 	lockall
-	textcolor(NPC_TEXT_COLOR_PLAYER)
 	msgbox(format("Can't go out, everyone is waiting for me on the table right now!"), MSGBOX_DEFAULT, Common_Names_Player)
 	applymovement(OBJ_EVENT_ID_PLAYER, PlayersHouse_1F_MainInterior_Movement_PlayerMovesAway)
 	waitmovement(0)
@@ -123,16 +136,6 @@ script PlayersHouse_1F_MainInterior_EventScript_Mom {
 }
 
 //! movements
-
-movement PlayersHouse_1F_MainInterior_Movement_CameraApproachTableNorth {
-	walk_right * 3
-	walk_down * 2
-}
-
-movement PlayersHouse_1F_MainInterior_Movement_CameraApproachTableSouth {
-	walk_right * 3
-	walk_down
-}
 
 movement PlayersHouse_1F_MainInterior_Movement_PlayerApproachTableNorth {
 	walk_right * 2

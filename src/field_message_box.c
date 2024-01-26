@@ -30,6 +30,7 @@ static const struct {
     NAME(Mom, _FEMALE),
     NAME(Rival, _RIVAL),
     NAME(Grampa, _MALE),
+    NAME(Navy, _MALE),
     NAME(Fab, _MALE), // baldass lmao
     NAME(Tina, _FEMALE),
     NAME(MsFanny, _FEMALE),

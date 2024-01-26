@@ -22,6 +22,10 @@ text Common_Names_Grampa {
 	}
 }
 
+text Common_Names_Navy {
+	"NAVY"
+}
+
 //! pallet town exterior
 
 text Common_Names_Fab {
