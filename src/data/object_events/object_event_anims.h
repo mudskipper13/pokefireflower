@@ -312,37 +312,37 @@ static const union AnimCmd sAnim_GoFastestEast[] =
 
 static const union AnimCmd sAnim_RunSouth[] =
 {
-    ANIMCMD_FRAME(12, 5),
-    ANIMCMD_FRAME(9, 3),
-    ANIMCMD_FRAME(13, 5),
-    ANIMCMD_FRAME(9, 3),
+    ANIMCMD_FRAME(16, 5),
+    ANIMCMD_FRAME(12, 3),
+    ANIMCMD_FRAME(17, 5),
+    ANIMCMD_FRAME(12, 3),
     ANIMCMD_JUMP(0),
 };
 
 static const union AnimCmd sAnim_RunNorth[] =
 {
-    ANIMCMD_FRAME(14, 5),
-    ANIMCMD_FRAME(10, 3),
-    ANIMCMD_FRAME(15, 5),
-    ANIMCMD_FRAME(10, 3),
+    ANIMCMD_FRAME(18, 5),
+    ANIMCMD_FRAME(13, 3),
+    ANIMCMD_FRAME(19, 5),
+    ANIMCMD_FRAME(13, 3),
     ANIMCMD_JUMP(0),
 };
 
 static const union AnimCmd sAnim_RunWest[] =
 {
-    ANIMCMD_FRAME(16, 5),
-    ANIMCMD_FRAME(11, 3),
-    ANIMCMD_FRAME(17, 5),
-    ANIMCMD_FRAME(11, 3),
+    ANIMCMD_FRAME(20, 5),
+    ANIMCMD_FRAME(14, 3),
+    ANIMCMD_FRAME(21, 5),
+    ANIMCMD_FRAME(14, 3),
     ANIMCMD_JUMP(0),
 };
 
 static const union AnimCmd sAnim_RunEast[] =
 {
-    ANIMCMD_FRAME(16, 5, .hFlip = TRUE),
-    ANIMCMD_FRAME(11, 3, .hFlip = TRUE),
-    ANIMCMD_FRAME(17, 5, .hFlip = TRUE),
-    ANIMCMD_FRAME(11, 3, .hFlip = TRUE),
+    ANIMCMD_FRAME(22, 5),
+    ANIMCMD_FRAME(15, 3),
+    ANIMCMD_FRAME(23, 5),
+    ANIMCMD_FRAME(15, 3),
     ANIMCMD_JUMP(0),
 };
 
@@ -997,23 +997,23 @@ static const union AnimCmd *const sAnimTable_BrendanMayNormal[] = {
     [ANIM_STD_FACE_SOUTH] = sAnim_StayStill,
     [ANIM_STD_FACE_NORTH] = sAnim_QuintyPlumpFaceNorth,
     [ANIM_STD_FACE_WEST] = sAnim_QuintyPlumpFaceWest,
-    [ANIM_STD_FACE_EAST] = sAnim_QuintyPlumpFaceEast,
-    [ANIM_STD_GO_SOUTH] = sAnim_GoSouth,
-    [ANIM_STD_GO_NORTH] = sAnim_GoNorth,
-    [ANIM_STD_GO_WEST] = sAnim_GoWest,
-    [ANIM_STD_GO_EAST] = sAnim_GoEast,
-    [ANIM_STD_GO_FAST_SOUTH] = sAnim_GoFastSouth,
-    [ANIM_STD_GO_FAST_NORTH] = sAnim_GoFastNorth,
-    [ANIM_STD_GO_FAST_WEST] = sAnim_GoFastWest,
-    [ANIM_STD_GO_FAST_EAST] = sAnim_GoFastEast,
-    [ANIM_STD_GO_FASTER_SOUTH] = sAnim_GoFasterSouth,
-    [ANIM_STD_GO_FASTER_NORTH] = sAnim_GoFasterNorth,
-    [ANIM_STD_GO_FASTER_WEST] = sAnim_GoFasterWest,
-    [ANIM_STD_GO_FASTER_EAST] = sAnim_GoFasterEast,
-    [ANIM_STD_GO_FASTEST_SOUTH] = sAnim_GoFastestSouth,
-    [ANIM_STD_GO_FASTEST_NORTH] = sAnim_GoFastestNorth,
-    [ANIM_STD_GO_FASTEST_WEST] = sAnim_GoFastestWest,
-    [ANIM_STD_GO_FASTEST_EAST] = sAnim_GoFastestEast,
+    [ANIM_STD_FACE_EAST] = sAnim_FaceEastAsymmetrical,
+    [ANIM_STD_GO_SOUTH] = sAnim_GoSouthAsymmetrical,
+    [ANIM_STD_GO_NORTH] = sAnim_GoNorthAsymmetrical,
+    [ANIM_STD_GO_WEST] = sAnim_GoWestAsymmetrical,
+    [ANIM_STD_GO_EAST] = sAnim_GoEastAsymmetrical,
+    [ANIM_STD_GO_FAST_SOUTH] = sAnim_GoFastSouthAsymmetrical,
+    [ANIM_STD_GO_FAST_NORTH] = sAnim_GoFastNorthAsymmetrical,
+    [ANIM_STD_GO_FAST_WEST] = sAnim_GoFastWestAsymmetrical,
+    [ANIM_STD_GO_FAST_EAST] = sAnim_GoFastEastAsymmetrical,
+    [ANIM_STD_GO_FASTER_SOUTH] = sAnim_GoFasterSouthAsymmetrical,
+    [ANIM_STD_GO_FASTER_NORTH] = sAnim_GoFasterNorthAsymmetrical,
+    [ANIM_STD_GO_FASTER_WEST] = sAnim_GoFasterWestAsymmetrical,
+    [ANIM_STD_GO_FASTER_EAST] = sAnim_GoFasterEastAsymmetrical,
+    [ANIM_STD_GO_FASTEST_SOUTH] = sAnim_GoFastestSouthAsymmetrical,
+    [ANIM_STD_GO_FASTEST_NORTH] = sAnim_GoFastestNorthAsymmetrical,
+    [ANIM_STD_GO_FASTEST_WEST] = sAnim_GoFastestWestAsymmetrical,
+    [ANIM_STD_GO_FASTEST_EAST] = sAnim_GoFastestEastAsymmetrical,
     [ANIM_RUN_SOUTH] = sAnim_RunSouth,
     [ANIM_RUN_NORTH] = sAnim_RunNorth,
     [ANIM_RUN_WEST] = sAnim_RunWest,
