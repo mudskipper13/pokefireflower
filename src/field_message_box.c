@@ -185,7 +185,15 @@ static void ExpandStringAndStartDrawFieldMessage(const u8 *str, bool32 allowSkip
         PutWindowTilemap(1);
         CopyWindowToVram(1, COPYWIN_GFX);
     }
-    StringExpandPlaceholders(gStringVar4, str);
+    if (DECAP_ENABLED && DECAP_MIRRORING && !DECAP_FIELD_MSG)
+    {
+        gStringVar4[0] = CHAR_FIXED_CASE;
+        StringExpandPlaceholders(gStringVar4+1, str);
+    }
+    else
+    {
+        StringExpandPlaceholders(gStringVar4, str);
+    }
     AddTextPrinterDiffStyleFromBuffer(allowSkippingDelayWithButtonPress);
     CreateTask_DrawFieldMessage();
 }

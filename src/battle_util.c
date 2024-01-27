@@ -1164,8 +1164,7 @@ void PrepareStringBattle(u16 stringId, u32 battler)
         else
             SET_STATCHANGER(STAT_SPATK, 2, FALSE);
     }
-#if  B_UPDATED_INTIMIDATE >= GEN_8
-    else if (stringId == STRINGID_PKMNCUTSATTACKWITH && targetAbility == ABILITY_RATTLED
+    else if (B_UPDATED_INTIMIDATE >= GEN_8 && stringId == STRINGID_PKMNCUTSATTACKWITH && targetAbility == ABILITY_RATTLED
             && CompareStat(gBattlerTarget, STAT_SPEED, MAX_STAT_STAGE, CMP_LESS_THAN))
     {
         gBattlerAbility = gBattlerTarget;
@@ -1173,7 +1172,6 @@ void PrepareStringBattle(u16 stringId, u32 battler)
         gBattlescriptCurrInstr = BattleScript_AbilityRaisesDefenderStat;
         SET_STATCHANGER(STAT_SPEED, 1, FALSE);
     }
-#endif
 
     // Signal for the trainer slide-in system.
     if ((stringId == STRINGID_ITDOESNTAFFECT || stringId == STRINGID_PKMNWASNTAFFECTED || stringId == STRINGID_PKMNUNAFFECTED)
@@ -3978,11 +3976,14 @@ static uq4_12_t GetSupremeOverlordModifier(u32 battler)
     return modifier;
 }
 
-static bool32 HadMoreThanHalfHpNowHasLess(u32 battler)
+static inline bool32 HadMoreThanHalfHpNowHasLess(u32 battler)
 {
+    u32 cutoff = gBattleMons[battler].maxHP / 2;
+    if (gBattleMons[battler].maxHP % 2 == 1)
+        cutoff++;
     // Had more than half of hp before, now has less
-     return (gBattleStruct->hpBefore[battler] >= gBattleMons[battler].maxHP / 2
-             && gBattleMons[battler].hp < gBattleMons[battler].maxHP / 2);
+     return (gBattleStruct->hpBefore[battler] >= cutoff
+             && gBattleMons[battler].hp < cutoff);
 }
 
 u32 AbilityBattleEffects(u32 caseID, u32 battler, u32 ability, u32 special, u32 moveArg)
@@ -5081,8 +5082,7 @@ u32 AbilityBattleEffects(u32 caseID, u32 battler, u32 ability, u32 special, u32 
              && TARGET_TURN_DAMAGED
              && IsBattlerAlive(battler)
             // Had more than half of hp before, now has less
-             && gBattleStruct->hpBefore[battler] > gBattleMons[battler].maxHP / 2
-             && gBattleMons[battler].hp < gBattleMons[battler].maxHP / 2
+             && HadMoreThanHalfHpNowHasLess(battler)
              && (gMultiHitCounter == 0 || gMultiHitCounter == 1)
              && !(TestSheerForceFlag(gBattlerAttacker, gCurrentMove))
              && (CanBattlerSwitch(battler) || !(gBattleTypeFlags & BATTLE_TYPE_TRAINER))
@@ -5138,7 +5138,7 @@ u32 AbilityBattleEffects(u32 caseID, u32 battler, u32 ability, u32 special, u32 
              && gBattleStruct->overwrittenAbilities[gBattlerAttacker] != GetBattlerAbility(gBattlerTarget)
              && gBattleMons[gBattlerTarget].ability != ABILITY_MUMMY
              && gBattleMons[gBattlerTarget].ability != ABILITY_LINGERING_AROMA
-             && !gAbilities[gBattleMons[gBattlerTarget].ability].cantBeSuppressed)
+             && !gAbilitiesInfo[gBattleMons[gBattlerTarget].ability].cantBeSuppressed)
             {
                 if (GetBattlerHoldEffect(gBattlerAttacker, TRUE) == HOLD_EFFECT_ABILITY_SHIELD)
                 {
@@ -5159,7 +5159,7 @@ u32 AbilityBattleEffects(u32 caseID, u32 battler, u32 ability, u32 special, u32 
              && TARGET_TURN_DAMAGED
              && IsMoveMakingContact(move, gBattlerAttacker)
              && !IsDynamaxed(gBattlerTarget)
-             && !gAbilities[gBattleMons[gBattlerAttacker].ability].cantBeSwapped)
+             && !gAbilitiesInfo[gBattleMons[gBattlerAttacker].ability].cantBeSwapped)
             {
                 if (GetBattlerHoldEffect(gBattlerAttacker, TRUE) == HOLD_EFFECT_ABILITY_SHIELD)
                 {
@@ -5796,17 +5796,17 @@ u32 AbilityBattleEffects(u32 caseID, u32 battler, u32 ability, u32 special, u32 
 
                 if (gBattleTypeFlags & BATTLE_TYPE_DOUBLE)
                 {
-                    if (!gAbilities[gBattleMons[target1].ability].cantBeTraced && gBattleMons[target1].hp != 0
-                     && !gAbilities[gBattleMons[target2].ability].cantBeTraced && gBattleMons[target2].hp != 0)
+                    if (!gAbilitiesInfo[gBattleMons[target1].ability].cantBeTraced && gBattleMons[target1].hp != 0
+                     && !gAbilitiesInfo[gBattleMons[target2].ability].cantBeTraced && gBattleMons[target2].hp != 0)
                         chosenTarget = GetBattlerAtPosition((RandomPercentage(RNG_TRACE, 50) * 2) | side), effect++;
-                    else if (!gAbilities[gBattleMons[target1].ability].cantBeTraced && gBattleMons[target1].hp != 0)
+                    else if (!gAbilitiesInfo[gBattleMons[target1].ability].cantBeTraced && gBattleMons[target1].hp != 0)
                         chosenTarget = target1, effect++;
-                    else if (!gAbilities[gBattleMons[target2].ability].cantBeTraced && gBattleMons[target2].hp != 0)
+                    else if (!gAbilitiesInfo[gBattleMons[target2].ability].cantBeTraced && gBattleMons[target2].hp != 0)
                         chosenTarget = target2, effect++;
                 }
                 else
                 {
-                    if (!gAbilities[gBattleMons[target1].ability].cantBeTraced && gBattleMons[target1].hp != 0)
+                    if (!gAbilitiesInfo[gBattleMons[target1].ability].cantBeTraced && gBattleMons[target1].hp != 0)
                         chosenTarget = target1, effect++;
                 }
 
@@ -6001,7 +6001,7 @@ bool32 IsMoldBreakerTypeAbility(u32 ability)
 
 u32 GetBattlerAbility(u32 battler)
 {
-    if (gAbilities[gBattleMons[battler].ability].cantBeSuppressed)
+    if (gAbilitiesInfo[gBattleMons[battler].ability].cantBeSuppressed)
         return gBattleMons[battler].ability;
 
     if (gStatuses3[battler] & STATUS3_GASTRO_ACID)
@@ -6016,7 +6016,7 @@ u32 GetBattlerAbility(u32 battler)
     if (((IsMoldBreakerTypeAbility(gBattleMons[gBattlerAttacker].ability)
             && !(gStatuses3[gBattlerAttacker] & STATUS3_GASTRO_ACID))
             || gBattleMoves[gCurrentMove].ignoresTargetAbility)
-            && gAbilities[gBattleMons[battler].ability].breakable
+            && gAbilitiesInfo[gBattleMons[battler].ability].breakable
             && gBattlerByTurnOrder[gCurrentTurnActionNumber] == gBattlerAttacker
             && gActionsByTurnOrder[gBattlerByTurnOrder[gBattlerAttacker]] == B_ACTION_USE_MOVE
             && gCurrentTurnActionNumber < gBattlersCount)
@@ -6548,6 +6548,10 @@ static u8 ItemHealHp(u32 battler, u32 itemId, bool32 end2, bool32 percentHeal)
             BattleScriptPushCursor();
             gBattlescriptCurrInstr = BattleScript_ItemHealHP_RemoveItemRet;
         }
+        if (gBattleResources->flags->flags[battler] & RESOURCE_FLAG_EMERGENCY_EXIT
+         && GetNonDynamaxMaxHP(battler) > gBattleMons[battler].maxHP / 2)
+            gBattleResources->flags->flags[battler] &= ~RESOURCE_FLAG_EMERGENCY_EXIT;
+
         return ITEM_HP_CHANGE;
     }
     return 0;
@@ -7532,7 +7536,7 @@ u8 ItemBattleEffects(u8 caseID, u32 battler, bool32 moveTurn)
             if (IsBattlerAlive(gBattlerAttacker)
                 && !(TestSheerForceFlag(gBattlerAttacker, gCurrentMove))
                 && GetBattlerAbility(gBattlerAttacker) != ABILITY_MAGIC_GUARD
-                && !gSpecialStatuses[gBattlerAttacker].magicianStolen
+                && !gSpecialStatuses[gBattlerAttacker].preventLifeOrbDamage
                 && gSpecialStatuses[gBattlerAttacker].damagedMons)
             {
                 gBattleMoveDamage = GetNonDynamaxMaxHP(gBattlerAttacker) / 10;
@@ -8796,11 +8800,12 @@ static inline u32 CalcMoveBasePowerAfterModifiers(u32 move, u32 battlerAtk, u32 
         break;
     case ABILITY_TRANSISTOR:
         if (moveType == TYPE_ELECTRIC)
-        #if B_TRANSISTOR_BOOST >= GEN_9
-            modifier = uq4_12_multiply(modifier, UQ_4_12(5325 / 4096));
-        #else
-            modifier = uq4_12_multiply(modifier, UQ_4_12(1.5));
-        #endif
+        {
+            if (B_TRANSISTOR_BOOST >= GEN_9)
+                modifier = uq4_12_multiply(modifier, UQ_4_12(5325 / 4096));
+            else
+                modifier = uq4_12_multiply(modifier, UQ_4_12(1.5));
+        }
         break;
     case ABILITY_DRAGONS_MAW:
         if (moveType == TYPE_DRAGON)
@@ -10952,11 +10957,10 @@ bool32 IsAlly(u32 battlerAtk, u32 battlerDef)
 
 bool32 IsGen6ExpShareEnabled(void)
 {
-#if I_EXP_SHARE_FLAG <= TEMP_FLAGS_END
-    return FALSE;
-#else
+    if (I_EXP_SHARE_FLAG <= TEMP_FLAGS_END)
+        return FALSE;
+
     return FlagGet(I_EXP_SHARE_FLAG);
-#endif
 }
 
 bool32 MoveHasMoveEffect(u32 move, u32 moveEffect)

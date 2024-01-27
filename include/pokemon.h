@@ -433,7 +433,8 @@ struct SpeciesInfo /*0x8C*/
             u32 cannotBeTraded:1;
             u32 allPerfectIVs:1;
             u32 dexForceRequired:1; // This species will be taken into account for Pokédex ratings even if they have the "isMythical" flag set.
-            u32 padding4:17;
+            u32 tmIlliterate:1; // This species will be unable to learn the universal moves.
+            u32 padding4:16;
             // Move Data
  /* 0x80 */ const struct LevelUpMove *levelUpLearnset;
  /* 0x84 */ const u16 *teachableLearnset;
@@ -609,7 +610,7 @@ extern const u16 gUnionRoomFacilityClasses[];
 extern const struct SpriteTemplate gBattlerSpriteTemplates[];
 extern const s8 gNatureStatTable[][5];
 extern const u32 sExpCandyExperienceTable[];
-extern const struct Ability gAbilities[];
+extern const struct Ability gAbilitiesInfo[];
 
 void ZeroBoxMonData(struct BoxPokemon *boxMon);
 void ZeroMonData(struct Pokemon *mon);

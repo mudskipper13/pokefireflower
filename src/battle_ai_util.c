@@ -499,6 +499,7 @@ s32 AI_CalcDamage(u32 move, u32 battlerAtk, u32 battlerDef, u8 *typeEffectivenes
     gBattleStruct->swapDamageCategory = FALSE;
     gBattleStruct->zmove.active = FALSE;
     gBattleStruct->zmove.baseMoves[battlerAtk] = MOVE_NONE;
+
     return dmg;
 }
 
@@ -632,7 +633,7 @@ static bool32 AI_IsMoveEffectInMinus(u32 battlerAtk, u32 battlerDef, u32 move, s
     switch (gBattleMoves[move].effect)
     {
     case EFFECT_MIND_BLOWN:
-    case EFFECT_STEEL_BEAM:
+    case EFFECT_MAX_HP_50_RECOIL:
         return TRUE;
     case EFFECT_RECOIL_IF_MISS:
         if (AI_IsDamagedByRecoil(battlerAtk))
@@ -845,6 +846,44 @@ bool32 CanTargetFaintAi(u32 battlerDef, u32 battlerAtk)
     }
 
     return FALSE;
+}
+
+u32 NoOfHitsForTargetToFaintAI(u32 battlerDef, u32 battlerAtk)
+{
+    u32 i;
+    u32 currNumberOfHits;
+    u32 leastNumberOfHits = UNKNOWN_NO_OF_HITS;
+
+    for (i = 0; i < MAX_MON_MOVES; i++)
+    {
+        currNumberOfHits = GetNoOfHitsToKOBattler(battlerDef, battlerAtk, i);
+        if (currNumberOfHits != 0)
+        {
+            if (currNumberOfHits < leastNumberOfHits)
+                leastNumberOfHits = currNumberOfHits;
+        }
+    }
+    return leastNumberOfHits;
+}
+
+u32 GetBestDmgMoveFromTarget(u32 battlerDef, u32 battlerAtk)
+{
+    u32 i;
+    u32 move = 0;
+    u32 bestDmg = 0;
+    u32 unusable = AI_DATA->moveLimitations[battlerDef];
+    u16 *moves = GetMovesArray(battlerDef);
+
+    for (i = 0; i < MAX_MON_MOVES; i++)
+    {
+        if (moves[i] != MOVE_NONE && moves[i] != MOVE_UNAVAILABLE && !(unusable & gBitTable[i])
+            && bestDmg < AI_DATA->simulatedDmg[battlerDef][battlerAtk][i])
+        {
+            bestDmg = AI_DATA->simulatedDmg[battlerDef][battlerAtk][i];
+            move = moves[i];
+        }
+    }
+    return move;
 }
 
 // Check if AI mon has the means to faint the target with any of its moves.
@@ -1951,11 +1990,6 @@ bool32 HasSubstituteIgnoringMove(u32 battler)
     CHECK_MOVE_FLAG(ignoresSubstitute);
 }
 
-bool32 HasSoundMove(u32 battler)
-{
-    CHECK_MOVE_FLAG(soundMove);
-}
-
 bool32 HasHighCritRatioMove(u32 battler)
 {
     s32 i;
@@ -2224,7 +2258,7 @@ static bool32 PartyBattlerShouldAvoidHazards(u32 currBattler, u32 switchBattler)
     if (gFieldStatuses & STATUS_FIELD_MAGIC_ROOM || ability == ABILITY_KLUTZ)
         holdEffect = HOLD_EFFECT_NONE;
     else
-        holdEffect = gItems[GetMonData(mon, MON_DATA_HELD_ITEM)].holdEffect;
+        holdEffect = gItemsInfo[GetMonData(mon, MON_DATA_HELD_ITEM)].holdEffect;
     if (holdEffect == HOLD_EFFECT_HEAVY_DUTY_BOOTS)
         return FALSE;
 
@@ -2483,17 +2517,11 @@ bool32 AI_CanPutToSleep(u32 battlerAtk, u32 battlerDef, u32 defAbility, u32 move
     return TRUE;
 }
 
-static bool32 AI_CanPoisonType(u32 battlerAttacker, u32 battlerTarget, u32 move)
-{
-    return ((AI_DATA->abilities[battlerAttacker] == ABILITY_CORROSION && gBattleMoves[move].category == BATTLE_CATEGORY_STATUS)
-            || !(IS_BATTLER_OF_TYPE(battlerTarget, TYPE_POISON) || IS_BATTLER_OF_TYPE(battlerTarget, TYPE_STEEL)));
-}
-
 static bool32 AI_CanBePoisoned(u32 battlerAtk, u32 battlerDef, u32 move)
 {
     u32 ability = AI_DATA->abilities[battlerDef];
 
-    if (!(AI_CanPoisonType(battlerAtk, battlerDef, move))
+    if (!(CanPoisonType(battlerAtk, battlerDef))
      || gSideStatuses[GetBattlerSide(battlerDef)] & SIDE_STATUS_SAFEGUARD
      || gBattleMons[battlerDef].status1 & STATUS1_ANY
      || ability == ABILITY_IMMUNITY
@@ -2678,6 +2706,9 @@ u32 ShouldTryToFlinch(u32 battlerAtk, u32 battlerDef, u32 atkAbility, u32 defAbi
 
 bool32 ShouldTrap(u32 battlerAtk, u32 battlerDef, u32 move)
 {
+    if (IsBattlerTrapped(battlerDef, TRUE))
+        return FALSE;
+
     if (BattlerWillFaintFromSecondaryDamage(battlerDef, AI_DATA->abilities[battlerDef]))
         return TRUE;    // battler is taking secondary damage with low HP
 
@@ -3181,7 +3212,7 @@ bool32 SideHasMoveCategory(u32 battlerId, u32 category)
 
 bool32 IsAbilityOfRating(u32 ability, s8 rating)
 {
-    if (gAbilities[ability].aiRating >= rating)
+    if (gAbilitiesInfo[ability].aiRating >= rating)
         return TRUE;
     return FALSE;
 }
@@ -3249,85 +3280,82 @@ bool32 IsRecycleEncouragedItem(u32 item)
     return FALSE;
 }
 
-// score increases
-#define STAT_UP_2_STAGE     8
-#define STAT_UP_STAGE       10
 void IncreaseStatUpScore(u32 battlerAtk, u32 battlerDef, u32 statId, s32 *score)
 {
+    u32 noOfHitsToFaint = NoOfHitsForTargetToFaintAI(battlerDef, battlerAtk);
+    u32 aiIsFaster = GetWhichBattlerFaster(battlerAtk, battlerDef, TRUE) == AI_IS_FASTER;
+    u32 shouldSetUp = ((noOfHitsToFaint >= 2 && aiIsFaster) || (noOfHitsToFaint >= 3 && !aiIsFaster) || noOfHitsToFaint == UNKNOWN_NO_OF_HITS);
+
     if (AI_DATA->abilities[battlerAtk] == ABILITY_CONTRARY)
         return;
 
-    if (AI_DATA->hpPercents[battlerAtk] < 80 && AI_RandLessThan(128))
+    // Don't increase stat if AI is at +4
+    if (gBattleMons[battlerAtk].statStages[statId] >= MAX_STAT_STAGE - 2)
         return;
 
-    if ((AI_THINKING_STRUCT->aiFlags[battlerAtk] & AI_FLAG_TRY_TO_FAINT) && CanAIFaintTarget(battlerAtk, battlerDef, 0))
-        return; // Damaging moves would get a score boost from AI_TryToFaint or PreferStrongestMove so we don't consider them here
+    // Don't increase stat if AI has less then 70% HP and number of hits isn't known
+    if (AI_DATA->hpPercents[battlerAtk] < 70 && noOfHitsToFaint == UNKNOWN_NO_OF_HITS)
+        return;
+
+    // Don't set up if AI is dead to residual damage from weather
+    if (BattlerWillFaintFromWeather(battlerAtk, AI_DATA->abilities[battlerAtk]))
+        return;
+
+    // Don't increase stats if opposing battler has Opportunist
+    if (AI_DATA->abilities[battlerDef] == ABILITY_OPPORTUNIST)
+        return;
 
     switch (statId)
     {
-    case STAT_ATK:
-        if (HasMoveWithCategory(battlerAtk, BATTLE_CATEGORY_PHYSICAL) && AI_DATA->hpPercents[battlerAtk] > 40)
-        {
-            if (gBattleMons[battlerAtk].statStages[STAT_ATK] < STAT_UP_2_STAGE)
-                ADJUST_SCORE_PTR(2);
-            else if (gBattleMons[battlerAtk].statStages[STAT_ATK] < STAT_UP_STAGE)
-                ADJUST_SCORE_PTR(1);
-        }
-        if (HasMoveEffect(battlerAtk, EFFECT_FOUL_PLAY))
-            ADJUST_SCORE_PTR(1);
+    case STAT_CHANGE_ATK:
+        if (HasMoveWithCategory(battlerAtk, BATTLE_CATEGORY_PHYSICAL) && shouldSetUp)
+            ADJUST_SCORE_PTR(2);
         break;
-    case STAT_DEF:
-        if ((HasMoveWithCategory(battlerDef, BATTLE_CATEGORY_PHYSICAL)|| IS_MOVE_PHYSICAL(gLastMoves[battlerDef]))
-          && AI_DATA->hpPercents[battlerAtk] > 70)
-        {
-            if (gBattleMons[battlerAtk].statStages[STAT_DEF] < STAT_UP_2_STAGE)
-                ADJUST_SCORE_PTR(2); // seems better to raise def at higher HP
-            else if (gBattleMons[battlerAtk].statStages[STAT_DEF] < STAT_UP_STAGE)
-                ADJUST_SCORE_PTR(1);
-        }
+    case STAT_CHANGE_DEF:
+        if (HasMoveWithCategory(battlerDef, BATTLE_CATEGORY_PHYSICAL) || !HasMoveWithCategory(battlerDef, BATTLE_CATEGORY_SPECIAL))
+            ADJUST_SCORE_PTR(2);
         break;
-    case STAT_SPEED:
-        if (!AI_STRIKES_FIRST(battlerAtk, battlerDef, AI_THINKING_STRUCT->moveConsidered))
-        {
-            if (gBattleMons[battlerAtk].statStages[STAT_SPEED] < STAT_UP_2_STAGE)
-                ADJUST_SCORE_PTR(2);
-            else if (gBattleMons[battlerAtk].statStages[STAT_SPEED] < STAT_UP_STAGE)
-                ADJUST_SCORE_PTR(1);
-        }
+    case STAT_CHANGE_SPEED:
+        if ((noOfHitsToFaint >= 3 && !aiIsFaster) || noOfHitsToFaint == 0)
+            ADJUST_SCORE_PTR(2);
         break;
-    case STAT_SPATK:
-        if (HasMoveWithCategory(battlerAtk, BATTLE_CATEGORY_SPECIAL) && AI_DATA->hpPercents[battlerAtk] > 40)
-        {
-            if (gBattleMons[battlerAtk].statStages[STAT_SPATK] < STAT_UP_2_STAGE)
-                ADJUST_SCORE_PTR(2);
-            else if (gBattleMons[battlerAtk].statStages[STAT_SPATK] < STAT_UP_STAGE)
-                ADJUST_SCORE_PTR(1);
-        }
+    case STAT_CHANGE_SPATK:
+        if (HasMoveWithCategory(battlerAtk, BATTLE_CATEGORY_SPECIAL) && shouldSetUp)
+            ADJUST_SCORE_PTR(2);
         break;
-    case STAT_SPDEF:
-        if ((HasMoveWithCategory(battlerDef, BATTLE_CATEGORY_SPECIAL) || IS_MOVE_SPECIAL(gLastMoves[battlerDef]))
-          && AI_DATA->hpPercents[battlerAtk] > 70)
-        {
-            if (gBattleMons[battlerAtk].statStages[STAT_SPDEF] < STAT_UP_2_STAGE)
-                ADJUST_SCORE_PTR(2); // seems better to raise spdef at higher HP
-            else if (gBattleMons[battlerAtk].statStages[STAT_SPDEF] < STAT_UP_STAGE)
-                ADJUST_SCORE_PTR(1);
-        }
+    case STAT_CHANGE_SPDEF:
+        if (HasMoveWithCategory(battlerDef, BATTLE_CATEGORY_SPECIAL) || !HasMoveWithCategory(battlerDef, BATTLE_CATEGORY_PHYSICAL))
+            ADJUST_SCORE_PTR(2);
         break;
-    case STAT_ACC:
-        if (HasMoveWithLowAccuracy(battlerAtk, battlerDef, 80, TRUE, AI_DATA->abilities[battlerAtk], AI_DATA->abilities[battlerDef], AI_DATA->holdEffects[battlerAtk], AI_DATA->holdEffects[battlerDef]))
-            ADJUST_SCORE_PTR(2); // has moves with less than 80% accuracy
-        else if (HasMoveWithLowAccuracy(battlerAtk, battlerDef, 90, TRUE, AI_DATA->abilities[battlerAtk], AI_DATA->abilities[battlerDef], AI_DATA->holdEffects[battlerAtk], AI_DATA->holdEffects[battlerDef]))
-            ADJUST_SCORE_PTR(1);
+    case STAT_CHANGE_ATK_2:
+        if (HasMoveWithCategory(battlerAtk, BATTLE_CATEGORY_PHYSICAL) && shouldSetUp)
+            ADJUST_SCORE_PTR(4);
         break;
-    case STAT_EVASION:
-        if (!BattlerWillFaintFromWeather(battlerAtk, AI_DATA->abilities[battlerAtk]))
-        {
-            if (!GetBattlerSecondaryDamage(battlerAtk) && !(gStatuses3[battlerAtk] & STATUS3_ROOTED))
-                ADJUST_SCORE_PTR(2);
-            else
-                ADJUST_SCORE_PTR(1);
-        }
+    case STAT_CHANGE_DEF_2:
+        if (HasMoveWithCategory(battlerDef, BATTLE_CATEGORY_PHYSICAL) || !HasMoveWithCategory(battlerDef, BATTLE_CATEGORY_SPECIAL))
+            ADJUST_SCORE_PTR(4);
+        break;
+    case STAT_CHANGE_SPEED_2:
+        if ((noOfHitsToFaint >= 3 && !aiIsFaster) || noOfHitsToFaint == 0)
+            ADJUST_SCORE_PTR(4);
+        break;
+    case STAT_CHANGE_SPATK_2:
+        if (HasMoveWithCategory(battlerAtk, BATTLE_CATEGORY_SPECIAL) && shouldSetUp)
+            ADJUST_SCORE_PTR(4);
+        break;
+    case STAT_CHANGE_SPDEF_2:
+        if (HasMoveWithCategory(battlerDef, BATTLE_CATEGORY_SPECIAL) || !HasMoveWithCategory(battlerDef, BATTLE_CATEGORY_PHYSICAL))
+            ADJUST_SCORE_PTR(4);
+        break;
+    case STAT_CHANGE_ACC:
+        if (gBattleMons[battlerAtk].statStages[STAT_ACC] <= 3) // Increase only if necessary
+            ADJUST_SCORE_PTR(2);
+        break;
+    case STAT_CHANGE_EVASION:
+        if (GetBattlerSecondaryDamage(battlerAtk) && ((noOfHitsToFaint > 3) || noOfHitsToFaint == 0))
+            ADJUST_SCORE_PTR(4);
+        else
+            ADJUST_SCORE_PTR(2);
         break;
     }
 }

@@ -1261,7 +1261,7 @@ static bool32 IsMonGrounded(u16 heldItemEffect, u32 ability, u8 type1, u8 type2)
 static u32 GetSwitchinHazardsDamage(u32 battler, struct BattlePokemon *battleMon)
 {
     u8 defType1 = battleMon->type1, defType2 = battleMon->type2, tSpikesLayers;
-    u16 heldItemEffect = gItems[battleMon->item].holdEffect;
+    u16 heldItemEffect = gItemsInfo[battleMon->item].holdEffect;
     u32 maxHP = battleMon->maxHP, ability = battleMon->ability, status = battleMon->status1;
     u32 spikesDamage = 0, tSpikesDamage = 0, hazardDamage = 0;
     u32 hazardFlags = gSideStatuses[GetBattlerSide(battler)] & (SIDE_STATUS_SPIKES | SIDE_STATUS_STEALTH_ROCK | SIDE_STATUS_STICKY_WEB | SIDE_STATUS_TOXIC_SPIKES | SIDE_STATUS_SAFEGUARD);
@@ -1444,7 +1444,7 @@ static u32 GetSwitchinStatusDamage(u32 battler)
 {
     u8 defType1 = AI_DATA->switchinCandidate.battleMon.type1, defType2 = AI_DATA->switchinCandidate.battleMon.type2;
     u8 tSpikesLayers = gSideTimers[GetBattlerSide(battler)].toxicSpikesAmount;
-    u16 heldItemEffect = gItems[AI_DATA->switchinCandidate.battleMon.item].holdEffect;
+    u16 heldItemEffect = gItemsInfo[AI_DATA->switchinCandidate.battleMon.item].holdEffect;
     u32 status = AI_DATA->switchinCandidate.battleMon.status1, ability = AI_DATA->switchinCandidate.battleMon.ability, maxHP = AI_DATA->switchinCandidate.battleMon.maxHP;
     u32 statusDamage = 0;
 
@@ -1453,11 +1453,10 @@ static u32 GetSwitchinStatusDamage(u32 battler)
     {
         if (status & STATUS1_BURN)
         {
-            #if B_BURN_DAMAGE >= GEN_7
+            if (B_BURN_DAMAGE >= GEN_7)
                 statusDamage = maxHP / 16;
-            #else
+            else
                 statusDamage = maxHP / 8;
-            #endif
             if(ability == ABILITY_HEATPROOF)
                 statusDamage = statusDamage / 2;
             if (statusDamage == 0)
@@ -1465,11 +1464,10 @@ static u32 GetSwitchinStatusDamage(u32 battler)
         }
         else if (status & STATUS1_FROSTBITE)
         {
-            #if B_BURN_DAMAGE >= GEN_7
+            if (B_BURN_DAMAGE >= GEN_7)
                 statusDamage = maxHP / 16;
-            #else
+            else
                 statusDamage = maxHP / 8;
-            #endif
             if (statusDamage == 0)
                 statusDamage = 1;
         }
@@ -1523,8 +1521,8 @@ static u32 GetSwitchinHitsToKO(s32 damageTaken, u32 battler)
     u32 recurringHealing = GetSwitchinRecurringHealing();
     u32 statusDamage = GetSwitchinStatusDamage(battler);
     u32 hitsToKO = 0, singleUseItemHeal = 0;
-    u16 maxHP = AI_DATA->switchinCandidate.battleMon.maxHP, item = AI_DATA->switchinCandidate.battleMon.item, heldItemEffect = gItems[AI_DATA->switchinCandidate.battleMon.item].holdEffect;
-    u8 weatherDuration = gWishFutureKnock.weatherDuration, holdEffectParam = gItems[AI_DATA->switchinCandidate.battleMon.item].holdEffectParam;
+    u16 maxHP = AI_DATA->switchinCandidate.battleMon.maxHP, item = AI_DATA->switchinCandidate.battleMon.item, heldItemEffect = gItemsInfo[AI_DATA->switchinCandidate.battleMon.item].holdEffect;
+    u8 weatherDuration = gWishFutureKnock.weatherDuration, holdEffectParam = gItemsInfo[AI_DATA->switchinCandidate.battleMon.item].holdEffectParam;
     u32 opposingBattler = GetBattlerAtPosition(BATTLE_OPPOSITE(GetBattlerPosition(battler)));
     u32 opposingAbility = gBattleMons[opposingBattler].ability;
     bool32 usedSingleUseHealingItem = FALSE;

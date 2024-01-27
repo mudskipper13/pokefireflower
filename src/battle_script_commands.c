@@ -3793,9 +3793,11 @@ void SetMoveEffect(bool32 primary, bool32 certain)
                 SetMoveEffect(primary, certain);
                 break;
             case MOVE_EFFECT_PSYCHIC_NOISE:
-                if (GetBattlerAbility(gEffectBattler) == ABILITY_AROMA_VEIL || GetBattlerAbility(BATTLE_PARTNER(gEffectBattler)) == ABILITY_AROMA_VEIL)
+                battlerAbility = IsAbilityOnSide(gEffectBattler, ABILITY_AROMA_VEIL);
+
+                if (battlerAbility)
                 {
-                    gBattlerAbility = gEffectBattler;
+                    gBattlerAbility = battlerAbility - 1;
                     BattleScriptPush(gBattlescriptCurrInstr + 1);
                     gBattlescriptCurrInstr = BattleScript_AromaVeilProtectsRet;
                 }
@@ -5851,7 +5853,7 @@ static void Cmd_moveend(void)
                 gEffectBattler = gBattlerTarget;
                 BattleScriptPushCursor();
                 gBattlescriptCurrInstr = BattleScript_MagicianActivates;
-                gSpecialStatuses[gBattlerAttacker].magicianStolen = TRUE;
+                gSpecialStatuses[gBattlerAttacker].preventLifeOrbDamage = TRUE;
                 effect = TRUE;
             }
             gBattleScripting.moveendState++;
@@ -6038,6 +6040,7 @@ static void Cmd_moveend(void)
                             gBattlescriptCurrInstr = BattleScript_MoveEnd;  // Prevent user switch-in selection
                         BattleScriptPushCursor();
                         gBattlescriptCurrInstr = BattleScript_RedCardActivates;
+                        gSpecialStatuses[gBattlerAttacker].preventLifeOrbDamage = TRUE;
                         effect = TRUE;
                         break;  // Only fastest red card activates
                     }
@@ -6064,6 +6067,7 @@ static void Cmd_moveend(void)
                         gLastUsedItem = gBattleMons[battler].item;
                         BattleScriptPushCursor();
                         gBattlescriptCurrInstr = BattleScript_EjectPackActivates;
+                        gSpecialStatuses[gBattlerAttacker].preventLifeOrbDamage = TRUE;
                         effect = TRUE;
                         break;  // Only fastest eject pack activates
                     }
@@ -6216,7 +6220,7 @@ static void Cmd_moveend(void)
             gStatuses3[gBattlerAttacker] &= ~STATUS3_ME_FIRST;
             gSpecialStatuses[gBattlerAttacker].gemBoost = FALSE;
             gSpecialStatuses[gBattlerAttacker].damagedMons = 0;
-            gSpecialStatuses[gBattlerAttacker].magicianStolen = 0;
+            gSpecialStatuses[gBattlerAttacker].preventLifeOrbDamage = 0;
             gSpecialStatuses[gBattlerTarget].berryReduced = FALSE;
             gBattleScripting.moveEffect = 0;
             // clear attacker z move data
@@ -8286,8 +8290,8 @@ static bool32 HasAttackerFaintedTarget(void)
 
 bool32 CanPoisonType(u8 battlerAttacker, u8 battlerTarget)
 {
-    return ((GetBattlerAbility(battlerAttacker) == ABILITY_CORROSION && gBattleMoves[gCurrentMove].category == BATTLE_CATEGORY_STATUS)
-            || !(IS_BATTLER_OF_TYPE(battlerTarget, TYPE_POISON) || IS_BATTLER_OF_TYPE(battlerTarget, TYPE_STEEL)));
+    return GetBattlerAbility(battlerAttacker) == ABILITY_CORROSION
+        || (!IS_BATTLER_OF_TYPE(battlerTarget, TYPE_STEEL) && !IS_BATTLER_OF_TYPE(battlerTarget, TYPE_POISON));
 }
 
 bool32 CanParalyzeType(u8 battlerAttacker, u8 battlerTarget)
@@ -9304,7 +9308,7 @@ static void Cmd_various(void)
         if (IsBattlerAlive(gBattlerAbility)
             && (i == ABILITY_RECEIVER || i == ABILITY_POWER_OF_ALCHEMY)
             && GetBattlerHoldEffect(battler, TRUE) != HOLD_EFFECT_ABILITY_SHIELD
-            && !gAbilities[gBattleMons[battler].ability].cantBeCopied)
+            && !gAbilitiesInfo[gBattleMons[battler].ability].cantBeCopied)
         {
             gBattleStruct->tracedAbility[gBattlerAbility] = gBattleMons[battler].ability; // re-using the variable for trace
             gBattleScripting.battler = battler;
@@ -9408,7 +9412,7 @@ static void Cmd_various(void)
     case VARIOUS_SET_SIMPLE_BEAM:
     {
         VARIOUS_ARGS(const u8 *failInstr);
-        if (gAbilities[gBattleMons[gBattlerTarget].ability].cantBeOverwritten
+        if (gAbilitiesInfo[gBattleMons[gBattlerTarget].ability].cantBeOverwritten
             || gBattleMons[gBattlerTarget].ability == ABILITY_SIMPLE)
         {
             RecordAbilityBattle(gBattlerTarget, gBattleMons[gBattlerTarget].ability);
@@ -9432,8 +9436,8 @@ static void Cmd_various(void)
     case VARIOUS_TRY_ENTRAINMENT:
     {
         VARIOUS_ARGS(const u8 *failInstr);
-        if (gAbilities[gBattleMons[gBattlerAttacker].ability].cantBeCopied
-          || gAbilities[gBattleMons[gBattlerTarget].ability].cantBeOverwritten)
+        if (gAbilitiesInfo[gBattleMons[gBattlerAttacker].ability].cantBeCopied
+          || gAbilitiesInfo[gBattleMons[gBattlerTarget].ability].cantBeOverwritten)
         {
             RecordAbilityBattle(gBattlerTarget, gBattleMons[gBattlerTarget].ability);
             gBattlescriptCurrInstr = cmd->failInstr;
@@ -13984,9 +13988,9 @@ static void Cmd_trycopyability(void)
 
     if (gBattleMons[battler].ability == defAbility
       || defAbility == ABILITY_NONE
-      || gAbilities[gBattleMons[battler].ability].cantBeSuppressed
-      || gAbilities[gBattleMons[BATTLE_PARTNER(battler)].ability].cantBeSuppressed
-      || gAbilities[defAbility].cantBeCopied)
+      || gAbilitiesInfo[gBattleMons[battler].ability].cantBeSuppressed
+      || gAbilitiesInfo[gBattleMons[BATTLE_PARTNER(battler)].ability].cantBeSuppressed
+      || gAbilitiesInfo[defAbility].cantBeCopied)
     {
         gBattlescriptCurrInstr = cmd->failInstr;
     }
@@ -14062,7 +14066,7 @@ static void Cmd_setgastroacid(void)
 {
     CMD_ARGS(const u8 *failInstr);
 
-    if (gAbilities[gBattleMons[gBattlerTarget].ability].cantBeSuppressed)
+    if (gAbilitiesInfo[gBattleMons[gBattlerTarget].ability].cantBeSuppressed)
     {
         gBattlescriptCurrInstr = cmd->failInstr;
     }
@@ -14162,8 +14166,8 @@ static void Cmd_tryswapabilities(void)
 {
     CMD_ARGS(const u8 *failInstr);
 
-    if (gAbilities[gBattleMons[gBattlerAttacker].ability].cantBeSwapped
-      || gAbilities[gBattleMons[gBattlerTarget].ability].cantBeSwapped)
+    if (gAbilitiesInfo[gBattleMons[gBattlerAttacker].ability].cantBeSwapped
+      || gAbilitiesInfo[gBattleMons[gBattlerTarget].ability].cantBeSwapped)
     {
         RecordAbilityBattle(gBattlerTarget, gBattleMons[gBattlerTarget].ability);
         gBattlescriptCurrInstr = cmd->failInstr;
@@ -14484,15 +14488,14 @@ static void Cmd_pickup(void)
                     SetMonData(&gPlayerParty[i], MON_DATA_HELD_ITEM, &heldItem);
                 }
             }
-            #if P_SHUCKLE_BERRY_JUICE == GEN_2
-            else if (species == SPECIES_SHUCKLE
+            else if (P_SHUCKLE_BERRY_JUICE == GEN_2
+                && species == SPECIES_SHUCKLE
                 && heldItem == ITEM_ORAN_BERRY
                 && (Random() % 16) == 0)
             {
                 heldItem = ITEM_BERRY_JUICE;
                 SetMonData(&gPlayerParty[i], MON_DATA_HELD_ITEM, &heldItem);
             }
-            #endif
         }
     }
 
@@ -15443,7 +15446,7 @@ static void Cmd_tryworryseed(void)
 {
     CMD_ARGS(const u8 *failInstr);
 
-    if (gAbilities[gBattleMons[gBattlerTarget].ability].cantBeOverwritten
+    if (gAbilitiesInfo[gBattleMons[gBattlerTarget].ability].cantBeOverwritten
       || gBattleMons[gBattlerTarget].ability == ABILITY_INSOMNIA)
     {
         RecordAbilityBattle(gBattlerTarget, gBattleMons[gBattlerTarget].ability);

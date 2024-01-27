@@ -75,6 +75,12 @@
 #include "constants/rgb.h"
 #include "constants/songs.h"
 
+#if (DECAP_ENABLED) && (DECAP_MIRRORING) && !(DECAP_PARTY_MENU)
+#define gStringVar4 (MirrorPtr(gStringVar4))
+#define AddTextPrinterParameterized4(a, b, c, d, e, f, g, h, str) (AddTextPrinterParameterized4(a, b, c, d, e, f, g, h, MirrorPtr(str)))
+#define AddTextPrinterParameterized3(a, b, c, d, e, f, str) AddTextPrinterParameterized3(a, b, c, d, e, f, MirrorPtr(str))
+#endif
+
 enum {
     MENU_SUMMARY,
     MENU_SWITCH,
@@ -2740,7 +2746,10 @@ static void PrintMessage(const u8 *text)
 {
     DrawStdFrameWithCustomTileAndPalette(WIN_MSG, FALSE, 0x4F, 13);
     gTextFlags.canABSpeedUpPrint = TRUE;
-    AddTextPrinterParameterized2(WIN_MSG, FONT_NORMAL, text, GetPlayerTextSpeedDelay(), 0, TEXT_COLOR_DARK_GRAY, TEXT_COLOR_WHITE, TEXT_COLOR_LIGHT_GRAY);
+    if (DECAP_ENABLED && DECAP_MIRRORING && !DECAP_PARTY_MENU)
+        AddTextPrinterParameterized2(WIN_MSG, FONT_NORMAL, MirrorPtr(text), GetPlayerTextSpeedDelay(), 0, TEXT_COLOR_DARK_GRAY, TEXT_COLOR_WHITE, TEXT_COLOR_LIGHT_GRAY);
+    else
+        AddTextPrinterParameterized2(WIN_MSG, FONT_NORMAL, text, GetPlayerTextSpeedDelay(), 0, TEXT_COLOR_DARK_GRAY, TEXT_COLOR_WHITE, TEXT_COLOR_LIGHT_GRAY);
 }
 
 static void PartyMenuDisplayYesNoMenu(void)
@@ -4692,7 +4701,7 @@ void Task_AbilityCapsule(u8 taskId)
         }
         gPartyMenuUseExitCallback = TRUE;
         GetMonNickname(&gPlayerParty[tMonId], gStringVar1);
-        StringCopy(gStringVar2, gAbilities[GetAbilityBySpecies(tSpecies, tAbilityNum)].name);
+        StringCopy(gStringVar2, gAbilitiesInfo[GetAbilityBySpecies(tSpecies, tAbilityNum)].name);
         StringExpandPlaceholders(gStringVar4, askText);
         PlaySE(SE_SELECT);
         DisplayPartyMenuMessage(gStringVar4, 1);
@@ -4779,7 +4788,7 @@ void Task_AbilityPatch(u8 taskId)
         }
         gPartyMenuUseExitCallback = TRUE;
         GetMonNickname(&gPlayerParty[tMonId], gStringVar1);
-        StringCopy(gStringVar2, gAbilities[GetAbilityBySpecies(tSpecies, tAbilityNum)].name);
+        StringCopy(gStringVar2, gAbilitiesInfo[GetAbilityBySpecies(tSpecies, tAbilityNum)].name);
         StringExpandPlaceholders(gStringVar4, askText);
         PlaySE(SE_SELECT);
         DisplayPartyMenuMessage(gStringVar4, 1);
@@ -5226,7 +5235,7 @@ void ItemUseCB_PPUp(u8 taskId, TaskFunc task)
 
 u16 ItemIdToBattleMoveId(u16 item)
 {
-    return (ItemId_GetPocket(item) == POCKET_TM_HM) ? gItems[item].secondaryId : MOVE_NONE;
+    return (ItemId_GetPocket(item) == POCKET_TM_HM) ? gItemsInfo[item].secondaryId : MOVE_NONE;
 }
 
 bool8 MonKnowsMove(struct Pokemon *mon, u16 move)
