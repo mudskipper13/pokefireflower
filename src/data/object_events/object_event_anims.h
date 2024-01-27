@@ -358,25 +358,25 @@ static const union AnimCmd sAnim_FieldMove[] =
 
 static const union AnimCmd sAnim_GetOnOffSurfBlobSouth[] =
 {
-    ANIMCMD_FRAME(3, 1),
+    ANIMCMD_FRAME(4, 1),
     ANIMCMD_JUMP(0),
 };
 
 static const union AnimCmd sAnim_GetOnOffSurfBlobNorth[] =
 {
-    ANIMCMD_FRAME(4, 1),
+    ANIMCMD_FRAME(5, 1),
     ANIMCMD_JUMP(0),
 };
 
 static const union AnimCmd sAnim_GetOnOffSurfBlobWest[] =
 {
-    ANIMCMD_FRAME(5, 1),
+    ANIMCMD_FRAME(6, 1),
     ANIMCMD_JUMP(0),
 };
 
 static const union AnimCmd sAnim_GetOnOffSurfBlobEast[] =
 {
-    ANIMCMD_FRAME(5, 1, .hFlip = TRUE),
+    ANIMCMD_FRAME(7, 1),
     ANIMCMD_JUMP(0),
 };
 
@@ -1067,23 +1067,23 @@ static const union AnimCmd *const sAnimTable_Surfing[] = {
     [ANIM_STD_FACE_SOUTH] = sAnim_StayStill,
     [ANIM_STD_FACE_NORTH] = sAnim_QuintyPlumpFaceNorth,
     [ANIM_STD_FACE_WEST] = sAnim_QuintyPlumpFaceWest,
-    [ANIM_STD_FACE_EAST] = sAnim_QuintyPlumpFaceEast,
+    [ANIM_STD_FACE_EAST] = sAnim_FaceEastAsymmetrical,
     [ANIM_STD_GO_SOUTH] = sAnim_StayStill,
     [ANIM_STD_GO_NORTH] = sAnim_QuintyPlumpFaceNorth,
     [ANIM_STD_GO_WEST] = sAnim_QuintyPlumpFaceWest,
-    [ANIM_STD_GO_EAST] = sAnim_QuintyPlumpFaceEast,
+    [ANIM_STD_GO_EAST] = sAnim_FaceEastAsymmetrical,
     [ANIM_STD_GO_FAST_SOUTH] = sAnim_StayStill,
     [ANIM_STD_GO_FAST_NORTH] = sAnim_QuintyPlumpFaceNorth,
     [ANIM_STD_GO_FAST_WEST] = sAnim_QuintyPlumpFaceWest,
-    [ANIM_STD_GO_FAST_EAST] = sAnim_QuintyPlumpFaceEast,
+    [ANIM_STD_GO_FAST_EAST] = sAnim_FaceEastAsymmetrical,
     [ANIM_STD_GO_FASTER_SOUTH] = sAnim_StayStill,
     [ANIM_STD_GO_FASTER_NORTH] = sAnim_QuintyPlumpFaceNorth,
     [ANIM_STD_GO_FASTER_WEST] = sAnim_QuintyPlumpFaceWest,
-    [ANIM_STD_GO_FASTER_EAST] = sAnim_QuintyPlumpFaceEast,
+    [ANIM_STD_GO_FASTER_EAST] = sAnim_FaceEastAsymmetrical,
     [ANIM_STD_GO_FASTEST_SOUTH] = sAnim_StayStill,
     [ANIM_STD_GO_FASTEST_NORTH] = sAnim_QuintyPlumpFaceNorth,
     [ANIM_STD_GO_FASTEST_WEST] = sAnim_QuintyPlumpFaceWest,
-    [ANIM_STD_GO_FASTEST_EAST] = sAnim_QuintyPlumpFaceEast,
+    [ANIM_STD_GO_FASTEST_EAST] = sAnim_FaceEastAsymmetrical,
     [ANIM_GET_ON_OFF_POKEMON_SOUTH] = sAnim_GetOnOffSurfBlobSouth,
     [ANIM_GET_ON_OFF_POKEMON_NORTH] = sAnim_GetOnOffSurfBlobNorth,
     [ANIM_GET_ON_OFF_POKEMON_WEST] = sAnim_GetOnOffSurfBlobWest,

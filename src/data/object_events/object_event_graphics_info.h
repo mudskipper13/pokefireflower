@@ -1668,7 +1668,7 @@ const struct ObjectEventGraphicsInfo gObjectEventGraphicsInfo_MaySurfing = {
     .oam = &gObjectEventBaseOam_32x32,
     .subspriteTables = sOamTables_32x32,
     .anims = OBJ_EVENT_ANIM_SURFING,
-    .images = sPicTable_MaySurfing,
+    .images = sPicTable_BrendanSurfing,
     .affineAnims = gDummySpriteAffineAnimTable,
 };
 
@@ -1974,7 +1974,7 @@ const struct ObjectEventGraphicsInfo gObjectEventGraphicsInfo_RivalMaySurfing = 
     .oam = &gObjectEventBaseOam_32x32,
     .subspriteTables = sOamTables_32x32,
     .anims = OBJ_EVENT_ANIM_SURFING,
-    .images = sPicTable_MaySurfing,
+    .images = sPicTable_BrendanSurfing,
     .affineAnims = gDummySpriteAffineAnimTable,
 };
 
@@ -4386,7 +4386,7 @@ const struct ObjectEventGraphicsInfo gObjectEventGraphicsInfo_RubySapphireBrenda
     .oam = &gObjectEventBaseOam_32x32,
     .subspriteTables = sOamTables_32x32,
     .anims = OBJ_EVENT_ANIM_SURFING,
-    .images = sPicTable_RubySapphireBrendanSurfing,
+    .images = sPicTable_BrendanSurfing,
     .affineAnims = gDummySpriteAffineAnimTable,
 };
 
@@ -4512,7 +4512,7 @@ const struct ObjectEventGraphicsInfo gObjectEventGraphicsInfo_RubySapphireMaySur
     .oam = &gObjectEventBaseOam_32x32,
     .subspriteTables = sOamTables_32x32,
     .anims = OBJ_EVENT_ANIM_SURFING,
-    .images = sPicTable_RubySapphireMaySurfing,
+    .images = sPicTable_BrendanSurfing,
     .affineAnims = gDummySpriteAffineAnimTable,
 };
 
