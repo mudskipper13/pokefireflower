@@ -173,7 +173,11 @@ static const union AnimCmd *const sSpriteAnimTable_Icons[] =
 static const struct SpriteTemplate sSpriteTemplate_EmoteIcons =
 {
     .tileTag = TAG_NONE,
-    .paletteTag = 0x1100, // OBJ_EVENT_PAL_TAG_BRENDAN
+    #ifdef SUPERLEAF
+    .paletteTag = OBJ_EVENT_PAL_TAG_MAY,
+    #else
+    .paletteTag = OBJ_EVENT_PAL_TAG_BRENDAN,
+    #endif
     .oam = &sOamData_Icons,
     .anims = sSpriteAnimTable_Icons,
     .images = sSpriteImageTable_EmoteIcon,
@@ -713,7 +717,11 @@ u8 FldEff_EmoteIcon(void)
 {
     u8 spriteId;
 
-    LoadObjectEventPalette(0x1100); // OBJ_EVENT_PAL_TAG_BRENDAN
+    #ifdef SUPERLEAF
+    LoadObjectEventPalette(OBJ_EVENT_PAL_TAG_MAY);
+    #else
+    LoadObjectEventPalette(OBJ_EVENT_PAL_TAG_BRENDAN);
+    #endif
     spriteId = CreateSpriteAtEnd(&sSpriteTemplate_EmoteIcons, 0, 0, 0x52);
 
     if (spriteId != MAX_SPRITES)

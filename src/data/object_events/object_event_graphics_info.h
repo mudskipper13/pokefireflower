@@ -1614,7 +1614,7 @@ const struct ObjectEventGraphicsInfo gObjectEventGraphicsInfo_MayNormal = {
     .oam = &gObjectEventBaseOam_32x32,
     .subspriteTables = sOamTables_32x32,
     .anims = OBJ_EVENT_ANIM_PLAYER,
-    .images = sPicTable_BrendanNormal,
+    .images = sPicTable_MayNormal,
     .affineAnims = gDummySpriteAffineAnimTable,
 };
 
@@ -1920,7 +1920,7 @@ const struct ObjectEventGraphicsInfo gObjectEventGraphicsInfo_RivalMayNormal = {
     .oam = &gObjectEventBaseOam_32x32,
     .subspriteTables = sOamTables_32x32,
     .anims = OBJ_EVENT_ANIM_PLAYER,
-    .images = sPicTable_BrendanNormal,
+    .images = sPicTable_MayNormal,
     .affineAnims = gDummySpriteAffineAnimTable,
 };
 
@@ -3972,7 +3972,7 @@ const struct ObjectEventGraphicsInfo gObjectEventGraphicsInfo_LinkMay = {
     .oam = &gObjectEventBaseOam_32x32,
     .subspriteTables = sOamTables_32x32,
     .anims = OBJ_EVENT_ANIM_PLAYER,
-    .images = sPicTable_BrendanNormal,
+    .images = sPicTable_MayNormal,
     .affineAnims = gDummySpriteAffineAnimTable,
 };
 
@@ -4476,7 +4476,7 @@ const struct ObjectEventGraphicsInfo gObjectEventGraphicsInfo_RubySapphireMay = 
     .oam = &gObjectEventBaseOam_32x32,
     .subspriteTables = sOamTables_32x32,
     .anims = OBJ_EVENT_ANIM_PLAYER,
-    .images = sPicTable_BrendanNormal,
+    .images = sPicTable_MayNormal,
     .affineAnims = gDummySpriteAffineAnimTable,
 };
 
