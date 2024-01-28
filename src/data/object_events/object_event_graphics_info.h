@@ -1668,7 +1668,7 @@ const struct ObjectEventGraphicsInfo gObjectEventGraphicsInfo_MaySurfing = {
     .oam = &gObjectEventBaseOam_32x32,
     .subspriteTables = sOamTables_32x32,
     .anims = OBJ_EVENT_ANIM_SURFING,
-    .images = sPicTable_BrendanSurfing,
+    .images = sPicTable_MaySurfing,
     .affineAnims = gDummySpriteAffineAnimTable,
 };
 
