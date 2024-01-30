@@ -2591,3 +2591,12 @@ bool8 ScrCmd_bufferoutfitstr(struct ScriptContext *ctx)
     BufferOutfitStrings(sScriptStringVars[strVarIdx], outfit, type);
     return TRUE;
 }
+
+bool8 ScrCmd_pokemartoutfit(struct ScriptContext *ctx)
+{
+    const void *ptr = (void *)ScriptReadWord(ctx);
+
+    CreateOutfitShopMenu(ptr);
+    ScriptContext_Stop();
+    return TRUE;
+}

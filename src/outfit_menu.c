@@ -696,6 +696,15 @@ static void Task_OutfitMenuHandleInput(u8 taskId)
             else
                 sOutfitMenu->idx = OUTFIT_BEGIN;
 
+            // skip outfit if it's hidden and locked.
+            if (gOutfits[sOutfitMenu->idx].isHidden && !GetOutfitStatus(sOutfitMenu->idx))
+            {
+                if (sOutfitMenu->idx < OUTFIT_END)
+                    sOutfitMenu->idx++;
+                else
+                    sOutfitMenu->idx = OUTFIT_BEGIN;
+            }
+
             UpdateOutfitInfo();
         }
 
@@ -705,6 +714,15 @@ static void Task_OutfitMenuHandleInput(u8 taskId)
                 sOutfitMenu->idx--;
             else
                 sOutfitMenu->idx = OUTFIT_END;
+
+            // skip outfit if it's hidden.
+            if (gOutfits[sOutfitMenu->idx].isHidden && !GetOutfitStatus(sOutfitMenu->idx))
+            {
+                if (sOutfitMenu->idx != OUTFIT_BEGIN)
+                    sOutfitMenu->idx--;
+                else
+                    sOutfitMenu->idx = OUTFIT_END;
+            }
 
             UpdateOutfitInfo();
         }
@@ -840,4 +858,9 @@ bool8 IsPlayerWearingOutfit(u16 id)
         return TRUE;
 
     return FALSE;
+}
+
+u32 GetOutfitPrice(u16 id)
+{
+    return gOutfits[id].prices[gSaveBlock2Ptr->playerGender];
 }
