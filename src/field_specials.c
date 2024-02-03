@@ -564,7 +564,7 @@ void SpawnLinkPartnerObjectEvent(void)
                 if (outfit < OUTFIT_COUNT)
                     linkSpriteId = GetLinkPlayerAvatarGraphicsIdByStateIdLinkIdAndGender(PLAYER_AVATAR_STATE_NORMAL, i, gender);
                 else
-                    linkSpriteId = (gender == 0) ? OBJ_EVENT_GFX_RIVAL_BRENDAN_NORMAL : OBJ_EVENT_GFX_RIVAL_MAY_NORMAL;
+                    linkSpriteId = (gender == 0) ? OBJ_EVENT_GFX_BRENDAN_NORMAL : OBJ_EVENT_GFX_MAY_NORMAL;
             }
                 break;
             }
@@ -2771,7 +2771,7 @@ void SetBattleTowerLinkPlayerGfx(void)
         if (gLinkPlayers[i].gender == MALE)
             VarSet(VAR_OBJ_GFX_ID_F - i, OBJ_EVENT_GFX_BRENDAN_NORMAL);
         else
-            VarSet(VAR_OBJ_GFX_ID_F - i, OBJ_EVENT_GFX_RIVAL_MAY_NORMAL);
+            VarSet(VAR_OBJ_GFX_ID_F - i, OBJ_EVENT_GFX_MAY_NORMAL);
     }
 }
 
