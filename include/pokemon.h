@@ -5,6 +5,7 @@
 #include "constants/items.h"
 #include "constants/region_map_sections.h"
 #include "constants/map_groups.h"
+#include "contest_effect.h"
 
 #define GET_BASE_SPECIES_ID(speciesId) (GetFormSpeciesId(speciesId, 0))
 #define FORM_SPECIES_END (0xffff)
@@ -112,6 +113,7 @@ enum {
     MON_DATA_DYNAMAX_LEVEL,
     MON_DATA_GIGANTAMAX_FACTOR,
     MON_DATA_TERA_TYPE,
+    MON_DATA_EVOLUTION_TRACKER,
 };
 
 struct PokemonSubstruct0
@@ -133,9 +135,10 @@ struct PokemonSubstruct0
 struct PokemonSubstruct1
 {
     u16 move1:11; // 2047 moves.
-    u16 unused_00:5;
+    u16 evolutionTracker1:5;
     u16 move2:11; // 2047 moves.
-    u16 unused_02:5;
+    u16 evolutionTracker2:4;
+    u16 unused_02:1;
     u16 move3:11; // 2047 moves.
     u16 unused_04:5;
     u16 move4:11; // 2047 moves.
@@ -443,8 +446,10 @@ struct SpeciesInfo /*0x8C*/
  /* 0x84 */ const struct FormChange *formChangeTable;
 };
 
-struct BattleMove
+struct MoveInfo
 {
+    const u8 *name;
+    const u8 *description;
     u16 effect;
     u8 power;
     u8 type:5;
@@ -515,6 +520,12 @@ struct BattleMove
 
     // primary/secondary effects
     const struct AdditionalEffect *additionalEffects;
+
+    // contest parameters
+    u8 contestEffect;
+    u8 contestCategory:3;
+    u8 contestComboStarterId;
+    u8 contestComboMoves[MAX_COMBO_MOVES];
 };
 
 #define EFFECTS_ARR(...) (const struct AdditionalEffect[]) {__VA_ARGS__}
@@ -597,7 +608,7 @@ extern u8 gEnemyPartyCount;
 extern struct Pokemon gEnemyParty[PARTY_SIZE];
 extern struct SpriteTemplate gMultiuseSpriteTemplate;
 
-extern const struct BattleMove gBattleMoves[];
+extern const struct MoveInfo gMovesInfo[];
 extern const u8 gFacilityClassToPicIndex[];
 extern const u8 gFacilityClassToTrainerClass[];
 extern const struct SpeciesInfo gSpeciesInfo[];
@@ -791,5 +802,6 @@ u16 GetCryIdBySpecies(u16 species);
 u16 GetSpeciesPreEvolution(u16 species);
 void HealPokemon(struct Pokemon *mon);
 void HealBoxPokemon(struct BoxPokemon *boxMon);
+const u8 *GetMoveName(u16 moveId);
 
 #endif // GUARD_POKEMON_H

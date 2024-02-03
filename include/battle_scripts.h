@@ -648,7 +648,7 @@ extern const u8 BattleScript_EffectBeatUp[];
 extern const u8 BattleScript_EffectSemiInvulnerable[];
 extern const u8 BattleScript_EffectDefenseCurl[];
 extern const u8 BattleScript_EffectSoftboiled[];
-extern const u8 BattleScript_EffectFakeOut[];
+extern const u8 BattleScript_EffectFirstTurnOnly[];
 extern const u8 BattleScript_EffectUproar[];
 extern const u8 BattleScript_EffectStockpile[];
 extern const u8 BattleScript_EffectSpitUp[];
@@ -822,5 +822,6 @@ extern const u8 BattleScript_EffectBrickBreak[];
 extern const u8 BattleScript_EffectDoodle[];
 extern const u8 BattleScript_EffectFilletAway[];
 extern const u8 BattleScript_EffectShedTail[];
+extern const u8 BattleScript_EffectUpperHand[];
 
 #endif // GUARD_BATTLE_SCRIPTS_H

@@ -216,9 +216,9 @@
 #define EV_ITEM_RAISE_LIMIT ((I_VITAMIN_EV_CAP >= GEN_8) ? MAX_PER_STAT_EVS : 100)
 
 // Move category defines.
-#define BATTLE_CATEGORY_PHYSICAL    0
-#define BATTLE_CATEGORY_SPECIAL     1
-#define BATTLE_CATEGORY_STATUS      2
+#define DAMAGE_CATEGORY_PHYSICAL    0
+#define DAMAGE_CATEGORY_SPECIAL     1
+#define DAMAGE_CATEGORY_STATUS      2
 
 // Growth rates
 #define GROWTH_MEDIUM_FAST  0
@@ -291,6 +291,9 @@
 #define EVO_MOVE_THREE_SEGMENT            44     // Pokémon levels up, knows specified move, has a personality value with a modulus of 1-99
 #define EVO_LEVEL_FAMILY_OF_THREE         45     // Pokémon reaches the specified level with a personality value with a modulus of 0
 #define EVO_LEVEL_FAMILY_OF_FOUR          46     // Pokémon reaches the specified level with a personality value with a modulus of 1-99
+#define EVO_LEVEL_MOVE_TWENTY_TIMES       47     // Pokémon levels up after having used a move for at least 20 times
+#define EVO_LEVEL_RECOIL_DAMAGE_MALE      48     // Pokémon levels up after having suffered specified amount of non-fainting recoil damage as a male
+#define EVO_LEVEL_RECOIL_DAMAGE_FEMALE    49     // Pokémon levels up after having suffered specified amount of non-fainting recoil damage as a female
 
 // Evolution 'modes,' for GetEvolutionTargetSpecies
 #define EVO_MODE_NORMAL            0
