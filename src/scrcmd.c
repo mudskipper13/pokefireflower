@@ -2115,6 +2115,7 @@ bool8 ScrCmd_pokemart(struct ScriptContext *ctx)
 {
     const void *ptr = (void *)ScriptReadWord(ctx);
 
+    gSpecialVar_0x800B = (gSelectedObjectEvent != 0) ? GetObjectEventGraphicsInfo(gObjectEvents[gSelectedObjectEvent].graphicsId)->textColor : NPC_TEXT_COLOR_NEUTRAL;
     CreatePokemartMenu(ptr);
     ScriptContext_Stop();
     return TRUE;
@@ -2124,6 +2125,7 @@ bool8 ScrCmd_pokemartdecoration(struct ScriptContext *ctx)
 {
     const void *ptr = (void *)ScriptReadWord(ctx);
 
+    gSpecialVar_0x800B = (gSelectedObjectEvent != 0) ? GetObjectEventGraphicsInfo(gObjectEvents[gSelectedObjectEvent].graphicsId)->textColor : NPC_TEXT_COLOR_NEUTRAL;
     CreateDecorationShop1Menu(ptr);
     ScriptContext_Stop();
     return TRUE;
@@ -2134,6 +2136,7 @@ bool8 ScrCmd_pokemartdecoration2(struct ScriptContext *ctx)
 {
     const void *ptr = (void *)ScriptReadWord(ctx);
 
+    gSpecialVar_0x800B = (gSelectedObjectEvent != 0) ? GetObjectEventGraphicsInfo(gObjectEvents[gSelectedObjectEvent].graphicsId)->textColor : NPC_TEXT_COLOR_NEUTRAL;
     CreateDecorationShop2Menu(ptr);
     ScriptContext_Stop();
     return TRUE;
@@ -2596,6 +2599,7 @@ bool8 ScrCmd_pokemartoutfit(struct ScriptContext *ctx)
 {
     const void *ptr = (void *)ScriptReadWord(ctx);
 
+    gSpecialVar_0x800B = (gSelectedObjectEvent != 0) ? GetObjectEventGraphicsInfo(gObjectEvents[gSelectedObjectEvent].graphicsId)->textColor : NPC_TEXT_COLOR_NEUTRAL;
     CreateOutfitShopMenu(ptr);
     ScriptContext_Stop();
     return TRUE;
