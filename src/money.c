@@ -150,9 +150,9 @@ void PrintMoneyAmount(u8 windowId, u8 x, u8 y, int amount, u8 speed)
     AddTextPrinterParameterized(windowId, FONT_NORMAL, gStringVar4, x, y, speed, NULL);
 }
 
-void PrintMoneyAmountInMoneyBoxWithBorder(u8 windowId, u16 tileStart, u8 pallete, int amount)
+void PrintMoneyAmountInMoneyBoxWithBorder(u8 windowId, u16 tileStart, u8 palette, int amount)
 {
-    DrawStdFrameWithCustomTileAndPalette(windowId, FALSE, tileStart, pallete);
+    DrawStdFrameWithCustomTileAndPalette(windowId, FALSE, tileStart, palette);
     PrintMoneyAmountInMoneyBox(windowId, amount, 0);
 }
 
@@ -163,14 +163,11 @@ void ChangeAmountInMoneyBox(int amount)
 
 void DrawMoneyBox(int amount, u8 x, u8 y)
 {
-    struct WindowTemplate template;
-
-    SetWindowTemplateFields(&template, 0, x + 1, y + 1, 10, 2, 15, 8);
-    sMoneyBoxWindowId = AddWindow(&template);
+    sMoneyBoxWindowId = AddWindowParameterized(0, x + 1, y + 1, 10, 2, 15, 8);;
     FillWindowPixelBuffer(sMoneyBoxWindowId, PIXEL_FILL(0));
     PutWindowTilemap(sMoneyBoxWindowId);
     CopyWindowToVram(sMoneyBoxWindowId, COPYWIN_MAP);
-    PrintMoneyAmountInMoneyBoxWithBorder(sMoneyBoxWindowId, 0x214, 14, amount);
+    PrintMoneyAmountInMoneyBoxWithBorder(sMoneyBoxWindowId, STD_WINDOW_BASE_TILE_NUM, 14, amount);
     AddMoneyLabelObject((8 * x) + 19, (8 * y) + 11);
 }
 

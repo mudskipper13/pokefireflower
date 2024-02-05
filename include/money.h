@@ -12,7 +12,7 @@ bool8 IsEnoughForCostInVar0x8005(void);
 void SubtractMoneyFromVar0x8005(void);
 void PrintMoneyAmountInMoneyBox(u8 windowId, int amount, u8 speed);
 void PrintMoneyAmount(u8 windowId, u8 x, u8 y, int amount, u8 speed);
-void PrintMoneyAmountInMoneyBoxWithBorder(u8 windowId, u16 tileStart, u8 pallete, int amount);
+void PrintMoneyAmountInMoneyBoxWithBorder(u8 windowId, u16 tileStart, u8 palette, int amount);
 void ChangeAmountInMoneyBox(int amount);
 void DrawMoneyBox(int amount, u8 x, u8 y);
 void HideMoneyBox(void);
