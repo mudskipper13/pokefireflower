@@ -2110,7 +2110,7 @@ bool8 CanWaterBerryPlot(void)
 
 void ObjectEventInteractionGetBerryTreeData(void)
 {
-    u8 id;
+    u16 id;
     u8 berry;
     u8 localId;
     u8 group;
