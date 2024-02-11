@@ -527,7 +527,7 @@ static inline void SetupOutfitMenu_Sprites_DrawOverworldSprite(bool32 update, bo
     if (update)
         DestroySprite(&gSprites[sOutfitMenu->spriteIds[GFX_OW]]);
 
-    sOutfitMenu->spriteIds[GFX_OW] = CreateObjectGraphicsSpriteNoTint(gfxId, SpriteCallbackDummy, 88, 76, 0);
+    sOutfitMenu->spriteIds[GFX_OW] = CreateObjectGraphicsSprite(gfxId, SpriteCallbackDummy, 88, 76, 0);
     StartSpriteAnim(&gSprites[sOutfitMenu->spriteIds[GFX_OW]], ANIM_STD_GO_SOUTH);
 }
 

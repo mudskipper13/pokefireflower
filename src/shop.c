@@ -712,7 +712,7 @@ static void BuyMenuAddItemIcon(u16 item, u8 iconSlot)
     else if (sMartInfo.martType == MART_TYPE_OUTFIT)
     {
         u16 gfxId = GetPlayerAvatarGraphicsIdByOutfitStateIdAndGender(item, PLAYER_AVATAR_STATE_NORMAL, gSaveBlock2Ptr->playerGender);
-        spriteId = CreateObjectGraphicsSpriteNoTint(gfxId, SpriteCallbackDummy, 20, 80, 0);
+        spriteId = CreateObjectGraphicsSprite(gfxId, SpriteCallbackDummy, 20, 80, 0);
         if (spriteId != MAX_SPRITES)
         {
             *spriteIdPtr = spriteId;
