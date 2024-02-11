@@ -360,7 +360,6 @@ SECTIONS {
         src/international_string_util.o(.text);
         src/pokemon_debug.o(.text);
         src/expansion_intro.o(.text);
-        src/day_night.o(.text);
         src/outfit_menu.o(.text);
     } > ROM =0
 
@@ -729,7 +728,6 @@ SECTIONS {
         data/sound_data.o(.rodata);
         src/pokemon_debug.o(.rodata);
         src/expansion_intro.o(.rodata);
-        src/day_night.o(.rodata);
         src/outfit_menu.o(.rodata);
     } > ROM =0
 
