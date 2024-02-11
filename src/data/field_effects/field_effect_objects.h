@@ -1286,4 +1286,4 @@ const struct SpriteTemplate gFieldEffectObjectTemplate_Rayquaza = {
     .callback = UpdateRayquazaSpotlightEffect,
 };
 
-static const struct SpritePalette sSpritePalette_Unused = {gObjectEventPal_Npc3, FLDEFF_PAL_TAG_UNKNOWN};
+const struct SpritePalette gSpritePalette_ArrowEmotionsFieldEffect = {gObjectEventPal_Brendan, OBJ_EVENT_PAL_TAG_BRENDAN};

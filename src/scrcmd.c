@@ -709,7 +709,7 @@ bool8 ScrCmd_gettime(struct ScriptContext *ctx)
     gSpecialVar_0x8000 = gLocalTime.hours;
     gSpecialVar_0x8001 = gLocalTime.minutes;
     gSpecialVar_0x8002 = gLocalTime.seconds;
-    gSpecialVar_0x8004 = GetCurrentTimeOfDay();
+    gSpecialVar_0x8004 = GetTimeOfDay();
     //! We need this modulo so that it
     //! can gives the right day number.
     gSpecialVar_0x8005 = gLocalTime.days % 7;
