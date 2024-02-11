@@ -112,10 +112,10 @@
     {
       "id": "LAYOUT_LITTLEROOT_TOWN",
       "name": "LittlerootTown_Layout",
-      "width": 30,
+      "width": 39,
       "height": 33,
-      "border_width": 2,
-      "border_height": 2,
+      "border_width": 8,
+      "border_height": 6,
       "primary_tileset": "gTileset_General",
       "secondary_tileset": "gTileset_Petalburg",
       "border_filepath": "data/layouts/LittlerootTown/border.bin",

@@ -6,9 +6,9 @@
 text PalletTown_Text_CanModifyGames {
 	poryswitch(LANG) {
 		_:		format(
-				"Today's technology is kinda cool!\p"
+				"Today's technology is super dope!\p"
 
-				"You can now change certain games"
+				"You can now change some games"
 				"to be whatever you want without"
 				"any worries!\p"
 
@@ -16,7 +16,7 @@ text PalletTown_Text_CanModifyGames {
 				"means, but it sounds cool!")
 
 		INA:	format(
-				"Teknologi zaman sekarang lumayan"
+				"Teknologi zaman sekarang sangat"
 				"keren!\p"
 
 				"Sekarang kamu bisa memodifikasi suatu"
@@ -24,7 +24,7 @@ text PalletTown_Text_CanModifyGames {
 				"khawatir!\p"
 
 				"…Aku sungguh tak tahu apa arti dari"
-				"itu, tapi itu kedengarannya keren!")
+				"itu, tapi kedengarannya keren!")
 	}
 }
 
@@ -37,10 +37,10 @@ text PalletTown_Text_RaisingMonsToo {
 				"protect me.")
 
 		INA:	format(
-				"Aku juga merawat POKéMON.\p"
+				"Aku juga ngerawat POKéMON.\p"
 
-				"Saat mereka menjadi lebih kuat,"
-				"mereka bisa melindungi ku.")
+				"Saat mereka menjadi kuat, "
+				"mereka bisa melindungiku.")
 	}
 }
 
@@ -48,17 +48,17 @@ text PalletTown_Text_HiWelcome {
 	poryswitch(LANG) {
 		_:		format(
 				"Hi, welcome to our SHOP!\n"
-				"How can I help you with?")
+				"What do you want?")
 		INA:	format(
 				"Hai, selamat datang ke TOKO kami!"
-				"Apa yang bisa ku bantu?")
+				"Mau beli apa?")
 	}
 }
 
 text PalletTown_Text_ThanksForVisiting {
 	poryswitch(LANG) {
-		_:		format("Thanks for visiting us!")
-		INA:	format("Terima kasih telah mengunjungi kami!")
+		_:		format("Thanks for visiting!")
+		INA:	format("Terima kasih telah berkunjung!")
 	}
 }
 
@@ -68,9 +68,9 @@ text PalletTown_Text_HeyThereSorry {
 			"Hey there! Sorry, but we're out of "
 			"stocks now. Come again at later time!")
 	INA:	format(
-			"Halo! Maaf, tapi persediaan stok "
-			"kami baru saja habis. Kembali lagi di "
-			"waktu lain!")
+			"Hai! Maaf, tapi persediaan stok TOKO "
+			"kami baru saja sudah habis. Kembali lagi di "
+			"waktu lain ya!")
 	}
 }
 
@@ -81,7 +81,7 @@ text PalletTown_Text_WelcomeToShop {
 				"What do you want…")
 		INA:	format(
 				"Selamat datang ke TOKO “kami”.\n"
-				"Kamu mau apa…")
+				"Beli apa, tuh…")
 	}
 }
 
@@ -99,8 +99,8 @@ text PalletTown_Text_SorryButNoMoreStock {
 				"We have no more stocks, come back here"
 				"later.")
 		INA:	format(
-				"Maaf tapi kamu ketinggalan, dik.\p"
-				"Kita kehabisan stok, kembali kesini"
+				"Maaf tapi kamu ketinggalan, cil.\p"
+				"Kita udah habis stoknya, balik kesini lagi"
 				"nanti.")
 	}
 }
@@ -108,15 +108,13 @@ text PalletTown_Text_SorryButNoMoreStock {
 text PalletTown_Text_MyGoodness {
 	poryswitch(LANG) {
 		_:		format(
-				"Ah… Thank goodness I was"
-				"just in the perfect time to shop here."
-				"Imagine coming here long enough that"
-				"everything has solds out…")
+				"Ah… Thank goodness I arrived"
+				"here in the time."
+				"Lots of people were preparing for the big day next week.")
 		INA:	format(
-				"Ah… Syukurlah saya datang"
-				"berbelanja disini di waktu yang tepat."
-				"Bayangkan telat datang kesini sampai"
-				"-sampai semua barangnya sudah ludes habis…")
+				"Ah… Syukurlah aku dateng "
+				"kesini tepat waktu."
+				"Banyak orang sedang bersiapan untuk hari besar minggu depan.")
 	}
 }
 
@@ -129,11 +127,10 @@ text PalletTown_Text_IWonder {
 				"All I got is just MAGIKARP, MAGIKARP,"
 				"and MAGIKARP! Argh!")
 		INA:	format(
-				"Hm, kapan… Kapan aku akhirnya"
-				"mendapatkan SEADRA menyebalkan itu! Ini"
-				"sudah 20+ tahun!\p"
+				"Hm, kapan… Kapan gua akhirnya"
+				"dapet si SEADRA itu! Ini sudah 20+ tahun!\p"
 
-				"Semua yang aku dapat hanyalah MAGIKARP,"
+				"Semua yang gua dapet cuman MAGIKARP,"
 				"MAGIKARP, dan MAGIKARP! Argh!")
 	}
 }
@@ -145,14 +142,14 @@ text PalletTown_Text_TrainerTipsSign {
 		_:		format(
 				"TRAINER TIPS!\p"
 
-				"Never forget to save your progress!\p"
+				"Never forget to save your journey!\p"
 
 				"The option to SAVE is located"
 				"in the START menu.")
 		INA:	format(
-				"TIPS PELATIH!\p"
+				"TRAINER TIPS!\p"
 
-				"Jangan lupa untuk menyimpan progres-mu!\p"
+				"Jangan pernah lupa untuk menyimpan perjalanan mu!\p"
 
 				"Pengaturan untuk SIMPAN dapat ditemukan."
 				"di menu START.")
@@ -201,10 +198,9 @@ text PalletTown_Text_PalletTownMarketSign {
 	poryswitch(LANG) {
 		_:		format(
 				"PALLET TOWN MARKET\n"
-				"Get your basic but cheap needs here!")
+				"Get your basic guaranteed cheap needs here!")
 		INA:	format(
 				"MARKET DESA PALLET\n"
-				"Dapatkan kebutuhan yang biasa tetapi"
-				"murah-mu disini!")
+				"Dapatkan kebutuhan biasa dijamin murah disini!")
 	}
 }

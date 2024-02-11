@@ -35,5 +35,11 @@ const struct PaletteOverride gTilesetPalOverrides_Petalburg[] =
         .endHour = HOUR_MORNING,
         .palette = sTilesetPalOverride_Petalburg06_08,
     },
+    {
+        .slot = 10,
+        .startHour = HOUR_NIGHT,
+        .endHour = HOUR_MORNING,
+        .palette = sTilesetPalOverride_Petalburg06_08,
+    },
     OVERRIDES_END
 };
