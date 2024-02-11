@@ -5028,7 +5028,7 @@ static void TryAddInterviewObjectEvents(void)
         return;
 
     // Add object for reporter/interviewing fan (facing left)
-    spriteId = CreateObjectGraphicsSpriteNoTint(graphicsId, SpriteCallbackDummy, 76, 40, 0);
+    spriteId = CreateObjectGraphicsSprite(graphicsId, SpriteCallbackDummy, 76, 40, 0);
     if (spriteId != MAX_SPRITES)
     {
         gSprites[spriteId].oam.priority = 0;
@@ -5036,7 +5036,7 @@ static void TryAddInterviewObjectEvents(void)
     }
 
     // Add object for player (facing right)
-    spriteId = CreateObjectGraphicsSpriteNoTint(
+    spriteId = CreateObjectGraphicsSprite(
         gSaveBlock2Ptr->playerGender == MALE ? OBJ_EVENT_GFX_BRENDAN_NORMAL : OBJ_EVENT_GFX_MAY_NORMAL,
         SpriteCallbackDummy,
         52,
