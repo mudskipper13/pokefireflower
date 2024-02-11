@@ -53,9 +53,7 @@ void CreatePokeballSpriteToReleaseMon(u8 monSpriteId, u8 monPalNum, u8 x, u8 y, 
 u8 CreateTradePokeballSprite(u8 monSpriteId, u8 monPalNum, u8 x, u8 y, u8 oamPriority, u8 subPriority, u8 delay, u32 fadePalettes);
 void StartHealthboxSlideIn(u8 battler);
 void DoHitAnimHealthboxEffect(u8 battler);
-void LoadBallGfx_HandleDayNight(u8 ballId, bool32 isDayNight);
 void LoadBallGfx(u8 ballId);
-void LoadBallGfxDayNight(u8 ballId);
 void FreeBallGfx(u8 ballId);
 void _CreatePokeballSpriteToReleaseMon(u8 monSpriteId, u8 monPalNum, u8 x, u8 y, u8 oamPriority, u8 subpriority, u8 delay, u32 fadePalettes, u16 species, u16 ball);
 

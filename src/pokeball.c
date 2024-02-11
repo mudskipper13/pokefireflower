@@ -13,7 +13,6 @@
 #include "trig.h"
 #include "util.h"
 #include "data.h"
-#include "day_night.h"
 #include "constants/songs.h"
 
 static void Task_DoPokeballSendOutAnim(u8 taskId);
@@ -559,7 +558,7 @@ static void Task_DoPokeballSendOutAnim(u8 taskId)
     throwCaseId = gTasks[taskId].tThrowId;
     battlerId = gTasks[taskId].tBattler;
     ballId = ItemIdToBallId(GetBattlerPokeballItemId(battlerId));
-    LoadBallGfxDayNight(ballId);
+    LoadBallGfx(ballId);
     ballSpriteId = CreateSprite(&gBallSpriteTemplates[ballId], 32, 80, 29);
     gSprites[ballSpriteId].data[0] = 0x80;
     gSprites[ballSpriteId].data[1] = 0;
@@ -1511,17 +1510,14 @@ static void SpriteCB_HitAnimHealthoxEffect(struct Sprite *sprite)
     }
 }
 
-void LoadBallGfx_HandleDayNight(u8 ballId, bool32 isDayNight)
+void LoadBallGfx(u8 ballId)
 {
     u16 var;
 
     if (GetSpriteTileStartByTag(gBallSpriteSheets[ballId].tag) == 0xFFFF)
     {
         LoadCompressedSpriteSheetUsingHeap(&gBallSpriteSheets[ballId]);
-        if (isDayNight)
-            LoadCompressedSpritePaletteUsingHeapDayNight(&gBallSpritePalettes[ballId]);
-        else
-            LoadCompressedSpritePaletteUsingHeap(&gBallSpritePalettes[ballId]);
+        LoadCompressedSpritePaletteUsingHeap(&gBallSpritePalettes[ballId]);
     }
 
     switch (ballId)
@@ -1534,16 +1530,6 @@ void LoadBallGfx_HandleDayNight(u8 ballId, bool32 isDayNight)
         LZDecompressVram(gOpenPokeballGfx, (void *)(OBJ_VRAM0 + 0x100 + var * 32));
         break;
     }
-}
-
-void LoadBallGfx(u8 ballId)
-{
-    LoadBallGfx_HandleDayNight(ballId, FALSE);
-}
-
-void LoadBallGfxDayNight(u8 ballId)
-{
-    LoadBallGfx_HandleDayNight(ballId, TRUE);
 }
 
 void FreeBallGfx(u8 ballId)
