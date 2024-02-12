@@ -56,7 +56,8 @@ static const u16 sTextWindowPalettes[][16] =
     INCBIN_U16("graphics/text_window/text_pal1.gbapal"),
     INCBIN_U16("graphics/text_window/text_pal2.gbapal"),
     INCBIN_U16("graphics/text_window/text_pal3.gbapal"),
-    INCBIN_U16("graphics/text_window/text_pal4.gbapal")
+    INCBIN_U16("graphics/text_window/text_pal4.gbapal"),
+    INCBIN_U16("graphics/text_window/signpost.gbapal"),
 };
 
 static const struct TilesPal sWindowFrames[WINDOW_FRAMES_COUNT] =
@@ -101,7 +102,7 @@ void LoadMessageBoxGfx(u8 windowId, u16 destOffset, u8 palOffset)
 void LoadSignpostWindowGfx(u8 windowId, u16 destOffset, u8 palOffset)
 {
     LoadBgTiles(GetWindowAttribute(windowId, WINDOW_BG), sSignpostWindow_Gfx, 0x1A0, destOffset);
-    LoadPalette(GetTextWindowPalette(1), palOffset, PLTT_SIZE_4BPP);
+    LoadPalette(GetTextWindowPalette(5), palOffset, PLTT_SIZE_4BPP);
 }
 
 void LoadUserWindowBorderGfx_(u8 windowId, u16 destOffset, u8 palOffset)
@@ -184,8 +185,11 @@ const u16 *GetTextWindowPalette(u8 id)
         id = 0x30;
         break;
     case 4:
-    default:
         id = 0x40;
+        break;
+    case 5:
+    default:
+        id = 0x50;
         break;
     }
 
