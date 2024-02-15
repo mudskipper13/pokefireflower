@@ -10,7 +10,26 @@ text LittlerootTown_MaysHouse_2F_Text_EMailAlreadyRead {
 // easy chat lmao
 text LittlerootTown_MaysHouse_2F_Text_PokemonTrainerSchoolEmail {
 	poryswitch(LANG) {
-		_:  format(	"Ada suatu e-mail dari…{PAUSE 20} NAVY?!\p"
+		_:	format(		"There's an e-mail from…{PAUSE 20} NAVY?!\p"
+						"… … … … … …\p"
+						"Heya, LIME. This is NAVY OAK.\p"
+						"How's going? Hope everyone there is"
+						"alright. Especially {PLAYER}, heh.\p"
+						"But anyway, I sent you this e-mail"
+						"for letting you know that I will come"
+						"home from STARION this month for"
+						"enjoying the summer break in KANTO\p"
+						"You could say I'm a bit missed,"
+						"especially with you and {PLAYER}.\p"
+						"I also came alongside a special"
+						"person, so no worries on the souvenier"
+						"alright.\p"
+						"And yeah, that's it. See you again"
+						"soon.\p"
+						"- Warm regards, NAVY OAK.\p"
+						"… … … … … …$")
+
+		INA:  format("Ada suatu e-mail dari…{PAUSE 20} NAVY?!\p"
 					"… … … … … …\p"
 					"Heya, LIME. Ini NAVY OAK.\p"
 					"Apa kabar? Semoga semua yang di"
@@ -29,25 +48,6 @@ text LittlerootTown_MaysHouse_2F_Text_PokemonTrainerSchoolEmail {
 					"lagi nanti.\p"
 					"- Salam hangat, NAVY OAK.\p"
 					"… … … … … …$")
-
-		INA:	format(	"There's an e-mail from…{PAUSE 20} NAVY?!\p"
-						"… … … … … …\p"
-						"Heya, LIME. This is NAVY OAK.\p"
-						"How's going? Hope everyone there is"
-						"alright. Especially {PLAYER}, heh.\p"
-						"But anyway, I sent you this e-mail"
-						"for letting you know that I will come"
-						"home from STARION this month for"
-						"enjoying the summer break in KANTO\p"
-						"You could say I'm a bit missed,"
-						"especially with you and {PLAYER}.\p"
-						"I also came alongside a special"
-						"person, so no worries on the souvenier"
-						"alright.\p"
-						"And yeah, that's it. See you again"
-						"soon.\p"
-						"- Warm regards, NAVY OAK.\p"
-						"… … … … … …$")
 	}
 }
 
