@@ -264,6 +264,9 @@
 
 #define OBJ_EVENT_GFX_TWIN_2                     255
 
+#define OBJ_EVENT_GFX_ANIMATED_BALL              256
+#define OBJ_EVENT_GFX_OW_MON                     257
+
 // NOTE: By default, the max value for NUM_OBJ_EVENT_GFX is 239.
 //
 // Object event graphics ids are 1 byte in size (max value of 255), and the dynamic
@@ -296,10 +299,34 @@
 #define OBJ_EVENT_GFX_VAR_E  (OBJ_EVENT_GFX_VARS + 0xE)
 #define OBJ_EVENT_GFX_VAR_F  (OBJ_EVENT_GFX_VARS + 0xF) // 316
 
-#define SHADOW_SIZE_S   0
-#define SHADOW_SIZE_M   1
-#define SHADOW_SIZE_L   2
-#define SHADOW_SIZE_XL  3
+#define OBJ_EVENT_GFX_MON_BASE  0x200 // 512
+#define OBJ_EVENT_GFX_SPECIES_BITS 11
+#define OBJ_EVENT_GFX_SPECIES_MASK ((1 << OBJ_EVENT_GFX_SPECIES_BITS) - 1)
+
+// Used to call a specific species' follower graphics. Useful for static encounters.
+#define OBJ_EVENT_GFX_SPECIES(name) (OBJ_EVENT_GFX_MON_BASE + SPECIES_##name)
+
+#define OW_SPECIES(x) (((x)->graphicsId & OBJ_EVENT_GFX_SPECIES_MASK) - OBJ_EVENT_GFX_MON_BASE)
+#define OW_FORM(x) ((x)->graphicsId >> OBJ_EVENT_GFX_SPECIES_BITS)
+
+// If true, follower pokemon will bob up and down
+// during their idle & walking animations
+#define OW_MON_BOBBING  TRUE
+
+// If true, adds a small amount of overhead
+// to OW code so that large (48x48, 64x64) OWs
+// will display correctly under bridges, etc.
+#define LARGE_OW_SUPPORT TRUE
+
+// See global.h for the toggle of OW_GFX_COMPRESS
+// Compressed gfx are incompatible with non-power-of-two sprite sizes:
+// (You should not use 48x48 sprites/tables for compressed gfx)
+// 16x32, 32x32, 64x64 etc are fine
+
+#define SHADOW_SIZE_S    0
+#define SHADOW_SIZE_M    1
+#define SHADOW_SIZE_L    2
+#define SHADOW_SIZE_NONE 3   // Originally SHADOW_SIZE_XL, which went unused due to shadowSize in ObjectEventGraphicsInfo being only 2 bits.
 
 #define F_INANIMATE                        (1 << 6)
 #define F_DISABLE_REFLECTION_PALETTE_LOAD  (1 << 7)
@@ -307,6 +334,9 @@
 #define TRACKS_NONE       0
 #define TRACKS_FOOT       1
 #define TRACKS_BIKE_TIRE  2
+#define TRACKS_SLITHER    3
+#define TRACKS_SPOT       4
+#define TRACKS_BUG        5
 
 #define FIRST_DECORATION_SPRITE_GFX OBJ_EVENT_GFX_PICHU_DOLL
 
@@ -316,6 +346,7 @@
 // Special object event local ids
 #define OBJ_EVENT_ID_PLAYER 0xFF
 #define OBJ_EVENT_ID_CAMERA 0x7F
+#define OBJ_EVENT_ID_FOLLOWER 0xFE
 
 // Object event local ids referenced in C files
 #define LOCALID_ROUTE111_PLAYER_FALLING 45
@@ -392,6 +423,15 @@
 #define OBJ_EVENT_PAL_TAG_YOUNGSTER               0x1126
 #define OBJ_EVENT_PAL_TAG_GIRL                    0x1127
 
+#define OBJ_EVENT_PAL_TAG_DYNAMIC                 0x1128
+#define OBJ_EVENT_PAL_TAG_EMOTES                  0x8002
+// Not a real OW palette tag; used for the white flash applied to followers
+#define OBJ_EVENT_PAL_TAG_WHITE                   (OBJ_EVENT_PAL_TAG_NONE - 1)
 #define OBJ_EVENT_PAL_TAG_NONE                    0x11FF
+
+// This + localId is used as the tileTag
+// for compressed graphicsInfos
+// '(C)ompressed (E)vent'
+#define COMP_OW_TILE_TAG_BASE 0xCE00
 
 #endif  // GUARD_CONSTANTS_EVENT_OBJECTS_H

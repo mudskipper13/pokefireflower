@@ -39,7 +39,7 @@ gFieldEffectScriptPointers::
 	.4byte gFieldEffectScript_NPCUseFly                 @ FLDEFF_NPCFLY_OUT
 	.4byte gFieldEffectScript_UseFly                    @ FLDEFF_USE_FLY
 	.4byte gFieldEffectScript_FlyIn                     @ FLDEFF_FLY_IN
-	.4byte gFieldEffectScript_QuestionMarkIcon          @ FLDEFF_QUESTION_MARK_ICON
+	.4byte gFieldEffectScript_FollowerEmote             @ FLDEFF_FOLLOWER_EMOTE
 	.4byte gFieldEffectScript_FeetInFlowingWater        @ FLDEFF_FEET_IN_FLOWING_WATER
 	.4byte gFieldEffectScript_BikeTireTracks            @ FLDEFF_BIKE_TIRE_TRACKS
 	.4byte gFieldEffectScript_SandDisguisePlaceholder   @ FLDEFF_SAND_DISGUISE
@@ -76,6 +76,9 @@ gFieldEffectScriptPointers::
 	.4byte gFldEffScript_UseVsSeeker                    @ FLDEFF_USE_VS_SEEKER
 	.4byte gFldEffScript_XIcon                          @ FLDEFF_X_ICON
 	.4byte gFldEffScript_DoubleExclMarkIcon             @ FLDEFF_DOUBLE_EXCL_MARK_ICON
+	.4byte gFieldEffectScript_TracksSlither             @ FLDEFF_TRACKS_SLITHER
+	.4byte gFieldEffectScript_TracksBug                 @ FLDEFF_TRACKS_BUG
+	.4byte gFieldEffectScript_TracksSpot                @ FLDEFF_TRACKS_SPOT
 
 gFieldEffectScript_EmoteIcon::
 	field_eff_loadfadedpal_callnative gSpritePalette_ArrowEmotionsFieldEffect, FldEff_EmoteIcon
@@ -210,8 +213,8 @@ gFieldEffectScript_FlyIn::
 	field_eff_callnative FldEff_FlyIn
 	field_eff_end
 
-gFieldEffectScript_QuestionMarkIcon::
-	field_eff_loadfadedpal_callnative gSpritePalette_ArrowEmotionsFieldEffect, FldEff_Nop47
+gFieldEffectScript_FollowerEmote::
+	field_eff_loadfadedpal_callnative gSpritePalette_ArrowEmotionsFieldEffect, FldEff_FollowerEmote
 	field_eff_end
 
 gFieldEffectScript_FeetInFlowingWater::
@@ -360,4 +363,16 @@ gFldEffScript_XIcon::
 gFldEffScript_DoubleExclMarkIcon::
 	@ field_eff_callnative FldEff_DoubleExclMarkIcon
 	field_eff_loadfadedpal_callnative gSpritePalette_ArrowEmotionsFieldEffect, FldEff_Nop47
+	field_eff_end
+
+gFieldEffectScript_TracksBug::
+	field_eff_loadfadedpal_callnative gSpritePalette_GeneralFieldEffect0, FldEff_TracksBug
+	field_eff_end
+
+gFieldEffectScript_TracksSpot::
+	field_eff_loadfadedpal_callnative gSpritePalette_GeneralFieldEffect0, FldEff_TracksSpot
+	field_eff_end
+
+gFieldEffectScript_TracksSlither::
+	field_eff_loadfadedpal_callnative gSpritePalette_GeneralFieldEffect0, FldEff_TracksSlither
 	field_eff_end

@@ -228,3 +228,4 @@ const union AnimCmd *const sAnims_Trainer[] ={
 #include "data/trainers.h"
 
 #include "data/outfit_tables.h"
+#include "data/text/follower_messages.h"

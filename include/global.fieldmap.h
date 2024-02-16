@@ -88,24 +88,24 @@ struct BackupMapLayout
     u16 *map;
 };
 
-struct ObjectEventTemplate
+struct __attribute__((packed, aligned(4))) ObjectEventTemplate
 {
     /*0x00*/ u8 localId;
-    /*0x01*/ u8 kind; // Always OBJ_KIND_NORMAL in Emerald.
-    /*0x02*/ u16 graphicsId;
+    /*0x01*/ u16 graphicsId;
+    /*0x03*/ u8 kind; // Always OBJ_KIND_NORMAL in Emerald.
     /*0x04*/ s16 x;
     /*0x06*/ s16 y;
     /*0x08*/ u8 elevation;
     /*0x09*/ u8 movementType;
     /*0x0A*/ u16 movementRangeX:4;
              u16 movementRangeY:4;
-             //u16 padding2:8;
+             u16 unused:8;
     /*0x0C*/ u16 trainerType;
     /*0x0E*/ u16 trainerRange_berryTreeId;
     /*0x10*/ const u8 *script;
     /*0x14*/ u16 flagId;
-    /*0x16*/ //u8 padding3[2];
-};
+    /*0x16*/ u16 filler;
+}; // size = 0x18
 
 struct WarpEvent
 {
@@ -219,8 +219,8 @@ struct ObjectEvent
              u32 disableJumpLandingGroundEffect:1;
              u32 fixedPriority:1;
              u32 hideReflection:1;
-             //u32 padding:4;
-    /*0x04*/ u16 graphicsId;
+             u32 shiny:1; // OW mon shininess
+    /*0x04*/ u16 graphicsId; // 11 bits for species; high 5 bits for form
     /*0x06*/ u8 movementType;
     /*0x07*/ u8 trainerType;
     /*0x08*/ u8 localId;
@@ -258,7 +258,7 @@ struct ObjectEventGraphicsInfo
     /*0x09*/ u8 textColor:4;
              u8 shadowSize:2;
              u8 inanimate:1;
-             u8 disableReflectionPaletteLoad:1;
+             u8 compressed:1;
     /*0x0D*/ u8 tracks:4;
              u8 anims:4;
     /*0x10*/ const struct OamData *oam;

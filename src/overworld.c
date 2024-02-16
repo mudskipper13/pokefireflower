@@ -42,6 +42,7 @@
 #include "random.h"
 #include "roamer.h"
 #include "rotating_gate.h"
+#include "rtc.h"
 #include "safari_zone.h"
 #include "save.h"
 #include "save_location.h"
@@ -1524,7 +1525,10 @@ void CB2_Overworld(void)
         SetVBlankCallback(NULL);
     OverworldBasic();
     if (fading)
+    {
         SetFieldVBlankCallback();
+        return;
+    }
 }
 
 void SetMainCallback1(MainCallback cb)
@@ -2007,6 +2011,10 @@ static bool32 ReturnToFieldLocal(u8 *state)
         InitObjectEventsReturnToField();
         ObjectEventSetGraphicsId(player, GetPlayerAvatarGraphicsIdByCurrentState());
         ObjectEventTurn(player, player->movementDirection);
+        if (gFieldCallback == FieldCallback_UseFly)
+            RemoveFollowingPokemon();
+        else
+            UpdateFollowingPokemon();
         SetCameraToTrackPlayer();
         (*state)++;
         break;
@@ -2214,6 +2222,7 @@ static void InitObjectEventsLocal(void)
     SetPlayerAvatarTransitionFlags(player->transitionFlags);
     ResetInitialPlayerAvatarState();
     TrySpawnObjectEvents(0, 0);
+    UpdateFollowingPokemon();
     TryRunOnWarpIntoMapScript();
 }
 
@@ -3003,7 +3012,7 @@ static void InitLinkPlayerObjectEventPos(struct ObjectEvent *objEvent, s16 x, s1
     objEvent->previousCoords.y = y;
     SetSpritePosToMapCoords(x, y, &objEvent->initialCoords.x, &objEvent->initialCoords.y);
     objEvent->initialCoords.x += 8;
-    ObjectEventUpdateElevation(objEvent);
+    ObjectEventUpdateElevation(objEvent, NULL);
 }
 
 static void UNUSED SetLinkPlayerObjectRange(u8 linkPlayerId, u8 dir)
@@ -3143,7 +3152,7 @@ static bool8 FacingHandler_DpadMovement(struct LinkPlayerObjectEvent *linkPlayer
     {
         objEvent->directionSequenceIndex = 16;
         ShiftObjectEventCoords(objEvent, x, y);
-        ObjectEventUpdateElevation(objEvent);
+        ObjectEventUpdateElevation(objEvent, NULL);
         return TRUE;
     }
 }

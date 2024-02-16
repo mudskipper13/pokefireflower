@@ -36,6 +36,7 @@
 #include "outfit_menu.h"
 #include "event_data.h"
 #include "constants/decorations.h"
+#include "constants/event_objects.h"
 #include "constants/items.h"
 #include "constants/metatile_behaviors.h"
 #include "constants/rgb.h"

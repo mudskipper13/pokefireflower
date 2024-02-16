@@ -14,6 +14,7 @@
 #include "trainer_hill.h"
 #include "util.h"
 #include "battle_pyramid.h"
+#include "follower_helper.h"
 #include "constants/battle_setup.h"
 #include "constants/event_objects.h"
 #include "constants/event_object_movement.h"
@@ -67,6 +68,8 @@ static const u8 sEmoticons[] = INCBIN_U8("graphics/field_effects/pics/emotes_sl.
 #else
 static const u8 sEmoticons[] = INCBIN_U8("graphics/field_effects/pics/emotes_ff.4bpp");
 #endif
+// TODO: Credit https://www.spriters-resource.com/ds_dsi/pokemonheartgoldsoulsilver/sheet/30497/
+static const u8 sEmotion_Gfx[] = INCBIN_U8("graphics/misc/emotes.4bpp");
 
 static u8 (*const sDirectionalApproachDistanceFuncs[])(struct ObjectEvent *trainerObj, s16 range, s16 x, s16 y) =
 {
@@ -132,11 +135,59 @@ static const struct OamData sOamData_Icons =
     .affineParam = 0,
 };
 
+#define ICON_SIZE 128
+
 #define EMOTE_FRAME(num)\
 {\
     ANIMCMD_FRAME(num, 60),\
     ANIMCMD_END\
 }
+
+#define FOLLOWER_EMOTE_FRAME(num)\
+{\
+    ANIMCMD_FRAME(num * 2, 30),\
+    ANIMCMD_FRAME(num * 2 + 1, 25),\
+    ANIMCMD_FRAME(num * 2, 30),\
+    ANIMCMD_END\
+}
+
+static const struct SpriteFrameImage sSpriteFrameImage_FollowerEmote[] =
+{
+    { (u8 *)sEmotion_Gfx +  0 * ICON_SIZE, ICON_SIZE }, // FOLLOWER_EMOTION_HAPPY
+    { (u8 *)sEmotion_Gfx +  1 * ICON_SIZE, ICON_SIZE }, // FOLLOWER_EMOTION_HAPPY
+    { (u8 *)sEmotion_Gfx +  2 * ICON_SIZE, ICON_SIZE }, // FOLLOWER_EMOTION_NEUTRAL
+    { (u8 *)sEmotion_Gfx +  3 * ICON_SIZE, ICON_SIZE }, // FOLLOWER_EMOTION_NEUTRAL
+    { (u8 *)sEmotion_Gfx +  4 * ICON_SIZE, ICON_SIZE }, // FOLLOWER_EMOTION_SAD
+    { (u8 *)sEmotion_Gfx +  5 * ICON_SIZE, ICON_SIZE }, // FOLLOWER_EMOTION_SAD
+    { (u8 *)sEmotion_Gfx +  6 * ICON_SIZE, ICON_SIZE }, // FOLLOWER_EMOTION_UPSET
+    { (u8 *)sEmotion_Gfx +  7 * ICON_SIZE, ICON_SIZE }, // FOLLOWER_EMOTION_UPSET
+    { (u8 *)sEmotion_Gfx +  8 * ICON_SIZE, ICON_SIZE }, // FOLLOWER_EMOTION_ANGRY
+    { (u8 *)sEmotion_Gfx +  9 * ICON_SIZE, ICON_SIZE }, // FOLLOWER_EMOTION_ANGRY
+    { (u8 *)sEmotion_Gfx + 10 * ICON_SIZE, ICON_SIZE }, // FOLLOWER_EMOTION_PENSIVE
+    { (u8 *)sEmotion_Gfx + 11 * ICON_SIZE, ICON_SIZE }, // FOLLOWER_EMOTION_PENSIVE
+    { (u8 *)sEmotion_Gfx + 12 * ICON_SIZE, ICON_SIZE }, // FOLLOWER_EMOTION_LOVE
+    { (u8 *)sEmotion_Gfx + 13 * ICON_SIZE, ICON_SIZE }, // FOLLOWER_EMOTION_LOVE
+    { (u8 *)sEmotion_Gfx + 14 * ICON_SIZE, ICON_SIZE }, // FOLLOWER_EMOTION_SURPRISE
+    { (u8 *)sEmotion_Gfx + 15 * ICON_SIZE, ICON_SIZE }, // FOLLOWER_EMOTION_SURPRISE
+    { (u8 *)sEmotion_Gfx + 16 * ICON_SIZE, ICON_SIZE }, // FOLLOWER_EMOTION_CURIOUS
+    { (u8 *)sEmotion_Gfx + 17 * ICON_SIZE, ICON_SIZE }, // FOLLOWER_EMOTION_CURIOUS
+    { (u8 *)sEmotion_Gfx + 18 * ICON_SIZE, ICON_SIZE }, // FOLLOWER_EMOTION_MUSIC
+    { (u8 *)sEmotion_Gfx + 19 * ICON_SIZE, ICON_SIZE }, // FOLLOWER_EMOTION_MUSIC
+    { (u8 *)sEmotion_Gfx + 20 * ICON_SIZE, ICON_SIZE }, // FOLLOWER_EMOTION_POISONED
+    { (u8 *)sEmotion_Gfx + 21 * ICON_SIZE, ICON_SIZE }, // FOLLOWER_EMOTION_POISONED
+};
+
+static const union AnimCmd sSpriteAnim_Emotes0[] = FOLLOWER_EMOTE_FRAME(FOLLOWER_EMOTION_HAPPY);
+static const union AnimCmd sSpriteAnim_Emotes1[] = FOLLOWER_EMOTE_FRAME(FOLLOWER_EMOTION_NEUTRAL);
+static const union AnimCmd sSpriteAnim_Emotes2[] = FOLLOWER_EMOTE_FRAME(FOLLOWER_EMOTION_SAD);
+static const union AnimCmd sSpriteAnim_Emotes3[] = FOLLOWER_EMOTE_FRAME(FOLLOWER_EMOTION_UPSET);
+static const union AnimCmd sSpriteAnim_Emotes4[] = FOLLOWER_EMOTE_FRAME(FOLLOWER_EMOTION_ANGRY);
+static const union AnimCmd sSpriteAnim_Emotes5[] = FOLLOWER_EMOTE_FRAME(FOLLOWER_EMOTION_PENSIVE);
+static const union AnimCmd sSpriteAnim_Emotes6[] = FOLLOWER_EMOTE_FRAME(FOLLOWER_EMOTION_LOVE);
+static const union AnimCmd sSpriteAnim_Emotes7[] = FOLLOWER_EMOTE_FRAME(FOLLOWER_EMOTION_SURPRISE);
+static const union AnimCmd sSpriteAnim_Emotes8[] = FOLLOWER_EMOTE_FRAME(FOLLOWER_EMOTION_CURIOUS);
+static const union AnimCmd sSpriteAnim_Emotes9[] = FOLLOWER_EMOTE_FRAME(FOLLOWER_EMOTION_MUSIC);
+static const union AnimCmd sSpriteAnim_Emotes10[] = FOLLOWER_EMOTE_FRAME(FOLLOWER_EMOTION_POISONED);
 
 static const union AnimCmd sSpriteAnim_IconExclamation[] = EMOTE_FRAME(0);
 static const union AnimCmd sSpriteAnim_IconQuestion[] = EMOTE_FRAME(1);
@@ -145,8 +196,6 @@ static const union AnimCmd sSpriteAnim_IconDots[] = EMOTE_FRAME(3);
 static const union AnimCmd sSpriteAnim_IconX[] = EMOTE_FRAME(4);
 static const union AnimCmd sSpriteAnim_IconDoubleExclamation[] = EMOTE_FRAME(5);
 static const union AnimCmd sSpriteAnim_Happy[] = EMOTE_FRAME(6);
-
-#define ICON_SIZE 128
 
 static const struct SpriteFrameImage sSpriteImageTable_EmoteIcon[] =
 {
@@ -170,6 +219,21 @@ static const union AnimCmd *const sSpriteAnimTable_Icons[] =
     [ICON_HAPPY]       = sSpriteAnim_Happy,
 };
 
+static const union AnimCmd *const sSpriteAnimTable_FollowerEmotes[] =
+{
+    [FOLLOWER_EMOTION_HAPPY] = sSpriteAnim_Emotes0,
+    [FOLLOWER_EMOTION_NEUTRAL] = sSpriteAnim_Emotes1,
+    [FOLLOWER_EMOTION_SAD] = sSpriteAnim_Emotes2,
+    [FOLLOWER_EMOTION_UPSET] = sSpriteAnim_Emotes3,
+    [FOLLOWER_EMOTION_ANGRY] = sSpriteAnim_Emotes4,
+    [FOLLOWER_EMOTION_PENSIVE] = sSpriteAnim_Emotes5,
+    [FOLLOWER_EMOTION_LOVE] = sSpriteAnim_Emotes6,
+    [FOLLOWER_EMOTION_SURPRISE] = sSpriteAnim_Emotes7,
+    [FOLLOWER_EMOTION_CURIOUS] = sSpriteAnim_Emotes8,
+    [FOLLOWER_EMOTION_MUSIC] = sSpriteAnim_Emotes9,
+    [FOLLOWER_EMOTION_POISONED] = sSpriteAnim_Emotes10,
+};
+
 static const struct SpriteTemplate sSpriteTemplate_EmoteIcons =
 {
     .tileTag = TAG_NONE,
@@ -181,6 +245,16 @@ static const struct SpriteTemplate sSpriteTemplate_EmoteIcons =
     .oam = &sOamData_Icons,
     .anims = sSpriteAnimTable_Icons,
     .images = sSpriteImageTable_EmoteIcon,
+    .affineAnims = gDummySpriteAffineAnimTable,
+    .callback = SpriteCB_TrainerIcons
+};
+
+static const struct SpriteTemplate sSpriteTemplate_FollowerEmote = {
+    .tileTag = TAG_NONE,
+    .paletteTag = OBJ_EVENT_PAL_TAG_EMOTES,
+    .oam = &sOamData_Icons,
+    .anims = sSpriteAnimTable_FollowerEmotes,
+    .images = sSpriteFrameImage_FollowerEmote,
     .affineAnims = gDummySpriteAffineAnimTable,
     .callback = SpriteCB_TrainerIcons
 };
@@ -698,6 +772,8 @@ void TryPrepareSecondApproachingTrainer(void)
 
 static void inline SetIconSpriteData(struct Sprite *sprite)
 {
+    u32 emote = gFieldEffectArguments[4] ? gFieldEffectArguments[7] : gFieldEffectArguments[3];
+    u32 count = gFieldEffectArguments[4] ? ARRAY_COUNT(sSpriteAnimTable_FollowerEmotes) : ARRAY_COUNT(sSpriteAnimTable_Icons);
     sprite->oam.priority = 1;
     sprite->coordOffsetEnabled = 1;
 
@@ -705,27 +781,40 @@ static void inline SetIconSpriteData(struct Sprite *sprite)
     sprite->sMapNum = gFieldEffectArguments[1];
     sprite->sMapGroup = gFieldEffectArguments[2];
     sprite->sYVelocity = -5;
-    sprite->sFldEffId = FLDEFF_EMOTE_ICON;
+    sprite->sFldEffId = gFieldEffectArguments[4] ? FLDEFF_FOLLOWER_EMOTE : FLDEFF_EMOTE_ICON;
 
-    if (gFieldEffectArguments[3] >= ARRAY_COUNT(sSpriteAnimTable_Icons))
-        StartSpriteAnim(sprite, ICON_EXCLAMATION);
+    if (emote >= count)
+        StartSpriteAnim(sprite, gFieldEffectArguments[4] ? FOLLOWER_EMOTION_HAPPY : ICON_EXCLAMATION);
     else
-        StartSpriteAnim(sprite, gFieldEffectArguments[3]);
+        StartSpriteAnim(sprite, emote);
+}
+
+u8 FldEff_FollowerEmote(void)
+{
+    u8 spriteId;
+
+    spriteId = CreateSpriteAtEnd(&sSpriteTemplate_FollowerEmote, 0, 0, 0x52);
+    if (spriteId == MAX_SPRITES)
+        return 0;
+
+    gFieldEffectArguments[4] = TRUE;
+    SetIconSpriteData(&gSprites[spriteId]); // Set animation based on emotion
+    UpdateSpritePaletteByTemplate(&sSpriteTemplate_FollowerEmote, &gSprites[spriteId]);
+    return 0;
 }
 
 u8 FldEff_EmoteIcon(void)
 {
     u8 spriteId;
 
-    #ifdef SUPERLEAF
-    LoadObjectEventPalette(OBJ_EVENT_PAL_TAG_MAY);
-    #else
-    LoadObjectEventPalette(OBJ_EVENT_PAL_TAG_BRENDAN);
-    #endif
     spriteId = CreateSpriteAtEnd(&sSpriteTemplate_EmoteIcons, 0, 0, 0x52);
 
     if (spriteId != MAX_SPRITES)
+    {
+        gFieldEffectArguments[4] = FALSE;
         SetIconSpriteData(&gSprites[spriteId]);
+        UpdateSpritePaletteByTemplate(&sSpriteTemplate_EmoteIcons, &gSprites[spriteId]);
+    }
 
     return 0;
 }

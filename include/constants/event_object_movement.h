@@ -82,7 +82,8 @@
 #define MOVEMENT_TYPE_WALK_SLOWLY_IN_PLACE_UP          0x4E
 #define MOVEMENT_TYPE_WALK_SLOWLY_IN_PLACE_LEFT        0x4F
 #define MOVEMENT_TYPE_WALK_SLOWLY_IN_PLACE_RIGHT       0x50
-#define NUM_MOVEMENT_TYPES                             0x51
+#define MOVEMENT_TYPE_FOLLOW_PLAYER                    0x51
+#define NUM_MOVEMENT_TYPES                             0x52
 
 #define MOVEMENT_ACTION_FACE_DOWN                       0x0
 #define MOVEMENT_ACTION_FACE_UP                         0x1
@@ -246,6 +247,8 @@
 #define MOVEMENT_ACTION_EMOTE_X                         0x9F
 #define MOVEMENT_ACTION_EMOTE_DOUBLE_EXCL_MARK          0xA0
 #define MOVEMENT_ACTION_EMOTE_HAPPY                     0xA1
+#define MOVEMENT_ACTION_EXIT_POKEBALL                   0xA2
+#define MOVEMENT_ACTION_ENTER_POKEBALL                  0xA3
 
 #define MOVEMENT_ACTION_STEP_END 0xFE
 #define MOVEMENT_ACTION_NONE     0xFF
@@ -353,5 +356,6 @@
 #define OBJ_EVENT_ANIM_CUTTABLE_TREE 12
 #define OBJ_EVENT_ANIM_FISHING 13
 #define OBJ_EVENT_ANIM_ASYMMETRICAL 14 //! basically OBJ_EVENT_ANIM_STANDARD, but can also use two side frames
+#define OBJ_EVENT_ANIM_FOLLOWER 15 //! basically OBJ_EVENT_ANIM_STANDARD, but can also use two side frames
 
 #endif // GUARD_CONSTANTS_EVENT_OBJECT_MOVEMENT_H

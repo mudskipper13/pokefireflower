@@ -234,6 +234,7 @@ gScriptCmdTable::
 	.4byte ScrCmd_bufferoutfitstr                   @ 0xe7
 	.4byte ScrCmd_setspeaker                        @ 0xe8
 	.4byte ScrCmd_pokemartoutfit                    @ 0xe9
+	.4byte ScrCmd_callfunc                          @ 0xea
 
 gScriptCmdTableEnd::
 	.4byte ScrCmd_nop
