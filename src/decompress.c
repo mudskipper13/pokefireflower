@@ -30,7 +30,8 @@ u16 LoadCompressedSpriteSheet(const struct CompressedSpriteSheet *src)
 }
 
 // This can be used for either compressed or uncompressed sprite sheets
-u16 LoadCompressedSpriteSheetByTemplate(const struct SpriteTemplate *template, s32 offset) {
+u16 LoadCompressedSpriteSheetByTemplate(const struct SpriteTemplate *template, s32 offset)
+{
     struct SpriteTemplate myTemplate;
     struct SpriteFrameImage myImage;
     const u8 *data = template->images->data;

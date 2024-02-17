@@ -1228,14 +1228,16 @@ void RemoveAllObjectEventsExceptPlayer(void)
 u16 LoadSheetGraphicsInfo(const struct ObjectEventGraphicsInfo *info, u16 uuid, struct Sprite *sprite)
 {
     u16 tag = info->tileTag;
-    if (tag != TAG_NONE || info->compressed) { // sheet-based gfx
+    if (tag != TAG_NONE || info->compressed) // sheet-based gfx
+    {
         u32 sheetSpan = GetSpanPerImage(info->oam->shape, info->oam->size);
         u16 oldTiles = 0;
         u16 tileStart;
         if (tag == TAG_NONE)
             tag = COMP_OW_TILE_TAG_BASE + uuid;
         
-        if (sprite) {
+        if (sprite)
+        {
             oldTiles = sprite->sheetTileStart;
             sprite->sheetTileStart = 0; // mark unused
             // Note: If sprite was not allocated to use a sheet,
@@ -1246,25 +1248,31 @@ u16 LoadSheetGraphicsInfo(const struct ObjectEventGraphicsInfo *info, u16 uuid, 
 
         tileStart = GetSpriteTileStartByTag(tag);
         // sheet not loaded; unload any old tiles and load it
-        if (tileStart == TAG_NONE) {
+        if (tileStart == TAG_NONE)
+        {
             struct SpriteFrameImage image = {.size = info->size, .data = info->images->data};
             struct SpriteTemplate template = {.tileTag = tag, .images = &image};
             if (oldTiles)
                 FieldEffectFreeTilesIfUnused(oldTiles);
             tileStart = LoadCompressedSpriteSheetByTemplate(&template, TILE_SIZE_4BPP << sheetSpan);
         // sheet loaded; unload any *other* sheet for sprite
-        } else if (oldTiles && oldTiles != tileStart) {
+        }
+        else if (oldTiles && oldTiles != tileStart)
+        {
             FieldEffectFreeTilesIfUnused(oldTiles);
         }
         
-        if (sprite) {
+        if (sprite)
+        {
             sprite->sheetTileStart = tileStart;
             sprite->sheetSpan = sheetSpan;
             sprite->usingSheet = TRUE;
         }
     // Going from sheet -> !sheet, reset tile number
     // (sheet stays loaded)
-    } else if (sprite && sprite->usingSheet) {
+    }
+    else if (sprite && sprite->usingSheet)
+    {
         sprite->oam.tileNum = sprite->sheetTileStart;
         sprite->usingSheet = FALSE;
     }
@@ -5044,7 +5052,8 @@ bool8 FollowablePlayerMovement_Step(struct ObjectEvent *objectEvent, struct Spri
     {
         if (playerAction >= MOVEMENT_ACTION_WALK_SLOW_DOWN && playerAction <= MOVEMENT_ACTION_WALK_SLOW_RIGHT)
             ObjectEventSetSingleMovement(objectEvent, sprite, GetWalkSlowMovementAction(direction));
-        else {
+        else
+        {
             objectEvent->movementActionId = GetWalkNormalMovementAction(direction);
             #if OW_MON_BOBBING == TRUE
             sprite->y2 = -1;
@@ -5060,7 +5069,8 @@ bool8 FollowablePlayerMovement_Step(struct ObjectEvent *objectEvent, struct Spri
     // If *player* jumps, make step take twice as long
     else if (PlayerGetCopyableMovement() == COPY_MOVE_JUMP2)
         ObjectEventSetSingleMovement(objectEvent, sprite, GetWalkSlowMovementAction(direction));
-    else {
+    else
+    {
         ObjectEventSetSingleMovement(objectEvent, sprite, GetWalkNormalMovementAction(direction));
         #if OW_MON_BOBBING == TRUE
         sprite->y2 = -1;
@@ -8819,7 +8829,8 @@ static void UpdateObjectEventElevationAndPriority(struct ObjectEvent *objEvent, 
 
     ObjectEventUpdateElevation(objEvent, sprite);
     #if LARGE_OW_SUPPORT
-    if (objEvent->localId == OBJ_EVENT_ID_FOLLOWER) {
+    if (objEvent->localId == OBJ_EVENT_ID_FOLLOWER)
+    {
         // keep subspriteMode synced with player's
         // so that it disappears under bridges when they do
         sprite->subspriteMode |= gSprites[gPlayerAvatar.spriteId].subspriteMode & SUBSPRITES_IGNORE_PRIORITY;
@@ -8853,7 +8864,8 @@ void ObjectEventUpdateElevation(struct ObjectEvent *objEvent, struct Sprite *spr
     u8 curElevation = MapGridGetElevationAt(objEvent->currentCoords.x, objEvent->currentCoords.y);
     u8 prevElevation = MapGridGetElevationAt(objEvent->previousCoords.x, objEvent->previousCoords.y);
 
-    if (curElevation == 15 || prevElevation == 15) {
+    if (curElevation == 15 || prevElevation == 15)
+    {
         #if LARGE_OW_SUPPORT
         // Ignore subsprite priorities under bridges
         // so all subsprites will display below it

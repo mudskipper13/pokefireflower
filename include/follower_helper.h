@@ -20,13 +20,16 @@ enum {
 // Each "section" can be used to combine multiple conditions,
 // i.e, species and map
 // Just set the flags accordingly and use the right union member
-struct __attribute__((packed)) FollowerMsgInfoExtended {
+struct __attribute__((packed)) FollowerMsgInfoExtended
+{
     const u8 *text;
     const u8 *script;
 
-    union __attribute__((packed)) {
+    union __attribute__((packed))
+    {
         u16 species:10;
-        struct __attribute__((packed)) {
+        struct __attribute__((packed))
+        {
             u16 type1:5;
             u16 type2:5; // if >= NUMBER_OF_MON_TYPES, inverts checking for type1
         } types;
@@ -35,23 +38,29 @@ struct __attribute__((packed)) FollowerMsgInfoExtended {
     u16 stFlags:2; // 0 = no matching, 1 = species matching, 2 = type matching, 3 = status
     u16 emotion:4; // emotion for this message
 
-    union __attribute__((packed)) {
-        struct __attribute__((packed)) {
+    union __attribute__((packed))
+    {
+        struct __attribute__((packed))
+        {
             u16 mapSec:8;
         } mapSec;
-        struct __attribute__((packed)) {
+        struct __attribute__((packed))
+        {
             u16 mapNum:8;
             u16 mapGroup:6;
         } map;
-        struct __attribute__((packed)) {
+        struct __attribute__((packed))
+        {
             u16 behavior1:8;
             u16 behavior2:6; // not full; only goes up to 0x3F
         } mb;
     } mm;
     u16 mmFlags:2; // 1 = map sec, 2 = map, 3 = metatile behavior
 
-    union __attribute__((packed)) {
-        struct __attribute__((packed)) {
+    union __attribute__((packed))
+    {
+        struct __attribute__((packed))
+        {
             u16 weather1:5;
             u16 weather2:5;
         } weather;
@@ -63,8 +72,10 @@ struct __attribute__((packed)) FollowerMsgInfoExtended {
     // if set, `text` is treated as an array of up to 4 texts instead
     u16 textSpread:1;
 
-    union __attribute__((packed)) {
-        struct __attribute__((packed)) {
+    union __attribute__((packed))
+    {
+        struct __attribute__((packed))
+        {
             u16 behavior:8;
             u16 distance:6;
         } mb;

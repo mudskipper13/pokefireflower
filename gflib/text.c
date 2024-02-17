@@ -1225,12 +1225,14 @@ static u16 RenderText(struct TextPrinter *textPrinter)
                 lastChar = 0;
             break;
         case CHAR_M:
-            if (lastChar == CHAR_T) { // TM
+            if (lastChar == CHAR_T) // TM
+            {
                 lastChar = 0;
                 break;
             }
         case CHAR_P:
-            if (lastChar == CHAR_H) { // HP, HM
+            if (lastChar == CHAR_H) // HP, HM
+            {
                 lastChar = 0;
                 break;
             }

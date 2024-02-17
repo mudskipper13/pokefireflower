@@ -165,7 +165,8 @@ static void LoadObjectRegularReflectionPalette(struct ObjectEvent *objectEvent, 
     u16 baseTag = GetSpritePaletteTagByPaletteNum(mainSprite->oam.paletteNum);
     u16 paletteTag = REFLECTION_PAL_TAG(baseTag, mainSprite->oam.paletteNum);
     u8 paletteNum = IndexOfSpritePaletteTag(paletteTag);
-    if (paletteNum <= 16) { // Load filtered palette
+    if (paletteNum <= 16) // Load filtered palette
+    {
         u16 filteredData[16];
         struct SpritePalette filteredPal = {.tag = paletteTag, .data = filteredData};
         if (sprite->sIsStillReflection == FALSE)
@@ -204,20 +205,25 @@ static void UpdateObjectReflectionSprite(struct Sprite *reflectionSprite)
 
     // Only filter palette if not using the high bridge blue palette
     // This is basically a copy of LoadObjectRegularReflectionPalette
-    if (IndexOfSpritePaletteTag(HIGH_BRIDGE_PAL_TAG) != reflectionSprite->oam.paletteNum) {
+    if (IndexOfSpritePaletteTag(HIGH_BRIDGE_PAL_TAG) != reflectionSprite->oam.paletteNum)
+    {
         u16 baseTag = GetSpritePaletteTagByPaletteNum(mainSprite->oam.paletteNum);
         u16 paletteTag = REFLECTION_PAL_TAG(baseTag, mainSprite->oam.paletteNum);
         u8 paletteNum = IndexOfSpritePaletteTag(paletteTag);
-        if (paletteNum >= 16) { // Build filtered palette
+        if (paletteNum >= 16) // Build filtered palette
+        {
             u16 filteredData[16];
             struct SpritePalette filteredPal = {.tag = paletteTag, .data = filteredData};
             // Free palette if unused
             reflectionSprite->inUse = FALSE;
             FieldEffectFreePaletteIfUnused(reflectionSprite->oam.paletteNum);
             reflectionSprite->inUse = TRUE;
-            if (reflectionSprite->sIsStillReflection == FALSE) {
+            if (reflectionSprite->sIsStillReflection == FALSE)
+            {
                 ApplyPondFilter(mainSprite->oam.paletteNum, filteredData);
-            } else {
+            }
+            else
+            {
                 ApplyIceFilter(mainSprite->oam.paletteNum, filteredData);
             }
             paletteNum = LoadSpritePalette(&filteredPal);
@@ -244,7 +250,8 @@ static void UpdateObjectReflectionSprite(struct Sprite *reflectionSprite)
         reflectionSprite->invisible = TRUE;
 
     // Support "virtual" sprites which can't be rotated via affines
-    if (reflectionSprite->subspriteTables[0].subsprites) {
+    if (reflectionSprite->subspriteTables[0].subsprites)
+    {
         reflectionSprite->oam.affineMode = ST_OAM_AFFINE_OFF;
         return;
     }
