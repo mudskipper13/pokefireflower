@@ -1101,8 +1101,4 @@ struct MapPosition
 
 extern u8 gStackBase[]; // Start of stack-allocated IWRAM
 
-// Adds support for compressed OW graphics,
-// (Also compresses pokemon follower graphics)
-#define OW_GFX_COMPRESS TRUE
-
 #endif // GUARD_GLOBAL_H

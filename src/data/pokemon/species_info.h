@@ -229,7 +229,7 @@ const u8 gOgerponCornerstoneMaskPokedexText[] = _(
 // Set .compressed = OW_GFX_COMPRESS
 #define COMP OW_GFX_COMPRESS
 
-#if P_FOLLOWERS
+#if OW_FOLLOWERS_ENABLED
 #define FOLLOWER(name, _size, shadow, _tracks)                                              \
 .followerData = {                                                                           \
     .tileTag = TAG_NONE,                                                                    \
@@ -237,6 +237,7 @@ const u8 gOgerponCornerstoneMaskPokedexText[] = _(
     .size = (_size == SIZE_32x32 ? 512 : 2048),                                             \
     .width = (_size == SIZE_32x32 ? 32 : 64),                                               \
     .height = (_size == SIZE_32x32 ? 32 : 64),                                              \
+    .textColor = NPC_TEXT_COLOR_MON,                                                        \
     .shadowSize = shadow,                                                                   \
     .inanimate = FALSE,                                                                     \
     .compressed = COMP,                                                                     \
@@ -289,7 +290,7 @@ const struct SpeciesInfo gSpeciesInfo[] =
         .backAnimId = BACK_ANIM_NONE,
         PALETTES(CircledQuestionMark),
         ICON(QuestionMark, 0),
-        .followerData = {TAG_NONE, OBJ_EVENT_PAL_TAG_DYNAMIC, 512, 32, 32, NPC_TEXT_COLOR_MON, SHADOW_SIZE_M, FALSE, COMP, TRACKS_FOOT, OBJ_EVENT_ANIM_FOLLOWER, &gObjectEventBaseOam_32x32, sOamTables_32x32, sPicTable_None, gDummySpriteAffineAnimTable},
+        .followerData = {TAG_NONE, OBJ_EVENT_PAL_TAG_SUBSTITUTE, 512, 32, 32, NPC_TEXT_COLOR_MON, SHADOW_SIZE_M, FALSE, COMP, TRACKS_FOOT, OBJ_EVENT_ANIM_FOLLOWER, &gObjectEventBaseOam_32x32, sOamTables_32x32, sPicTable_Substitute, gDummySpriteAffineAnimTable},
         LEARNSETS(None),
     },
 
@@ -377,4 +378,15 @@ const struct SpeciesInfo gSpeciesInfo[] =
         .allPerfectIVs = TRUE,
     },
     */
+};
+
+// Standalone follower palettes
+// If not NULL, entries here override the front-sprite-based pals
+// used by OBJ_EVENT_PAL_TAG_DYNAMIC
+// Palette data may be compressed, or not
+const void* const gFollowerPalettes[NUM_SPECIES][2] =
+{
+    // Must have at least one entry, or ARRAY_COUNT comparison fails
+    // (SPECIES_NONE does not use OBJ_EVENT_PAL_TAG_DYNAMIC anyway)
+    [SPECIES_NONE] = {gMonPalette_CircledQuestionMark, gMonShinyPalette_CircledQuestionMark},
 };

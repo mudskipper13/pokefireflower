@@ -293,6 +293,10 @@ enum {
     PLAYER_AVATAR_GFX_VSSEEKER,
 };
 
+// Player avatar flags for which follower pokemon are hidden
+#define FOLLOWER_INVISIBLE_FLAGS       (PLAYER_AVATAR_FLAG_SURFING | PLAYER_AVATAR_FLAG_UNDERWATER | \
+                                        PLAYER_AVATAR_FLAG_BIKE | PLAYER_AVATAR_FLAG_FORCED_MOVE)
+
 enum
 {
     ACRO_BIKE_NORMAL,

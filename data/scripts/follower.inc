@@ -30,17 +30,6 @@ EventScript_Follower::
 	bufferlivemonnickname 0
 	playfirstmoncry
 	callfunc ScrFunc_getfolloweraction
-	checkpartymove MOVE_FLY
-	compare VAR_RESULT 6
-	goto_if_eq EventScript_FollowerEnd
-	bufferlivemonnickname 0
-	msgbox gText_WantsToFly, MSGBOX_YESNO
-	switch VAR_RESULT
-	case NO, EventScript_FollowerEnd
-	case YES, EventScript_FollowerFly
-	case MULTI_B_PRESSED, EventScript_FollowerEnd
-EventScript_FollowerFly::
-	callfunc ScrFunc_followerfly
 EventScript_FollowerEnd::
 	waitfieldeffect FLDEFF_FOLLOWER_EMOTE
 	release
@@ -50,6 +39,7 @@ EventScript_FollowerLovesYou::
 	applymovement 0xFE ContestHall_Movement_Heart
 	waitmovement 0xFE
 	waitmoncry
+	textcolor NPC_TEXT_COLOR_MON
 	msgbox gText_FollowerLovesYou, MSGBOX_DEFAULT
 	return
 
@@ -58,6 +48,7 @@ EventScript_FollowerGeneric:: @ similar to Std_MsgboxDefault
 	faceplayer
 EventScript_FollowerGenericSkipFace:
 	waitfieldeffect FLDEFF_FOLLOWER_EMOTE
+	textcolor NPC_TEXT_COLOR_MON
 	message 0x0
 	waitmessage
 	waitbuttonpress
@@ -68,6 +59,7 @@ EventScript_FollowerJump::
 	applymovement 0xFE FollowerSplashMovement
 	waitmovement 0xFE
 	waitfieldeffect FLDEFF_FOLLOWER_EMOTE
+	textcolor NPC_TEXT_COLOR_MON
 	message 0x0
 	waitmessage
 	waitbuttonpress

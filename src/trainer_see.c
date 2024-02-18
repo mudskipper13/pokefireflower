@@ -153,28 +153,28 @@ static const struct OamData sOamData_Icons =
 
 static const struct SpriteFrameImage sSpriteFrameImage_FollowerEmote[] =
 {
-    { (u8 *)sEmotion_Gfx +  0 * ICON_SIZE, ICON_SIZE }, // FOLLOWER_EMOTION_HAPPY
-    { (u8 *)sEmotion_Gfx +  1 * ICON_SIZE, ICON_SIZE }, // FOLLOWER_EMOTION_HAPPY
-    { (u8 *)sEmotion_Gfx +  2 * ICON_SIZE, ICON_SIZE }, // FOLLOWER_EMOTION_NEUTRAL
-    { (u8 *)sEmotion_Gfx +  3 * ICON_SIZE, ICON_SIZE }, // FOLLOWER_EMOTION_NEUTRAL
-    { (u8 *)sEmotion_Gfx +  4 * ICON_SIZE, ICON_SIZE }, // FOLLOWER_EMOTION_SAD
-    { (u8 *)sEmotion_Gfx +  5 * ICON_SIZE, ICON_SIZE }, // FOLLOWER_EMOTION_SAD
-    { (u8 *)sEmotion_Gfx +  6 * ICON_SIZE, ICON_SIZE }, // FOLLOWER_EMOTION_UPSET
-    { (u8 *)sEmotion_Gfx +  7 * ICON_SIZE, ICON_SIZE }, // FOLLOWER_EMOTION_UPSET
-    { (u8 *)sEmotion_Gfx +  8 * ICON_SIZE, ICON_SIZE }, // FOLLOWER_EMOTION_ANGRY
-    { (u8 *)sEmotion_Gfx +  9 * ICON_SIZE, ICON_SIZE }, // FOLLOWER_EMOTION_ANGRY
-    { (u8 *)sEmotion_Gfx + 10 * ICON_SIZE, ICON_SIZE }, // FOLLOWER_EMOTION_PENSIVE
-    { (u8 *)sEmotion_Gfx + 11 * ICON_SIZE, ICON_SIZE }, // FOLLOWER_EMOTION_PENSIVE
-    { (u8 *)sEmotion_Gfx + 12 * ICON_SIZE, ICON_SIZE }, // FOLLOWER_EMOTION_LOVE
-    { (u8 *)sEmotion_Gfx + 13 * ICON_SIZE, ICON_SIZE }, // FOLLOWER_EMOTION_LOVE
-    { (u8 *)sEmotion_Gfx + 14 * ICON_SIZE, ICON_SIZE }, // FOLLOWER_EMOTION_SURPRISE
-    { (u8 *)sEmotion_Gfx + 15 * ICON_SIZE, ICON_SIZE }, // FOLLOWER_EMOTION_SURPRISE
-    { (u8 *)sEmotion_Gfx + 16 * ICON_SIZE, ICON_SIZE }, // FOLLOWER_EMOTION_CURIOUS
-    { (u8 *)sEmotion_Gfx + 17 * ICON_SIZE, ICON_SIZE }, // FOLLOWER_EMOTION_CURIOUS
-    { (u8 *)sEmotion_Gfx + 18 * ICON_SIZE, ICON_SIZE }, // FOLLOWER_EMOTION_MUSIC
-    { (u8 *)sEmotion_Gfx + 19 * ICON_SIZE, ICON_SIZE }, // FOLLOWER_EMOTION_MUSIC
-    { (u8 *)sEmotion_Gfx + 20 * ICON_SIZE, ICON_SIZE }, // FOLLOWER_EMOTION_POISONED
-    { (u8 *)sEmotion_Gfx + 21 * ICON_SIZE, ICON_SIZE }, // FOLLOWER_EMOTION_POISONED
+    overworld_frame(sEmotion_Gfx, 2, 2, 0), // FOLLOWER_EMOTION_HAPPY
+    overworld_frame(sEmotion_Gfx, 2, 2, 1), // FOLLOWER_EMOTION_HAPPY
+    overworld_frame(sEmotion_Gfx, 2, 2, 2), // FOLLOWER_EMOTION_NEUTRAL
+    overworld_frame(sEmotion_Gfx, 2, 2, 3), // FOLLOWER_EMOTION_NEUTRAL
+    overworld_frame(sEmotion_Gfx, 2, 2, 4), // FOLLOWER_EMOTION_SAD
+    overworld_frame(sEmotion_Gfx, 2, 2, 5), // FOLLOWER_EMOTION_SAD
+    overworld_frame(sEmotion_Gfx, 2, 2, 6), // FOLLOWER_EMOTION_UPSET
+    overworld_frame(sEmotion_Gfx, 2, 2, 7), // FOLLOWER_EMOTION_UPSET
+    overworld_frame(sEmotion_Gfx, 2, 2, 8), // FOLLOWER_EMOTION_ANGRY
+    overworld_frame(sEmotion_Gfx, 2, 2, 9), // FOLLOWER_EMOTION_ANGRY
+    overworld_frame(sEmotion_Gfx, 2, 2, 10), // FOLLOWER_EMOTION_PENSIVE
+    overworld_frame(sEmotion_Gfx, 2, 2, 11), // FOLLOWER_EMOTION_PENSIVE
+    overworld_frame(sEmotion_Gfx, 2, 2, 12), // FOLLOWER_EMOTION_LOVE
+    overworld_frame(sEmotion_Gfx, 2, 2, 13), // FOLLOWER_EMOTION_LOVE
+    overworld_frame(sEmotion_Gfx, 2, 2, 14), // FOLLOWER_EMOTION_SURPRISE
+    overworld_frame(sEmotion_Gfx, 2, 2, 15), // FOLLOWER_EMOTION_SURPRISE
+    overworld_frame(sEmotion_Gfx, 2, 2, 16), // FOLLOWER_EMOTION_CURIOUS
+    overworld_frame(sEmotion_Gfx, 2, 2, 17), // FOLLOWER_EMOTION_CURIOUS
+    overworld_frame(sEmotion_Gfx, 2, 2, 18), // FOLLOWER_EMOTION_MUSIC
+    overworld_frame(sEmotion_Gfx, 2, 2, 19), // FOLLOWER_EMOTION_MUSIC
+    overworld_frame(sEmotion_Gfx, 2, 2, 20), // FOLLOWER_EMOTION_POISONED
+    overworld_frame(sEmotion_Gfx, 2, 2, 21), // FOLLOWER_EMOTION_POISONED
 };
 
 static const union AnimCmd sSpriteAnim_Emotes0[] = FOLLOWER_EMOTE_FRAME(FOLLOWER_EMOTION_HAPPY);
