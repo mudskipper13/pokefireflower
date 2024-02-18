@@ -33,24 +33,24 @@ script PalletTown_EventScript_PreventEnterTrigger {
 //! overworlds
 
 script PalletTown_EventScript_FatMan {
-	msgbox(PalletTown_Text_CanModifyGames, MSGBOX_NPC, Common_Names_Fab)
+	msgbox(PalletTown_Text_CanModifyGames, MSGBOX_NPC)
 	end
 }
 
 script PalletTown_EventScript_Twin {
-	msgbox(PalletTown_Text_RaisingMonsToo, MSGBOX_NPC, Common_Names_Tina)
+	msgbox(PalletTown_Text_RaisingMonsToo, MSGBOX_NPC)
 	end
 }
 
 script PalletTown_EventScript_Fanny {
-	msgbox(PalletTown_Text_MyGoodness, MSGBOX_NPC, Common_Names_MsFanny)
+	msgbox(PalletTown_Text_MyGoodness, MSGBOX_NPC)
 	end
 }
 
 script PalletTown_EventScript_Mel {
 	lock
 	faceplayer
-	speakername(Common_Names_Mel)
+	setspeaker(NAME_MEL)
 	if (var(VAR_PALLET_TOWN_STATE) > 1) { //! TODO
 		message(PalletTown_Text_HiWelcome)
 		waitmessage
@@ -72,7 +72,7 @@ mart PalletTown_Mart_Mel {
 script PalletTown_EventScript_Mei {
 	lock
 	faceplayer
-	speakername(Common_Names_Mei)
+	setspeaker(NAME_MEI)
 	if (var(VAR_PALLET_TOWN_STATE) > 1) { //! TODO
 		message(PalletTown_Text_WelcomeToShop)
 		waitmessage
@@ -90,7 +90,7 @@ mart PalletTown_Mart_Mei {
 }
 
 script PalletTown_EventScript_Eric {
-	msgbox(PalletTown_Text_IWonder, MSGBOX_NPC, Common_Names_Eric)
+	msgbox(PalletTown_Text_IWonder, MSGBOX_NPC)
 	end
 }
 

@@ -29,34 +29,34 @@ script PlayersHouse_1F_MainInterior_EventScript_EarlyGameSequence {
 	playse(SE_PIN)
 	waitfieldeffect(FLDEFF_EMOTE_ICON)
 	msgbox(format(	"Oh hey, {PLAYER}!"
-					"You came just in time!"), MSGBOX_DEFAULT, Common_Names_Rival)
+					"You came just in time!"), MSGBOX_DEFAULT, NAME_RIVAL)
 	closemessage
 	applymovement(LOCALID_NAVY, Common_Movement_WalkInPlaceRight)
 	if (flag(FLAG_IS_NORTH_TRIGGER)) { applymovement(OBJ_EVENT_ID_PLAYER, PlayersHouse_1F_MainInterior_Movement_PlayerApproachTableNorth) }
 	else { applymovement(OBJ_EVENT_ID_PLAYER, PlayersHouse_1F_MainInterior_Movement_PlayerApproachTableSouth) }
 	msgbox(format(	"Heya, {PLAYER}. It has been a long time, isn't it?"
-					"We've been waiting for you here, y'know."), MSGBOX_DEFAULT, Common_Names_Navy)
+					"We've been waiting for you here, y'know."), MSGBOX_DEFAULT, NAME_NAVY)
 	closemessage
 	waitmovement(0)
 	applymovement(LOCALID_RIVAL, Common_Movement_WalkInPlaceLeft)
 	msgbox(format(	"Oh NAVY, we missed you so much!\p"
-					"I was so excited when I read the e-mail you sent last night!"), MSGBOX_DEFAULT, Common_Names_Rival)
+					"I was so excited when I read the e-mail you sent last night!"), MSGBOX_DEFAULT, NAME_RIVAL)
 	closemessage
 	waitmovement(0)
 	applymovement(LOCALID_NAVY, Common_Movement_WalkInPlaceRight)
 	msgbox(format(	"Tch, you guys think I don't miss everyone here either?!\p"
 					"And of course, I'm excited to meet you guys again too!\p"
 					"Either way though, I got something for you guys.\p"
-					"Its from my school's teacher, PROF. MARCUS."), MSGBOX_DEFAULT, Common_Names_Navy)
+					"Its from my school's teacher, PROF. MARCUS."), MSGBOX_DEFAULT, NAME_NAVY)
 	waitmovement(0)
 	applymovement(LOCALID_RIVAL, Common_Movement_WalkInPlaceLeft)
 	msgbox(format(	"Oh, that's GRAMPS right?\n"
-					"I remember you said that you carry something from GRAMPS."), MSGBOX_DEFAULT, Common_Names_Rival)
+					"I remember you said that you carry something from GRAMPS."), MSGBOX_DEFAULT, NAME_RIVAL)
 	waitmovement(0)
 	applymovement(LOCALID_NAVY, Common_Movement_WalkInPlaceRight)
 	msgbox(format(	"Yeah, it's a funny coincidence that he's my biology teacher."
 					"I like him even more from his classes, he's a really fun guy than I thought.\p"
-					"But anyway, here is the package."), MSGBOX_DEFAULT, Common_Names_Navy)
+					"But anyway, here is the package."), MSGBOX_DEFAULT, NAME_NAVY)
 	closemessage
 	waitmovement(0)
 	applymovement(LOCALID_NAVY, Common_Movement_FaceUp)
@@ -69,11 +69,11 @@ script PlayersHouse_1F_MainInterior_EventScript_EarlyGameSequence {
 	msgbox(format(	"My PROF-{PAUSE 10} I mean,{PAUSE 16} your GRAMPS,{PAUSE 10} "
 					"says that he wants you be the one who opens this, {PLAYER}.\p"
 					"I don't know what's inside it but it must be something exciting for sure! "
-					"Go on, open it and see what's in there!"), MSGBOX_DEFAULT, Common_Names_Navy)
+					"Go on, open it and see what's in there!"), MSGBOX_DEFAULT, NAME_NAVY)
 	closemessage
 	waitmovement(0)
 	applymovement(LOCALID_RIVAL, Common_Movement_WalkInPlaceLeft)
-	msgbox(format(	"Looks exciting from the looks of it to me as well! No time to waste, c'mon {PLAYER}!"), MSGBOX_DEFAULT, Common_Names_Rival)
+	msgbox(format(	"Looks exciting from the looks of it to me as well! No time to waste, c'mon {PLAYER}!"), MSGBOX_DEFAULT, NAME_RIVAL)
 	closemessage
 	waitmovement(0)
 	playse(SE_RG_BALL_CLICK)
@@ -123,7 +123,7 @@ script PlayersHouse_1F_MainInterior_EventScript_EarlyGameSequenceSouth {
 
 script PlayersHouse_1F_MainInterior_EventScript_EarlyGamePrevention {
 	lockall
-	msgbox(format("Can't go out, everyone is waiting for me on the table right now!"), MSGBOX_DEFAULT, Common_Names_Player)
+	msgbox(format("Can't go out, everyone is waiting for me on the table right now!"), MSGBOX_DEFAULT, NAME_PLAYER)
 	applymovement(OBJ_EVENT_ID_PLAYER, PlayersHouse_1F_MainInterior_Movement_PlayerMovesAway)
 	waitmovement(0)
 	releaseall
@@ -132,7 +132,7 @@ script PlayersHouse_1F_MainInterior_EventScript_EarlyGamePrevention {
 //! object events
 
 script PlayersHouse_1F_MainInterior_EventScript_Mom {
-	msgbox(PlayersHouse_1F_MainInterior_Text_HiHoney, MSGBOX_NPC, Common_Names_Mom)
+	msgbox(PlayersHouse_1F_MainInterior_Text_HiHoney, MSGBOX_NPC, NAME_MOM)
 }
 
 //! movements

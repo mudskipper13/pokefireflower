@@ -9,37 +9,11 @@
 #include "text_window.h"
 #include "script.h"
 #include "event_scripts.h"
+#include "namebox.h"
+#include "constants/namebox.h"
 
 static EWRAM_DATA u8 sFieldMessageBoxMode = 0;
 EWRAM_DATA const u8 *gSpeakerName = NULL;
-
-// expandable
-// we need to include the _ from the arg because it could clash with existing defines
-// e.g. FEMALE & _FEMALE
-#define NAME(name, color) { Common_Names_ ## name, NPC_TEXT_COLOR ## color }
-
-static const struct {
-    const u8 *name;
-    // this is slightly redundant since we did use
-    // AddTextPrinterDiffStyle for namebox, but
-    // its just for avoiding setting textcolor
-    // manually from the script xD
-    u8 color;
-} sNameInfo[] = {
-    NAME(Player, _PLAYER),
-    NAME(Mom, _FEMALE),
-    NAME(Rival, _RIVAL),
-    NAME(Grampa, _MALE),
-    NAME(Navy, _MALE),
-    NAME(Fab, _MALE), // baldass lmao
-    NAME(Tina, _FEMALE),
-    NAME(MsFanny, _FEMALE),
-    NAME(Mel, _FEMALE),
-    NAME(Mei, _FEMALE),
-    NAME(Eric, _MALE),
-};
-
-#define NAMES_COUNT ARRAY_COUNT(sNameInfo)
 
 static void ExpandStringAndStartDrawFieldMessage(const u8 *, bool32);
 static void StartDrawFieldMessage(void);
@@ -162,12 +136,24 @@ static void ExpandStringAndStartDrawFieldMessage(const u8 *str, bool32 allowSkip
 
         for (i = 0; i < NAMES_COUNT; i++)
         {
-            if (gSpeakerName == sNameInfo[i].name && sNameInfo[i].name != NULL)
-                gSpecialVar_TextColor = sNameInfo[i].color;
+            if (gSpeakerName == gNameInfo[i].name)
+            {
+                gSpecialVar_TextColor = gNameInfo[i].color == 0 ? NPC_TEXT_COLOR_NEUTRAL : gNameInfo[i].color;
+                break;
+            }
         }
 
-        if (gSpeakerName == Common_Names_Player)
-            strLen = GetStringWidth(FONT_SMALL, gSaveBlock2Ptr->playerName, -1);
+        if (gNameInfo[i].buffer)
+        {
+            switch (i)
+            {
+                case NAME_PLAYER:
+                    strLen = GetStringWidth(FONT_SMALL, gSaveBlock2Ptr->playerName, -1);
+                    break;
+                default:
+                    break;
+            }
+        }
 
         if (strLen > 0)
         {
@@ -191,9 +177,8 @@ static void ExpandStringAndStartDrawFieldMessage(const u8 *str, bool32 allowSkip
         StringExpandPlaceholders(gStringVar4+1, str);
     }
     else
-    {
         StringExpandPlaceholders(gStringVar4, str);
-    }
+
     AddTextPrinterDiffStyleFromBuffer(allowSkippingDelayWithButtonPress);
     CreateTask_DrawFieldMessage();
 }

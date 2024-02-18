@@ -1839,9 +1839,9 @@
 	.endm
 
 	@ Sets the text of the name box in the next-shown message box.
-	.macro speakername text:req
+	.macro setspeaker name:req
 	.byte 0xe8
-	.4byte \text
+	.byte \name
 	.endm
 
 	@ Opens the Pokemart system, offering the specified outfit products for sale.
@@ -2009,12 +2009,12 @@
 	@ Buffers the given text and calls the relevant standard message script (see gStdScripts).
 	.macro msgbox text:req, type=MSGBOX_DEFAULT, name
 	.ifnb \name
-	speakername \name
+	setspeaker \name
 	.endif
 	loadword 0, \text
 	callstd \type
 	.ifnb \name
-	speakername NULL
+	setspeaker NAMES_COUNT
 	.endif
 	.endm
 

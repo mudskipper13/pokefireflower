@@ -53,6 +53,8 @@
 #include "malloc.h"
 #include "constants/event_objects.h"
 #include "outfit_menu.h"
+#include "namebox.h"
+#include "constants/namebox.h"
 
 typedef u16 (*SpecialFunc)(void);
 typedef void (*NativeFunc)(struct ScriptContext *ctx);
@@ -1340,8 +1342,9 @@ bool8 ScrCmd_textcolor(struct ScriptContext *ctx)
 
 bool8 ScrCmd_setspeaker(struct ScriptContext *ctx)
 {
-    const u8 *name = (const u8 *)ScriptReadWord(ctx);
-    SetSpeakerName(name);
+    u8 name = ScriptReadByte(ctx);
+
+    SetSpeakerName(name >= NAMES_COUNT ? NULL : gNameInfo[name].name);
 
     return FALSE;
 }
