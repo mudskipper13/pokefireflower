@@ -52,6 +52,7 @@ extern const u8 EventScript_ResetAllMapFlags[];
 static void ClearFrontierRecord(void);
 static void WarpToTruck(void);
 static void ResetMiniGamesRecords(void);
+static void ResetOutfitData(void);
 
 EWRAM_DATA bool8 gDifferentSaveFile = FALSE;
 EWRAM_DATA bool8 gEnableContestDebugging = FALSE;
@@ -135,6 +136,7 @@ void Sav2_ClearSetDefault(void)
 {
     ClearSav2();
     SetDefaultOptions();
+    ResetOutfitData();
 }
 
 void ResetMenuAndMonGlobals(void)
@@ -151,6 +153,7 @@ static void ResetOutfitData(void)
 {
     memset(gSaveBlock2Ptr->outfits, 0, sizeof(gSaveBlock2Ptr->outfits));
     UnlockOutfit(DEFAULT_OUTFIT);
+    gSaveBlock2Ptr->currOutfitId = DEFAULT_OUTFIT;
 }
 
 void NewGameInitData(void)
@@ -213,7 +216,6 @@ void NewGameInitData(void)
     ResetTrainerHillResults();
     ResetContestLinkResults();
     ResetOutfitData();
-    gSaveBlock2Ptr->currOutfitId = DEFAULT_OUTFIT;
 }
 
 static void ResetMiniGamesRecords(void)
