@@ -10417,3 +10417,12 @@ bool8 ScrFunc_getdaycaregfx(struct ScriptContext *ctx)
     gSpecialVar_Result = i;
     return FALSE;
 }
+
+const struct SpritePalette *GetObjectEventPaletteFromTag(u16 tag)
+{
+    u32 i = FindObjectEventPaletteIndexByTag(tag);
+    if (i == 0xFF)
+        i = 0; 
+
+    return &sObjectEventSpritePalettes[i];
+}

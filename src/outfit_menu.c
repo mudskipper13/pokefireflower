@@ -788,19 +788,23 @@ const u16 *GetPlayerBattleTransitionMugshotPalette(void)
 
 const void *GetPlayerHeadGfxOrPal(u8 which, bool32 isFP)
 {
-    if (isFP)
+    if (which == PAL)
     {
-        if (which == GFX)
-            return gOutfits[gSaveBlock2Ptr->currOutfitId].iconsFP[gSaveBlock2Ptr->playerGender][GFX];
-        else
-            return gOutfits[gSaveBlock2Ptr->currOutfitId].iconsFP[gSaveBlock2Ptr->playerGender][PAL];
+        u32 tag = GetObjectEventGraphicsInfo(
+            GetPlayerAvatarGraphicsIdByStateId(PLAYER_AVATAR_STATE_NORMAL))->paletteTag;
+
+        return GetObjectEventPaletteFromTag(tag)->data;
     }
     else
     {
-        if (which == GFX)
-            return gOutfits[gSaveBlock2Ptr->currOutfitId].iconsRM[gSaveBlock2Ptr->playerGender][GFX];
+        if (isFP)
+        {
+            return gSaveBlock2Ptr->playerGender ?
+                        gOutfits[gSaveBlock2Ptr->currOutfitId].iconsFP + 0x80 :
+                        gOutfits[gSaveBlock2Ptr->currOutfitId].iconsFP;
+        }
         else
-            return gOutfits[gSaveBlock2Ptr->currOutfitId].iconsRM[gSaveBlock2Ptr->playerGender][PAL];
+            return gOutfits[gSaveBlock2Ptr->currOutfitId].iconsRM[gSaveBlock2Ptr->playerGender];
     }
 }
 

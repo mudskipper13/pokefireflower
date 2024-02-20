@@ -476,7 +476,8 @@ bool32 IsVirtualObjectAnimating(u8 virtualObjId);
 
 bool8 MovementAction_EmoteX_Step0(struct ObjectEvent *, struct Sprite *);
 bool8 MovementAction_EmoteDoubleExclamationMark_Step0(struct ObjectEvent *, struct Sprite *);
-
 bool8 MovementAction_EmoteHappy_Step0(struct ObjectEvent *, struct Sprite *);
+
+const struct SpritePalette *GetObjectEventPaletteFromTag(u16 tag);
 
 #endif //GUARD_EVENT_OBJECT_MOVEMENT_H

@@ -20,26 +20,18 @@ struct Outfit
 #endif
 
 static const u16 sRegionMapPlayerIcon_BrendanGfx[] = INCBIN_U16("graphics/pokenav/region_map/brendan_icon.4bpp");
-static const u16 sRegionMapPlayerIcon_BrendanPal[] = INCBIN_U16("graphics/pokenav/region_map/brendan_icon.gbapal");
 
 static const u16 sRegionMapPlayerIcon_RSBrendanGfx[] = INCBIN_U16("graphics/pokenav/region_map/rs_brendan_icon.4bpp");
-static const u16 sRegionMapPlayerIcon_RSBrendanPal[] = INCBIN_U16("graphics/pokenav/region_map/rs_brendan_icon.gbapal");
 
 static const u16 sRegionMapPlayerIcon_MayGfx[] = INCBIN_U16("graphics/pokenav/region_map/may_icon.4bpp");
-static const u16 sRegionMapPlayerIcon_MayPal[] = INCBIN_U16("graphics/pokenav/region_map/may_icon.gbapal");
 
 static const u16 sRegionMapPlayerIcon_RSMayGfx[] = INCBIN_U16("graphics/pokenav/region_map/rs_may_icon.4bpp");
-static const u16 sRegionMapPlayerIcon_RSMayPal[] = INCBIN_U16("graphics/pokenav/region_map/rs_may_icon.gbapal");
 
 //! TODO: Should the gfx here be seperated?
 
 static const u8 sFrontierPassPlayerIcons_BrendanMay_Gfx[] = INCBIN_U8("graphics/frontier_pass/map_heads.4bpp");
-static const u16 sFrontierPassPlayerIcons_Brendan_Pal[] = INCBIN_U16("graphics/frontier_pass/map_heads.gbapal");
-static const u16 sFrontierPassPlayerIcons_May_Pal[] = INCBIN_U16("graphics/frontier_pass/map_heads_female.gbapal");
 
 static const u8 sFrontierPassPlayerIcons_RSBrendanMay_Gfx[] = INCBIN_U8("graphics/frontier_pass/rs_map_heads.4bpp");
-static const u16 sFrontierPassPlayerIcons_RSBrendan_Pal[] = INCBIN_U16("graphics/frontier_pass/rs_map_heads.gbapal");
-static const u16 sFrontierPassPlayerIcons_RSMay_Pal[] = INCBIN_U16("graphics/frontier_pass/rs_map_heads_female.gbapal");
 
 static const u16 sMugshotPal_Brendan[] = INCBIN_U16("graphics/battle_transitions/brendan_bg.gbapal");
 static const u16 sMugshotPal_May[] = INCBIN_U16("graphics/battle_transitions/may_bg.gbapal");
@@ -82,13 +74,7 @@ static const u16 sMugshotPal_May[] = INCBIN_U16("graphics/battle_transitions/may
     }, \
 }
 
-#define REGION_MAP_GFX(m, f) \
-    [MALE] = { sRegionMapPlayerIcon_ ## m ## Gfx, sRegionMapPlayerIcon_ ## m ## Pal }, \
-    [FEMALE] = { sRegionMapPlayerIcon_ ## f ## Gfx, sRegionMapPlayerIcon_ ## f ## Pal },
-
-#define FRONTIER_PASS_GFX(id, m, f) \
-    [MALE] = { sFrontierPassPlayerIcons_ ## id ## _Gfx, sFrontierPassPlayerIcons_ ## m ## _Pal }, \
-    [FEMALE] = { sFrontierPassPlayerIcons_ ## id ## _Gfx + 1 * 0x80, sFrontierPassPlayerIcons_ ## f ## _Pal },
+#define REGION_MAP_GFX(m, f) { sRegionMapPlayerIcon_ ## m ## Gfx, sRegionMapPlayerIcon_ ## f ## Gfx }
 
 #ifdef INA
 #define USUAL_GREEN_NAME "HIJAU BIASA"
@@ -136,12 +122,12 @@ const struct Outfit gOutfits[OUTFIT_COUNT] =
         .animGfxIds = ANIM_GFX_ID(BRENDAN, MAY),
 
         //! DESC: head icons gfx&pal for region map
-        .iconsRM = { REGION_MAP_GFX(Brendan, May) },
+        .iconsRM = REGION_MAP_GFX(Brendan, May),
 
         //! DESC: head icons gfx&pal for frontier pass
         //! note that frontier pass needs to be in one sprite instead of two,
         //! unlike region map. (probably should split them tbh)
-        .iconsFP = { FRONTIER_PASS_GFX(BrendanMay, Brendan, May) },
+        .iconsFP = sFrontierPassPlayerIcons_BrendanMay_Gfx,
     },
     [OUTFIT_UNUSUAL_RED] = {
         .isHidden = FALSE,
@@ -152,7 +138,7 @@ const struct Outfit gOutfits[OUTFIT_COUNT] =
         .trainerPics = TRAINER_ID(RS_BRENDAN, RS_MAY),
         .avatarGfxIds = AVATAR_GFX_ID(RS_BRENDAN, RS_MAY),
         .animGfxIds = ANIM_GFX_ID(RS_BRENDAN, RS_MAY),
-        .iconsRM = { REGION_MAP_GFX(RSBrendan, RSMay) },
-        .iconsFP = { FRONTIER_PASS_GFX(RSBrendanMay, RSBrendan, RSMay) },
+        .iconsRM = REGION_MAP_GFX(RSBrendan, RSMay),
+        .iconsFP = sFrontierPassPlayerIcons_RSBrendanMay_Gfx,
     },
 };
