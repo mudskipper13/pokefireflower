@@ -9,13 +9,12 @@ struct Outfit
     u32 prices[GENDER_COUNT]; //! heh
     const u8 *name;
     const u8 *desc;
-    const u16 *mugshotPals[GENDER_COUNT]; //! mugshot battle transition palette
     u16 trainerPics[GENDER_COUNT][2];
     u16 avatarGfxIds[GENDER_COUNT][4];
     u16 animGfxIds[GENDER_COUNT][4];
     //! region map & frontier pass
     const void *iconsRM[GENDER_COUNT][2]; //! region map
-    const void *iconsFP[GENDER_COUNT][2]; //! frontier pass
+    const void *iconsFP; //! frontier pass
 };
 #endif
 
@@ -32,9 +31,6 @@ static const u16 sRegionMapPlayerIcon_RSMayGfx[] = INCBIN_U16("graphics/pokenav/
 static const u8 sFrontierPassPlayerIcons_BrendanMay_Gfx[] = INCBIN_U8("graphics/frontier_pass/map_heads.4bpp");
 
 static const u8 sFrontierPassPlayerIcons_RSBrendanMay_Gfx[] = INCBIN_U8("graphics/frontier_pass/rs_map_heads.4bpp");
-
-static const u16 sMugshotPal_Brendan[] = INCBIN_U16("graphics/battle_transitions/brendan_bg.gbapal");
-static const u16 sMugshotPal_May[] = INCBIN_U16("graphics/battle_transitions/may_bg.gbapal");
 
 #define TRAINER_ID(m, f) \
 { \
@@ -106,9 +102,6 @@ const struct Outfit gOutfits[OUTFIT_COUNT] =
         //! DESC: outfit's description
         .desc = COMPOUND_STRING(USUAL_GREEN_DESC),
 
-        //! DESC: palettes for the bg of the mugshot battle transition
-        .mugshotPals = { sMugshotPal_Brendan, sMugshotPal_May },
-
         //! DESC: trainer front & back pic index
         //! (see include/constants/trainers.h)
         .trainerPics = TRAINER_ID(BRENDAN, MAY),
@@ -134,7 +127,6 @@ const struct Outfit gOutfits[OUTFIT_COUNT] =
         .prices = { 200, 500 },
         .name = COMPOUND_STRING(UNUSUAL_RED_NAME),
         .desc = COMPOUND_STRING(UNUSUAL_RED_DESC),
-        .mugshotPals = { sMugshotPal_Brendan, sMugshotPal_May },
         .trainerPics = TRAINER_ID(RS_BRENDAN, RS_MAY),
         .avatarGfxIds = AVATAR_GFX_ID(RS_BRENDAN, RS_MAY),
         .animGfxIds = ANIM_GFX_ID(RS_BRENDAN, RS_MAY),

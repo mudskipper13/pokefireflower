@@ -7,7 +7,6 @@ void Task_OpenOutfitMenu(u8 taskId);
 //! misc funcs
 void BufferOutfitStrings(u8 *dest, u8 outfitId, u8 dataType);
 u32 GetPlayerTrainerPicIdByOutfitGenderType(u32 outfitId, u32 gender, bool32 type);
-const u16 *GetPlayerBattleTransitionMugshotPalette(void);
 const void *GetPlayerHeadGfxOrPal(u8 which, bool32 isFP);
 u16 *GetOutfitPointer(u16 id);
 u16 UnlockOutfit(u16 id);

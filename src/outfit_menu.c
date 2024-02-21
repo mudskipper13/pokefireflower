@@ -781,11 +781,6 @@ u32 GetPlayerTrainerPicIdByOutfitGenderType(u32 outfitId, u32 gender, bool32 typ
         return gOutfits[0].trainerPics[gender][type];
 }
 
-const u16 *GetPlayerBattleTransitionMugshotPalette(void)
-{
-    return gOutfits[gSaveBlock2Ptr->currOutfitId].mugshotPals[gSaveBlock2Ptr->playerGender];
-}
-
 const void *GetPlayerHeadGfxOrPal(u8 which, bool32 isFP)
 {
     if (which == PAL)

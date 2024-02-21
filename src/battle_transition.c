@@ -861,6 +861,9 @@ static const u16 sMugshotPal_Pink[]   = INCBIN_U16("graphics/battle_transitions/
 static const u16 sMugshotPal_Blue[]   = INCBIN_U16("graphics/battle_transitions/blue_bg.gbapal");
 static const u16 sMugshotPal_Yellow[] = INCBIN_U16("graphics/battle_transitions/yellow_bg.gbapal");
 
+static const u16 sMugshotPal_Male[] = INCBIN_U16("graphics/battle_transitions/brendan_bg.gbapal");
+static const u16 sMugshotPal_Female[] = INCBIN_U16("graphics/battle_transitions/may_bg.gbapal");
+
 static const u16 *const sOpponentMugshotsPals[MUGSHOT_COLOR_COUNT] =
 {
     [MUGSHOT_COLOR_PURPLE] = sMugshotPal_Purple,
@@ -868,6 +871,11 @@ static const u16 *const sOpponentMugshotsPals[MUGSHOT_COLOR_COUNT] =
     [MUGSHOT_COLOR_PINK]   = sMugshotPal_Pink,
     [MUGSHOT_COLOR_BLUE]   = sMugshotPal_Blue,
     [MUGSHOT_COLOR_YELLOW] = sMugshotPal_Yellow
+};
+
+static const u16 *const sPlayerMugshotPals[GENDER_COUNT] = {
+    [MALE] = sMugshotPal_Male,
+    [FEMALE] = sMugshotPal_Female
 };
 
 static const u16 sUnusedTrainerPalette[] = INCBIN_U16("graphics/battle_transitions/unused_trainer.gbapal");
@@ -2261,7 +2269,7 @@ static bool8 Mugshot_SetGfx(struct Task *task)
         mugshotColor = MUGSHOT_COLOR_PURPLE;
 
     LoadPalette(sOpponentMugshotsPals[mugshotColor], BG_PLTT_ID(15), PLTT_SIZE_4BPP);
-    LoadPalette(GetPlayerBattleTransitionMugshotPalette(), BG_PLTT_ID(15) + 10, PLTT_SIZEOF(6));
+    LoadPalette(sPlayerMugshotPals[gSaveBlock2Ptr->playerGender], BG_PLTT_ID(15) + 10, PLTT_SIZEOF(6));
 
     for (i = 0; i < 20; i++)
     {
