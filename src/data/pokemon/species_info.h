@@ -290,7 +290,9 @@ const struct SpeciesInfo gSpeciesInfo[] =
         .backAnimId = BACK_ANIM_NONE,
         PALETTES(CircledQuestionMark),
         ICON(QuestionMark, 0),
+    #if OW_FOLLOWERS_ENABLED
         .followerData = {TAG_NONE, OBJ_EVENT_PAL_TAG_SUBSTITUTE, 512, 32, 32, NPC_TEXT_COLOR_MON, SHADOW_SIZE_M, FALSE, COMP, TRACKS_FOOT, OBJ_EVENT_ANIM_FOLLOWER, &gObjectEventBaseOam_32x32, sOamTables_32x32, sPicTable_Substitute, gDummySpriteAffineAnimTable},
+    #endif
         LEARNSETS(None),
     },
 
