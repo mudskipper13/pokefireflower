@@ -17,6 +17,8 @@
 #include "malloc.h"
 #include "util.h"
 #include "item_icon.h"
+#include "trainer_pokemon_sprites.h"
+#include "field_weather.h"
 #include "constants/field_specials.h"
 #include "constants/items.h"
 #include "constants/script_menu.h"
@@ -61,27 +63,30 @@ static void CreateLilycoveSSTidalMultichoice(void);
 static bool8 IsPicboxClosed(void);
 static void CreateStartMenuForPokenavTutorial(void);
 static void InitMultichoiceNoWrap(bool8 ignoreBPress, u8 unusedCount, u8 windowId, u8 multichoiceId);
+
 static void MultichoiceDynamicEventDebug_OnInit(struct DynamicListMenuEventArgs *eventArgs);
 static void MultichoiceDynamicEventDebug_OnSelectionChanged(struct DynamicListMenuEventArgs *eventArgs);
 static void MultichoiceDynamicEventDebug_OnDestroy(struct DynamicListMenuEventArgs *eventArgs);
 static void MultichoiceDynamicEventShowItem_OnInit(struct DynamicListMenuEventArgs *eventArgs);
 static void MultichoiceDynamicEventShowItem_OnSelectionChanged(struct DynamicListMenuEventArgs *eventArgs);
 static void MultichoiceDynamicEventShowItem_OnDestroy(struct DynamicListMenuEventArgs *eventArgs);
+static void MultichoiceDynamicEventShowMonPic_OnInit(struct DynamicListMenuEventArgs *eventArgs);
+static void MultichoiceDynamicEventShowMonPic_OnSelectionChanged(struct DynamicListMenuEventArgs *eventArgs);
+static void MultichoiceDynamicEventShowMonPic_OnDestroy(struct DynamicListMenuEventArgs *eventArgs);
+
+#define DYNMULTI_CB(id_def, id_func) \
+[DYN_MULTICHOICE_CB_ ## id_def] = \
+{ \
+    .OnInit = MultichoiceDynamicEvent ## id_func ## _OnInit, \
+    .OnSelectionChanged = MultichoiceDynamicEvent ## id_func ## _OnSelectionChanged, \
+    .OnDestroy = MultichoiceDynamicEvent ## id_func ## _OnDestroy, \
+}
 
 static const struct DynamicListMenuEventCollection sDynamicListMenuEventCollections[] =
 {
-    [DYN_MULTICHOICE_CB_DEBUG] =
-    {
-        .OnInit = MultichoiceDynamicEventDebug_OnInit,
-        .OnSelectionChanged = MultichoiceDynamicEventDebug_OnSelectionChanged,
-        .OnDestroy = MultichoiceDynamicEventDebug_OnDestroy
-    },
-    [DYN_MULTICHOICE_CB_SHOW_ITEM] =
-    {
-        .OnInit = MultichoiceDynamicEventShowItem_OnInit,
-        .OnSelectionChanged = MultichoiceDynamicEventShowItem_OnSelectionChanged,
-        .OnDestroy = MultichoiceDynamicEventShowItem_OnDestroy
-    }
+    DYNMULTI_CB(DEBUG, Debug),
+    DYNMULTI_CB(SHOW_ITEM, ShowItem),
+    DYNMULTI_CB(SHOW_MON_PIC, ShowMonPic),
 };
 
 static const struct ListMenuTemplate sScriptableListMenuTemplate =
@@ -206,6 +211,53 @@ static void MultichoiceDynamicEventShowItem_OnDestroy(struct DynamicListMenuEven
 #undef sAuxWindowId
 #undef sItemSpriteId
 #undef TAG_CB_ITEM_ICON
+
+#define sAuxWindowId sDynamicMenuEventScratchPad[0]
+#define sMonSpriteId sDynamicMenuEventScratchPad[1]
+#define TAG_CB_MON_PIC 3000
+
+static void MultichoiceDynamicEventShowMonPic_OnInit(struct DynamicListMenuEventArgs *eventArgs)
+{
+    struct WindowTemplate *template = &gWindows[eventArgs->windowId].window;
+    u32 baseBlock = template->baseBlock + template->width * template->height;
+    struct WindowTemplate auxTemplate = CreateWindowTemplate(0, template->tilemapLeft + template->width + 2, template->tilemapTop, 8, 8, 15, baseBlock);
+    u32 auxWindowId = AddWindow(&auxTemplate);
+
+    SetStandardWindowBorderStyle(auxWindowId, FALSE);
+    FillWindowPixelBuffer(auxWindowId, 0x11);
+    CopyWindowToVram(auxWindowId, COPYWIN_FULL);
+    sAuxWindowId = auxWindowId;
+    sMonSpriteId = MAX_SPRITES;
+    DebugPrintf("OnInit: %d", eventArgs->windowId);
+}
+
+static void MultichoiceDynamicEventShowMonPic_OnSelectionChanged(struct DynamicListMenuEventArgs *eventArgs)
+{
+    struct WindowTemplate *template = &gWindows[sAuxWindowId].window;
+    // why gf, why is it shifted by 32 pixels??
+    u32 x = template->tilemapLeft * 8 + 32;
+    u32 y = template->tilemapTop * 8 + 32;
+
+    if (sMonSpriteId != MAX_SPRITES)
+        FreeResourcesAndDestroySprite(&gSprites[sMonSpriteId], sMonSpriteId);
+
+    sMonSpriteId = CreateMonSprite_PicBox(eventArgs->selectedItem, x, y, 0);
+    DebugPrintf("OnSelectionChanged: %d", eventArgs->selectedItem);
+}
+
+static void MultichoiceDynamicEventShowMonPic_OnDestroy(struct DynamicListMenuEventArgs *eventArgs)
+{
+    ClearStdWindowAndFrame(sAuxWindowId, TRUE);
+    RemoveWindow(sAuxWindowId);
+    if (sMonSpriteId != MAX_SPRITES)
+        FreeResourcesAndDestroySprite(&gSprites[sMonSpriteId], sMonSpriteId);
+
+    DebugPrintf("OnDestroy: %d", eventArgs->windowId);
+}
+
+#undef sAuxWindowId
+#undef sMonSpriteId
+#undef TAG_CB_MON_PIC
 
 static void FreeListMenuItems(struct ListMenuItem *items, u32 count)
 {
