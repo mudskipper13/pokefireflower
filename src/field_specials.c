@@ -4286,3 +4286,61 @@ void PreparePartyForSkyBattle(void)
     VarSet(B_VAR_SKY_BATTLE,participatingPokemonSlot);
     CompactPartySlots();
 }
+
+void SetRivalMon(void)
+{
+    u32 rivalStarters, navyStarters;
+    switch(gSaveBlock3Ptr->playerStarters)
+    {
+        default:
+        case SPECIES_BULBASAUR:
+            rivalStarters = SPECIES_SQUIRTLE;
+            navyStarters = SPECIES_CHARMANDER;
+            break;
+        case SPECIES_IVYSAUR:
+            rivalStarters = SPECIES_WARTORTLE;
+            navyStarters = SPECIES_CHARMELEON;
+            break;
+        case SPECIES_VENUSAUR:
+            rivalStarters = SPECIES_BLASTOISE;
+            navyStarters = SPECIES_CHARIZARD;
+            break;
+
+        case SPECIES_CHARMANDER:
+            rivalStarters = SPECIES_BULBASAUR;
+            navyStarters = SPECIES_SQUIRTLE;
+            break;
+        case SPECIES_CHARMELEON:
+            rivalStarters = SPECIES_IVYSAUR;
+            navyStarters = SPECIES_WARTORTLE;
+            break;
+        case SPECIES_CHARIZARD:
+            rivalStarters = SPECIES_VENUSAUR;
+            navyStarters = SPECIES_BLASTOISE;
+            break;
+
+        case SPECIES_SQUIRTLE:
+            rivalStarters = SPECIES_CHARMANDER;
+            navyStarters = SPECIES_BULBASAUR;
+            break;
+        case SPECIES_WARTORTLE:
+            rivalStarters = SPECIES_CHARMELEON;
+            navyStarters = SPECIES_IVYSAUR;
+            break;
+        case SPECIES_BLASTOISE:
+            rivalStarters = SPECIES_CHARIZARD;
+            navyStarters = SPECIES_VENUSAUR;
+            break;
+    }
+    gSaveBlock3Ptr->rivalStarters = rivalStarters;
+    gSaveBlock3Ptr->navyStarters = navyStarters;
+}
+
+void BufferStarterMon(void)
+{
+    struct Pokemon *lead = &gPlayerParty[GetLeadMonIndex()];
+    const u8 *name = GetSpeciesName(GetMonData(lead, MON_DATA_SPECIES));
+    const u8 *isStarter = GetMonData(lead, MON_DATA_IS_STARTER) ? COMPOUND_STRING("true") : COMPOUND_STRING("false");
+
+    DebugPrintf("species: %S ; starter: %S", name, isStarter);
+}

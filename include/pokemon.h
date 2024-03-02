@@ -26,6 +26,7 @@ enum {
     MON_DATA_IS_SHINY,
     MON_DATA_HIDDEN_NATURE,
     MON_DATA_HP_LOST,
+    MON_DATA_IS_STARTER,
     MON_DATA_ENCRYPT_SEPARATOR,
     MON_DATA_NICKNAME,
     MON_DATA_SPECIES,
@@ -246,7 +247,8 @@ struct BoxPokemon
     u8 hasSpecies:1;
     u8 isEgg:1;
     u8 blockBoxRS:1; // Unused, but Pokémon Box Ruby & Sapphire will refuse to deposit a Pokémon with this flag set.
-    u8 unused_13:4;
+    u8 isStarter:1;
+    u8 unused_13:3;
     u8 otName[PLAYER_NAME_LENGTH];
     u8 markings:4;
     u8 compressedStatus:4;

@@ -2263,3 +2263,17 @@
 		setvar VAR_RESULT, TRUE
 	2:
 	.endm
+
+	.macro setplayerstartermon species:req
+	callnative SetStarterMon
+	.2byte \species
+	.endm
+
+	MON_RIVAL = 0
+	MON_NAVY = 1
+
+	.macro bufferrivalstartermon stringVarId:req, rival=0
+	callnative BufferRivalsStarterMon
+	stringvar \stringVarId
+	.2byte \rival
+	.endm

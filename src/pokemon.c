@@ -2586,6 +2586,9 @@ u32 GetBoxMonData3(struct BoxPokemon *boxMon, s32 field, u8 *data)
             retVal = nature ^ boxMon->hiddenNatureModifier;
             break;
         }
+        case MON_DATA_IS_STARTER:
+            retVal = boxMon->isStarter;
+            break;
         default:
             break;
         }
@@ -3011,6 +3014,9 @@ void SetBoxMonData(struct BoxPokemon *boxMon, s32 field, const void *dataArg)
             boxMon->hiddenNatureModifier = nature ^ hiddenNature;
             break;
         }
+        case MON_DATA_IS_STARTER:
+            SET8(boxMon->isStarter);
+            break;
         }
     }
 

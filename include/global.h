@@ -174,6 +174,12 @@ struct UCoords32
 
 struct SaveBlock3
 {
+    // the only starters were bulbasaur, charmander, and squirtle
+    // so under 15, really
+    u32 playerStarters:4;
+    u32 rivalStarters:4;
+    u32 navyStarters:4;
+    u32 pad:20;
 };
 
 extern struct SaveBlock3 *gSaveBlock3Ptr;
