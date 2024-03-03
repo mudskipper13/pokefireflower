@@ -7216,7 +7216,8 @@ static const struct TrainerMon sParty_GruntSeafloorCavern5[] = {
 static const struct TrainerMon sParty_Navy_PlayersHouse[] = {
     {
     .lvl = 5,
-    .species = SPECIES_SQUIRTLE,
+    .species = SPECIES_BULBASAUR,
+    .rival = STARTER_NAVY, // navy
     }
 };
 

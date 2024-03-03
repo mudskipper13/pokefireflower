@@ -64,6 +64,10 @@ struct TrainerBacksprite
 #define TRAINER_PARTY_IVS(hp, atk, def, speed, spatk, spdef) (hp | (atk << 5) | (def << 10) | (speed << 15) | (spatk << 20) | (spdef << 25))
 #define TRAINER_PARTY_EVS(hp, atk, def, speed, spatk, spdef) ((const u8[6]){hp,atk,def,spatk,spdef,speed})
 
+#define STARTER_NONE 0
+#define STARTER_RIVAL 1
+#define STARTER_NAVY 2
+
 struct TrainerMon
 {
     const u8 *nickname;
@@ -74,7 +78,9 @@ struct TrainerMon
     u16 heldItem;
     u16 ability;
     u8 lvl;
-    u8 ball;
+    u8 ball : 5;
+    u8 rival : 2;
+    u8 pad : 1;
     u8 friendship;
     u8 nature : 5;
     bool8 gender : 2;
