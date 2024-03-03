@@ -4344,3 +4344,13 @@ void BufferStarterMon(void)
 
     DebugPrintf("species: %S ; starter: %S", name, isStarter);
 }
+
+void SetStarterMon_(u16 species, struct Pokemon *mon)
+{
+    bool8 isStarter = TRUE;
+
+    // this will get updated when the player evolves the mon with isStarter flag
+    gSaveBlock3Ptr->playerStarters = species;
+    if (GetMonData(mon, MON_DATA_IS_STARTER, NULL) == FALSE)
+        SetMonData(mon, MON_DATA_IS_STARTER, &isStarter);
+}

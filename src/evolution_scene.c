@@ -30,6 +30,7 @@
 #include "trig.h"
 #include "trade.h"
 #include "util.h"
+#include "field_specials.h"
 #include "constants/battle_string_ids.h"
 #include "constants/songs.h"
 #include "constants/rgb.h"
@@ -817,6 +818,7 @@ static void Task_EvolutionScene(u8 taskId)
     case EVOSTATE_END:
         if (!gPaletteFade.active)
         {
+            u8 isStarter = GetMonData(mon, MON_DATA_IS_STARTER, NULL);
             if (!(gTasks[taskId].tBits & TASK_BIT_LEARN_MOVE))
             {
                 StopMapMusic();
@@ -824,6 +826,14 @@ static void Task_EvolutionScene(u8 taskId)
             }
             if (!gTasks[taskId].tEvoWasStopped)
                 CreateShedinja(gTasks[taskId].tPreEvoSpecies, mon);
+
+            if (!gTasks[taskId].tEvoWasStopped &&
+                isStarter &&
+                gTasks[taskId].tPreEvoSpecies == gSaveBlock3Ptr->playerStarters)
+            {
+                SetStarterMon_(gTasks[taskId].tPostEvoSpecies, mon);
+                SetRivalMon();
+            }
 
             DestroyTask(taskId);
             FreeMonSpritesGfx();

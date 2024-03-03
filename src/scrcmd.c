@@ -2658,12 +2658,9 @@ void SetStarterMon(struct ScriptContext *ctx)
 {
     u16 species = VarGet(ScriptReadHalfword(ctx));
     struct Pokemon *lead = &gPlayerParty[GetLeadMonIndex()];
-    bool8 isStarter = TRUE;
 
-    gSaveBlock3Ptr->playerStarters = species; // this will get updated when the player evolves the mon with isStarter flag
-    SetMonData(lead, MON_DATA_IS_STARTER, &isStarter); // no need to be dynamic since this'd happen once
+    SetStarterMon_(species, lead);
 }
-
 
 void BufferRivalsStarterMon(struct ScriptContext *ctx)
 {
