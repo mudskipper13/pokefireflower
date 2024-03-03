@@ -141,36 +141,22 @@ Debug_EventScript_Script_1::
 	unlockoutfit OUTFIT_UNUSUAL_RED
 	end
 
+	.macro playeremote movementName:req
+	applymovement OBJ_EVENT_ID_PLAYER, \movementName
+	playse SE_PIN
+	waitfieldeffect FLDEFF_EMOTE_ICON
+	waitse
+	.endm
+
 Debug_EventScript_Script_2::
 	lockall
-	applymovement OBJ_EVENT_ID_PLAYER, Common_Movement_QuestionMark
-	playse SE_PIN
-	waitfieldeffect FLDEFF_EMOTE_ICON
-	waitse
-	applymovement OBJ_EVENT_ID_PLAYER, Common_Movement_ExclamationMark
-	playse SE_PIN
-	waitfieldeffect FLDEFF_EMOTE_ICON
-	waitse
-	applymovement OBJ_EVENT_ID_PLAYER, Common_Movement_Heart
-	playse SE_PIN
-	waitfieldeffect FLDEFF_EMOTE_ICON
-	waitse
-	applymovement OBJ_EVENT_ID_PLAYER, Common_Movement_Dots
-	playse SE_PIN
-	waitfieldeffect FLDEFF_EMOTE_ICON
-	waitse
-	applymovement OBJ_EVENT_ID_PLAYER, Common_Movement_DoubleExclMark
-	playse SE_PIN
-	waitfieldeffect FLDEFF_EMOTE_ICON
-	waitse
-	applymovement OBJ_EVENT_ID_PLAYER, Common_Movement_X
-	playse SE_PIN
-	waitfieldeffect FLDEFF_EMOTE_ICON
-	waitse
-	applymovement OBJ_EVENT_ID_PLAYER, Common_Movement_Happy
-	playse SE_PIN
-	waitfieldeffect FLDEFF_EMOTE_ICON
-	waitse
+	playeremote Common_Movement_QuestionMark
+	playeremote Common_Movement_ExclamationMark
+	playeremote Common_Movement_Heart
+	playeremote Common_Movement_Dots
+	playeremote Common_Movement_DoubleExclMark
+	playeremote Common_Movement_X
+	playeremote Common_Movement_Happy
 	releaseall
 	end
 
