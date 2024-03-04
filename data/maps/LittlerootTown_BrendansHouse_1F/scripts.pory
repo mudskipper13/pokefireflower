@@ -25,88 +25,35 @@ script PlayersHouse_1F_MainInterior_OnTransition {
 
 script PlayersHouse_1F_MainInterior_EventScript_EarlyGameSequence {
 	lockall
+
 	applymovement(LOCALID_RIVAL, Common_Movement_ExclamationMark)
 	playse(SE_PIN)
 	waitfieldeffect(FLDEFF_EMOTE_ICON)
-	msgbox(format(	"Oh hey, {PLAYER}!"
+
+	applymovement(LOCALID_RIVAL, Common_Movement_WalkInPlaceLeft)
+	msgbox(format(	"Oh hey, {COLOR GREEN}{PLAYER}{COLOR DARK_GRAY}!"
 					"You came just in time!"), MSGBOX_DEFAULT, NAME_RIVAL)
+	waitmovement(0)
 	closemessage
+
 	applymovement(LOCALID_NAVY, Common_Movement_WalkInPlaceRight)
 	if (flag(FLAG_IS_NORTH_TRIGGER)) { applymovement(OBJ_EVENT_ID_PLAYER, PlayersHouse_1F_MainInterior_Movement_PlayerApproachTableNorth) }
 	else { applymovement(OBJ_EVENT_ID_PLAYER, PlayersHouse_1F_MainInterior_Movement_PlayerApproachTableSouth) }
-	msgbox(format(	"Heya, {PLAYER}. It has been a long time, isn't it?"
-					"We've been waiting for you here, y'know."), MSGBOX_DEFAULT, NAME_NAVY)
+	msgbox(format(	"Heya, {COLOR GREEN}{PLAYER}{COLOR DARK_GRAY}. It's been a long time, isn't it?"
+					"We've been waiting for you here!"), MSGBOX_DEFAULT, NAME_NAVY)
 	closemessage
 	waitmovement(0)
+
 	applymovement(LOCALID_RIVAL, Common_Movement_WalkInPlaceLeft)
-	msgbox(format(	"Oh NAVY, we missed you so much!\p"
+	msgbox(format(	"Oh NAVY, I cannot express how much we miss you being here!\p"
 					"I was so excited when I read the e-mail you sent last night!"), MSGBOX_DEFAULT, NAME_RIVAL)
-	closemessage
 	waitmovement(0)
+
 	applymovement(LOCALID_NAVY, Common_Movement_WalkInPlaceRight)
-	msgbox(format(	"Tch, you guys think I don't miss everyone here either?!\p"
-					"And of course, I'm excited to meet you guys again too!\p"
-					"Either way though, I got something for you guys.\p"
-					"Its from my school's teacher, PROF. MARCUS."), MSGBOX_DEFAULT, NAME_NAVY)
+	msgbox(format(	"Ha, I miss you all too!"), MSGBOX_DEFAULT, NAME_NAVY)
 	waitmovement(0)
-	applymovement(LOCALID_RIVAL, Common_Movement_WalkInPlaceLeft)
-	msgbox(format(	"Oh, that's GRAMPS right?\n"
-					"I remember you said that you carry something from GRAMPS."), MSGBOX_DEFAULT, NAME_RIVAL)
-	waitmovement(0)
-	applymovement(LOCALID_NAVY, Common_Movement_WalkInPlaceRight)
-	msgbox(format(	"Yeah, it's a funny coincidence that he's my biology teacher."
-					"I like him even more from his classes, he's a really fun guy than I thought.\p"
-					"But anyway, here is the package."), MSGBOX_DEFAULT, NAME_NAVY)
 	closemessage
-	waitmovement(0)
-	applymovement(LOCALID_NAVY, Common_Movement_FaceUp)
-	waitmovement(0)
-	addobject(LOCALID_ITEMBALL)
-	clearflag(FLAG_HIDE_ITEMBALL)
-	applymovement(LOCALID_NAVY, Common_Movement_FaceRight)
-	waitmovement(0)
-	applymovement(LOCALID_NAVY, Common_Movement_WalkInPlaceRight)
-	msgbox(format(	"My PROF-{PAUSE 10} I mean,{PAUSE 16} your GRAMPS,{PAUSE 10} "
-					"says that he wants you be the one who opens this, {PLAYER}.\p"
-					"I don't know what's inside it but it must be something exciting for sure! "
-					"Go on, open it and see what's in there!"), MSGBOX_DEFAULT, NAME_NAVY)
-	closemessage
-	waitmovement(0)
-	applymovement(LOCALID_RIVAL, Common_Movement_WalkInPlaceLeft)
-	msgbox(format(	"Looks exciting from the looks of it to me as well! No time to waste, c'mon {PLAYER}!"), MSGBOX_DEFAULT, NAME_RIVAL)
-	closemessage
-	waitmovement(0)
-	playse(SE_RG_BALL_CLICK)
-	msgbox(format(	"{PLAYER} opened the package from “PROF. MARCUS”.\p"
-					"There is a letter and{PAUSE 10}…{PAUSE 10} 3 POKé BALLs?!\lLet's read the letter first."))
-	closemessage
-	fadescreenswapbuffers(FADE_TO_BLACK)
-	msgbox(format(	"Dear {PLAYER}, as well as others in the family,\p"
-					"I unfortunately cannot meet you all in person "
-					"due to my very strict schedule as of writing.\p"
-					"So, I lend the packages here to NAVY while he "
-					"reunites with you all.\p"
-					"Here, I've place 3 POKé BALLs containing 1 POKéMON each, "
-					"that is BULBASAUR, CHARMANDER, and SQUIRTLE. "
-					"I also have place 3 smaller packages for each of them "
-					"for basic needs such as POKé BALLs and POTIONs.\p"
-					"Please pick only 1 out of the 3 for each of you "
-					"including NAVY, alright?\p"
-					"I figure, it's been a while I gave everyone there "
-					"gifts like this so I did this while I plan coming "
-					"to KANTO. I hope all of you can take "
-					"care of them properly and gave them loves they deserve.\p"
-					"Oh also, please gave this flower to your MOM as well.\p"
-					"It's a flower your MOM was gifted from your DAD. "
-					"It's really rare to find until I did research on "
-					"them personally and search for them properly."
-					"It's easy to take care of, so no worries on that.\p"
-					"That aside, I hope you like these gifts! I hope we'll meet again "
-					"soon in the future, I have lots of time here in KANTO to happily meet all of you.\l"
-					"See you soon!\p"
-					"Warm regards, MARCUS STARKSON (Your biology maniac GRAMPA)"))
-	closemessage
-	fadescreenswapbuffers(FADE_FROM_BLACK)
+
 	releaseall
 	end
 }
@@ -157,3 +104,133 @@ movement PlayersHouse_1F_MainInterior_Movement_PlayerMovesAway {
 	walk_up
 	unlock_facing_direction
 }
+
+// backup
+
+// starter_choices:
+//	applymovement(LOCALID_NAVY, Common_Movement_WalkInPlaceRight)
+//	msgbox(format(	"Tch, do you guys think I don't miss everyone here either?! "
+//					"I'm excited to meet you guys again too, obviously!\p"
+//					"Either way though, I got something for you guys. "
+//					"It's from my teacher, PROF. MARCUS."), MSGBOX_DEFAULT, NAME_NAVY)
+//	waitmovement(0)
+//	applymovement(LOCALID_RIVAL, Common_Movement_WalkInPlaceLeft)
+//	msgbox(format(	"Oh, that's GRAMPA MARCUS right? "
+//					"I remember you said that you were carrying something from GRAMPA MARCUS."), MSGBOX_DEFAULT, NAME_RIVAL)
+//	waitmovement(0)
+//	applymovement(LOCALID_NAVY, Common_Movement_WalkInPlaceRight)
+//	msgbox(format(	"Yep. It's a funny coincidence that he's my biology teacher. "
+//					"His subject is really fun!\p"
+//					"But anyway, here's the package."), MSGBOX_DEFAULT, NAME_NAVY)
+//	waitmovement(0)
+//	closemessage
+//	applymovement(LOCALID_NAVY, Common_Movement_FaceUp)
+//	waitmovement(0)
+//	delay(16)
+//	addobject(LOCALID_ITEMBALL)
+//	clearflag(FLAG_HIDE_ITEMBALL)
+//	delay(20)
+//	applymovement(LOCALID_NAVY, Common_Movement_FaceRight)
+//	waitmovement(0)
+//	delay(10)
+//	applymovement(LOCALID_NAVY, Common_Movement_WalkInPlaceRight)
+//	msgbox(format(	"My PROF-{PAUSE 16} I mean,{PAUSE 16} your GRAMPA,{PAUSE 16} "
+//					"says that he wants YOU to open this package, {COLOR GREEN}{PLAYER}{COLOR DARK_GRAY}.\p"
+//					"I don't know what's inside it but it must be really exciting for sure! "
+//					"Now go on {COLOR GREEN}{PLAYER}{COLOR DARK_GRAY}, open it and see what's in there!"), MSGBOX_DEFAULT, NAME_NAVY)
+//	waitmovement(0)
+//	closemessage
+//	applymovement(LOCALID_RIVAL, Common_Movement_WalkInPlaceLeft)
+//	msgbox(format(	"This is so exciting! "
+//					"No time to waste, c'mon {COLOR GREEN}{PLAYER}{COLOR DARK_GRAY}!"), MSGBOX_DEFAULT, NAME_RIVAL)
+//	waitmovement(0)
+//	closemessage
+//	playse(SE_RG_BALL_CLICK)
+//	msgbox(format(	"{COLOR GREEN}{PLAYER}{COLOR DARK_GRAY} opens the package from “PROF. MARCUS”.\p"
+//					"There is a letter and{PAUSE 10}…{PAUSE 10} 3 POKé BALLS!\lLet's read the letter first."))
+//	waitmovement(0)
+//	closemessage
+//	fadescreenswapbuffers(FADE_TO_BLACK)
+//	msgbox(format(	"Dear {COLOR GREEN}{PLAYER}{COLOR DARK_GRAY}, as well as others in the family,\p"
+//					"I unfortunately cannot meet you all in person "
+//					"due to my very strict scheduling as of writing.\p"
+//					"So, I lend this package here to NAVY while he "
+//					"reunites with you all.\p"
+//					"I've put 3 POKé BALLs containing 1 POKéMON each, "
+//					"that is BULBASAUR, CHARMANDER, and SQUIRTLE.\p"
+//					"I've also place 3 other packages for each of you "
+//					"for basic needs such as POKé BALLs and POTIONs.\p"
+//					"Please pick only 1 out of the 3 for each of you "
+//					"including NAVY, alright?\p"
+//					"It's been a while I gave everyone there gifts like "
+//					"this so I did this while I plan coming to KANTO "
+//					"this month. I hope all of you can take care of them "
+//					"properly and gave them loves they deserve!\p"
+//					"That aside, I hope you like these gifts! I hope we'll meet again "
+//					"soon in the future, I have lots of time here in KANTO to hopefully "
+//					"be able to meet all of you just in time.\l"
+//					"See you all soon!\p"
+//					"Warm regards, MARCUS REDWOOD STARKSON."))
+//	closemessage
+//	fadescreenswapbuffers(FADE_FROM_BLACK)
+//	applymovement(LOCALID_RIVAL, Common_Movement_ExclamationMark)
+//	applymovement(LOCALID_NAVY, Common_Movement_ExclamationMark)
+//	applymovement(OBJ_EVENT_ID_PLAYER, Common_Movement_ExclamationMark)
+//	playse(SE_PIN)
+//	waitfieldeffect(FLDEFF_EMOTE_ICON)
+//	applymovement(LOCALID_RIVAL, Common_Movement_WalkInPlaceLeft)
+//	msgbox(format(	"Yes, the day finally came! This is so cool!\p"
+//					"Aw man, these were all my favorites! It's so hard to pick!"), MSGBOX_DEFAULT, NAME_RIVAL)
+//	waitmovement(0)
+//	applymovement(LOCALID_NAVY, Common_Movement_WalkInPlaceRight)
+//	msgbox(format(	"Well, how about letting {COLOR GREEN}{PLAYER}{COLOR DARK_GRAY} picks first? "
+//					"That way, you can easily pick which one you'd want to get."), MSGBOX_DEFAULT, NAME_NAVY)
+//	waitmovement(0)
+//	applymovement(LOCALID_RIVAL, Common_Movement_WalkInPlaceLeft)
+//	msgbox(format(	"Good point!\n"
+//					"You can go first, {COLOR GREEN}{PLAYER}{COLOR DARK_GRAY}! We'll follow the rest after."), MSGBOX_DEFAULT, NAME_RIVAL)
+//	waitmovement(0)
+//	closemessage
+//	applymovement(LOCALID_NAVY, Common_Movement_WalkInPlaceRight)
+//	msgbox(format(	"Now, go on {COLOR GREEN}{PLAYER}{COLOR DARK_GRAY}! Pick a POKéMON!\n"
+//					"Remember to not be greedy!"), MSGBOX_DEFAULT, NAME_NAVY)
+//	bufferspeciesname(STR_VAR_1, SPECIES_BULBASAUR)
+//	bufferspeciesname(STR_VAR_2, SPECIES_CHARMANDER)
+//	bufferspeciesname(STR_VAR_3, SPECIES_SQUIRTLE)
+//	dynmultipush("{COLOR GREEN}{STR_VAR_1}{COLOR DARK_GRAY}", SPECIES_BULBASAUR)
+//	dynmultipush("{COLOR RED}{STR_VAR_2}{COLOR DARK_GRAY}", SPECIES_CHARMANDER)
+//	dynmultipush("{COLOR BLUE}{STR_VAR_3}{COLOR DARK_GRAY}", SPECIES_SQUIRTLE)
+//	playse(SE_SELECT)
+//	dynmultistack(0, 0, TRUE, 3, FALSE, 0, DYN_MULTICHOICE_CB_SHOW_MON_PIC)
+//	setorcopyvar(VAR_0x8000, VAR_RESULT)
+//	bufferspeciesname(STR_VAR_1, VAR_0x8000)
+//	msgbox(format("Alright, so you want the {COLOR GREEN}{STR_VAR_1}{COLOR DARK_GRAY}, right?"), MSGBOX_YESNO, NAME_NAVY)
+//	if (var(VAR_RESULT) == NO) {
+//		msgbox(format(	"Oh, you changed your mind? Fine then. "
+//						"Just remember to pick more wisely!"), MSGBOX_DEFAULT, NAME_NAVY)
+//		goto(starter_choices)
+//	}
+//	closemessage
+//	givemon(VAR_0x8000, 5)
+//	playfanfare(MUS_OBTAIN_ITEM)
+//	msgbox(format("You picked the {COLOR GREEN}{STR_VAR_1}{COLOR DARK_GRAY} from the special {COLOR GREEN}PACKAGE{COLOR DARK_GRAY}!"), MSGBOX_DEFAULT)
+//	waitfanfare
+//	msgbox(gText_NicknameThisPokemon, MSGBOX_YESNO)
+//	if (var(VAR_RESULT) == YES) {
+//		call(Common_EventScript_GetGiftMonPartySlot)
+//		call(Common_EventScript_NameReceivedPartyMon)
+//	}
+//	setplayerstartermon(VAR_0x8000)
+//	callnative(SetRivalMon)
+//	bufferrivalstartermon(STR_VAR_1, MON_NAVY)
+//	applymovement(LOCALID_NAVY, Common_Movement_WalkInPlaceRight)
+//	msgbox(format(	"Good choice, {COLOR GREEN}{PLAYER}{COLOR DARK_GRAY}. Don't forget to take the other packages! "
+//					"Now, our turn to pick!\p"
+//					"I'm gonna pick that {COLOR GREEN}{STR_VAR_1}{COLOR DARK_GRAY}, I like it."), MSGBOX_DEFAULT, NAME_NAVY)
+//	waitmovement(0)
+//	closemessage
+//	bufferrivalstartermon(STR_VAR_1, MON_RIVAL)
+//	applymovement(LOCALID_RIVAL, Common_Movement_WalkInPlaceLeft)
+//	msgbox(format(	"Perfect, I get the {COLOR GREEN}{STR_VAR_1}{COLOR DARK_GRAY}! Exactly as what I wanted, haha!"), MSGBOX_DEFAULT, NAME_RIVAL)
+//	waitmovement(0)
+//	closemessage
