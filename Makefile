@@ -142,12 +142,7 @@ ifeq ($(ANALYZE),1)
 override CFLAGS += -fanalyzer
 endif
 
-# Only throw an error for unused elements if its RH-Hideout's repo
-ifeq ($(UNUSED_ERROR),0)
-ifneq ($(GITHUB_REPOSITORY_OWNER),rh-hideout)
 override CFLAGS += -Wno-error=unused-variable -Wno-error=unused-const-variable -Wno-error=unused-parameter -Wno-error=unused-function -Wno-error=unused-but-set-parameter -Wno-error=unused-but-set-variable -Wno-error=unused-value -Wno-error=unused-local-typedefs
-endif
-endif
 
 LIBPATH := -L "$(dir $(shell $(PATH_MODERNCC) -mthumb -print-file-name=libgcc.a))" -L "$(dir $(shell $(PATH_MODERNCC) -mthumb -print-file-name=libnosys.a))" -L "$(dir $(shell $(PATH_MODERNCC) -mthumb -print-file-name=libc.a))"
 LIB := $(LIBPATH) -lc -lnosys -lgcc -L../../libagbsyscall -lagbsyscall
