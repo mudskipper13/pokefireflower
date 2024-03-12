@@ -166,8 +166,6 @@ static void UpdateItemData(void);
 extern void _DisplayMessageAndContinueTask(u8 taskId, u8 windowId, u16 tileNum, u8 paletteNum, u8 fontId, u8 textSpeed, const u8 *string, void *taskFunc, u8 txtColor);
 static void ExitBuyMenu(u8 taskId);
 
-static const u8 sGridCursorPos[] = { 0, 40, 80 };
-
 static const u8 sGridPosX[] = { (120 + 16), (160 + 16), (200 + 16) };
 static const u8 sGridPosY[] = { (24 + 16), (64 + 16) };
 
