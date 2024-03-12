@@ -1069,13 +1069,12 @@ static void UpdateItemData(void)
     else
     {
         u32 i = GridMenu_SelectedIndex(sShopData->gridItems);
-        u32 item = sMartInfo.itemList[i];
         BuyMenuPrint(WIN_MULTI, BuyMenuGetItemName(i), 0, 0, TEXT_SKIP_DRAW, COLORID_BLACK);
         PrintMoneyLocal(WIN_MULTI, 2*8, BuyMenuGetItemPrice(i), 76, COLORID_BLACK);
 
         if (sMartInfo.martType != MART_TYPE_DECOR || sMartInfo.martType != MART_TYPE_DECOR2 || sMartInfo.martType != MART_TYPE_OUTFIT)
         {
-            u16 quantity = CountTotalItemQuantityInBag(item);
+            u16 quantity = CountTotalItemQuantityInBag(sMartInfo.itemList[i]);
             ConvertIntToDecimalStringN(gStringVar3, quantity, STR_CONV_MODE_RIGHT_ALIGN, 3);
             BuyMenuPrint(WIN_MULTI, gStringVar3, GetStringRightAlignXOffset(FONT_SMALL, gStringVar3, 72), 4*8, TEXT_SKIP_DRAW, COLORID_BLACK);
         }
