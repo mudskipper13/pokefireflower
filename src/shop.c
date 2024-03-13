@@ -1414,15 +1414,16 @@ static void BuyMenuSubtractMoney(u8 taskId)
         gTasks[taskId].func = Task_ReturnToItemListAfterDecorationPurchase;
 }
 
-// Identical to Task_WaitMessage, but this one jumps to BuyMenuReturnToItemList instead
-// Feel free to optimize it better, recommend porting the change to the original branch
-// for everyone to enjoy.
+// This is hacky but this'd do it
 static void Task_ReturnToItemListWaitMsg(u8 taskId)
 {
-    if (--gTasks[taskId].data[0] == 0)
+    if (gTasks[taskId].data[0] == 0)
     {
-        BuyMenuReturnToItemList(taskId);
+        if (JOY_NEW(A_BUTTON | B_BUTTON))
+            BuyMenuReturnToItemList(taskId);
     }
+    else
+        gTasks[taskId].data[0]--;
 }
 
 static void Task_ReturnToItemListAfterItemPurchase(u8 taskId)
@@ -1445,7 +1446,8 @@ static void Task_ReturnToItemListAfterItemPurchase(u8 taskId)
             premierBallsToAdd = 0;
         }
 
-        PlaySE(SE_SELECT);
+        if (gTasks[taskId].data[0] != 20)
+            PlaySE(SE_SELECT);
         AddBagItem(ITEM_PREMIER_BALL, premierBallsToAdd);
         if (premierBallsToAdd > 0)
         {
@@ -1453,7 +1455,7 @@ static void Task_ReturnToItemListAfterItemPurchase(u8 taskId)
             ConvertIntToDecimalStringN(gStringVar1, premierBallsToAdd, STR_CONV_MODE_LEFT_ALIGN, MAX_ITEM_DIGITS);
             StringExpandPlaceholders(gStringVar4, (premierBallsToAdd >= 2 ? gText_ThrowInPremierBalls : gText_ThrowInPremierBall));
             BuyMenuPrint(WIN_ITEM_DESCRIPTION, gStringVar4, 4, 0, TEXT_SKIP_DRAW, COLORID_BLACK, TRUE);
-            gTasks[taskId].data[0] = 70;
+            gTasks[taskId].data[0] = 20;
             gTasks[taskId].func = Task_ReturnToItemListWaitMsg;
         }
         else
