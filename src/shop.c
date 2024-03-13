@@ -583,8 +583,6 @@ static void Task_BuyMenuWaitFadeIn(u8 taskId)
 
 static void CB2_InitBuyMenu(void)
 {
-    u8 taskId;
-
     switch (gMain.state)
     {
     case 0:
@@ -1144,7 +1142,7 @@ static void UpdateItemData(void)
     if (GridMenu_SelectedIndex(sShopData->gridItems) >= sMartInfo.itemCount)
         return;
 
-    FillWindowPixelRect(WIN_MULTI, PIXEL_FILL(0), 0, 0, sShopMenuWindowTemplates[WIN_MULTI].width * 8, 16);
+    FillWindowPixelRect(WIN_MULTI, PIXEL_FILL(0), 0, 0, sShopMenuWindowTemplates[WIN_MULTI].width * 8+8, 16);
     FillWindowPixelRect(WIN_MULTI, PIXEL_FILL(0), 34, 1*8, 40, 40);
     if (sMartInfo.itemList[GridMenu_SelectedIndex(sShopData->gridItems)] == ITEM_NONE || sMartInfo.itemList[GridMenu_SelectedIndex(sShopData->gridItems)] == OUTFIT_COUNT)
     {
