@@ -1052,7 +1052,7 @@ static void BuyMenuInitWindows(void)
 
         if (ItemId_GetImportance(item) && (CheckBagHasItem(item, 1) || CheckPCHasItem(item, 1)))
         {
-            FillWindowPixelRect(WIN_MULTI, PIXEL_FILL(0), 0, 2*8, sShopMenuWindowTemplates[WIN_MULTI].width * 8, 40);
+            FillWindowPixelRect(WIN_MULTI, PIXEL_FILL(0), 0, 2*8, sShopMenuWindowTemplates[WIN_MULTI].width * 8+8, 40);
             BuyMenuPrint(WIN_MULTI, gText_SoldOut, 0, 2*8, TEXT_SKIP_DRAW, COLORID_BLACK, FALSE);
         }
         else
@@ -1143,7 +1143,7 @@ static void UpdateItemData(void)
         return;
 
     FillWindowPixelRect(WIN_MULTI, PIXEL_FILL(0), 0, 0, sShopMenuWindowTemplates[WIN_MULTI].width * 8+8, 16);
-    FillWindowPixelRect(WIN_MULTI, PIXEL_FILL(0), 34, 1*8, 40, 40);
+    FillWindowPixelRect(WIN_MULTI, PIXEL_FILL(0), 34, 1*8, 84, 40);
     if (sMartInfo.itemList[GridMenu_SelectedIndex(sShopData->gridItems)] == ITEM_NONE || sMartInfo.itemList[GridMenu_SelectedIndex(sShopData->gridItems)] == OUTFIT_COUNT)
     {
         FillWindowPixelRect(WIN_MULTI, PIXEL_FILL(0), 0, 0, 84, 16);
@@ -1221,12 +1221,15 @@ static void Task_BuyMenuTryBuyingItem(u8 taskId)
 
     FillWindowPixelBuffer(WIN_ITEM_DESCRIPTION, PIXEL_FILL(0));
 
-    if ((ItemId_GetImportance(sShopData->currentItemId) && (CheckBagHasItem(sShopData->currentItemId, 1) || CheckPCHasItem(sShopData->currentItemId, 1)))
-        || GetOutfitStatus(sShopData->currentItemId))
+    if (sMartInfo.martType != MART_TYPE_DECOR || sMartInfo.martType != MART_TYPE_DECOR2)
     {
-        PlaySE(SE_BOO);
-        gTasks[taskId].data[0] = 70;
-        BuyMenuDisplayMessage(taskId, gText_ThatItemIsSoldOut, Task_WaitMessage);
+        if ((ItemId_GetImportance(sShopData->currentItemId) && (CheckBagHasItem(sShopData->currentItemId, 1) || CheckPCHasItem(sShopData->currentItemId, 1))) || GetOutfitStatus(sShopData->currentItemId))
+        {
+            PlaySE(SE_BOO);
+            gTasks[taskId].data[0] = 70;
+            BuyMenuDisplayMessage(taskId, gText_ThatItemIsSoldOut, Task_WaitMessage);
+            return;
+        }
     }
 
     if (!IsEnoughMoney(&gSaveBlock1Ptr->money, sShopData->totalCost))
@@ -1242,7 +1245,7 @@ static void Task_BuyMenuTryBuyingItem(u8 taskId)
         {
             CopyItemName(sShopData->currentItemId, gStringVar1);
             if (ItemId_GetImportance(sShopData->currentItemId)
-                || GetOutfitStatus(sShopData->currentItemId))
+                || !GetOutfitStatus(sShopData->currentItemId))
             {
                 u32 cost = BuyMenuGetItemPrice(sShopData->currentItemId);
                 ConvertIntToDecimalStringN(gStringVar2, sShopData->totalCost, STR_CONV_MODE_LEFT_ALIGN, 6);
